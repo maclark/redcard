@@ -215,7 +215,6 @@ namespace RedCard {
             }
 
             switch (mode) {
-                case MirrorMode.GazingAtArm:
                 case MirrorMode.Approaching:
                     t += Time.deltaTime * approachSpeed;
                     if (t >= 1f) {
