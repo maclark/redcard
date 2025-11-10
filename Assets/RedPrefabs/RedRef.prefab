@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6375961973125877157}
   - component: {fileID: 681671332373524177}
   - component: {fileID: 1473184925839005420}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WatchButton (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 3273701426783682209}
   - component: {fileID: 3908242971599064799}
   - component: {fileID: 8904551946448863092}
-  m_Layer: 16
+  m_Layer: 7
   m_Name: RefBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 3951535701237052535}
   - component: {fileID: 1178365238550342284}
   - component: {fileID: 8126016303821019941}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: SprayCanBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 4747460371789550604}
   - component: {fileID: 1134534076484743306}
   - component: {fileID: 1527780632725311546}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WhistleBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 151381201390299287}
   - component: {fileID: 667814811847574178}
   - component: {fileID: 4016427299865772009}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WhistleBodyBevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -528,7 +528,7 @@ GameObject:
   - component: {fileID: 5297092636630223294}
   - component: {fileID: 4280445363454229078}
   - component: {fileID: 7098505844284672893}
-  m_Layer: 16
+  m_Layer: 7
   m_Name: RedRef
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -758,7 +758,7 @@ GameObject:
   - component: {fileID: 1649124995204549782}
   - component: {fileID: 680354708502510503}
   - component: {fileID: 3539603538870275619}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WhistleBodyKeyRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -871,7 +871,7 @@ GameObject:
   - component: {fileID: 1468377585192170260}
   - component: {fileID: 8918803669260681431}
   - component: {fileID: 9100216793549213167}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: FoamSprayParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5777,7 +5777,7 @@ GameObject:
   - component: {fileID: 3011637886967927194}
   - component: {fileID: 849386739227375324}
   - component: {fileID: 5102571889400589147}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WatchBandL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5887,7 +5887,7 @@ GameObject:
   - component: {fileID: 4983276612782865289}
   - component: {fileID: 7375304942775271343}
   - component: {fileID: 8997130220508345637}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WhistleRidge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5976,7 +5976,7 @@ GameObject:
   - component: {fileID: 5328702785372119171}
   - component: {fileID: 3751166435246131526}
   - component: {fileID: 4738135567689643250}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: YellowCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6065,7 +6065,7 @@ GameObject:
   - component: {fileID: 5867361409810163545}
   - component: {fileID: 1262757364964034910}
   - component: {fileID: 2996143500680552935}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WatchButton (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6195,7 +6195,7 @@ Camera:
   m_GameObject: {fileID: 3956856155070522804}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.116647065, g: 0.017933426, b: 0.122641504, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -6301,7 +6301,7 @@ GameObject:
   - component: {fileID: 4994310691036408462}
   - component: {fileID: 8555759174539285949}
   - component: {fileID: 3538748335615969579}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: SprayCanTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6390,7 +6390,7 @@ GameObject:
   - component: {fileID: 1512541308239446747}
   - component: {fileID: 2565532532551649768}
   - component: {fileID: 2843246603495654103}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WatchTimeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6569,7 +6569,7 @@ GameObject:
   - component: {fileID: 3201153915921765761}
   - component: {fileID: 6456163999210198490}
   - component: {fileID: 3635542580010906468}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WhistleLip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6659,7 +6659,7 @@ GameObject:
   - component: {fileID: 4494549062643626531}
   - component: {fileID: 2169098347933872942}
   - component: {fileID: 4550614667507522307}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: MouthHole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6746,7 +6746,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2324091775619896814}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: SprayCan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6781,7 +6781,7 @@ GameObject:
   - component: {fileID: 6446828675223307673}
   - component: {fileID: 5427852261948688741}
   - component: {fileID: 7037206522554226941}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ArmsCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6907,7 +6907,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 259949938632427502}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: Watch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6949,7 +6949,7 @@ GameObject:
   - component: {fileID: 1223768014672775101}
   - component: {fileID: 5966798240773481983}
   - component: {fileID: 4474421392423767389}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WatchButton (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7038,7 +7038,7 @@ GameObject:
   - component: {fileID: 3977015071018287501}
   - component: {fileID: 7456475031856363726}
   - component: {fileID: 3513013342219613049}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WatchBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7128,7 +7128,7 @@ GameObject:
   - component: {fileID: 2451065295761521185}
   - component: {fileID: 9043418100364213938}
   - component: {fileID: 2216423007004301104}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WatchBandR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7238,7 +7238,7 @@ GameObject:
   - component: {fileID: 5711639404296675281}
   - component: {fileID: 3454697600348510019}
   - component: {fileID: 4194792995866849793}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WatchButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7325,7 +7325,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7885894688189361907}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: Whistle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7363,7 +7363,7 @@ GameObject:
   - component: {fileID: 8281474810963713447}
   - component: {fileID: 7974235295745879481}
   - component: {fileID: 1263821545929942003}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: WatchFace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7452,7 +7452,7 @@ GameObject:
   - component: {fileID: 7000079479439513534}
   - component: {fileID: 5642324016009090459}
   - component: {fileID: 1312611561375081245}
-  m_Layer: 12
+  m_Layer: 6
   m_Name: RedCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
