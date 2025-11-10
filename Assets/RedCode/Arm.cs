@@ -24,6 +24,10 @@ namespace RedCard {
         public MeshRenderer[] folicles = new MeshRenderer[0];
         public MeshRenderer[] nails = new MeshRenderer[0];
 
+        [Header("SETTINGS")]
+        public Vector3 localLoweredPos;
+        public Vector3 localRaisedPos;
+
 
         private void Awake() {
             radius = .5f * limb.transform.localScale.x;

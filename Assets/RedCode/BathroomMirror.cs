@@ -49,6 +49,7 @@ namespace RedCard {
         public MirrorCanvas mirror;
         public MirrorMode mode = MirrorMode.Inactive;
         public Arm currentArm;
+        public Arm otherArm;
 
 
         public const int MAX_TATTOOS = 3;
@@ -73,12 +74,11 @@ namespace RedCard {
             mirror = Instantiate(mirrorCanvasPrefab, transform).GetComponent<MirrorCanvas>();
             mirror.hairThicknessSlider.onValueChanged.AddListener(HairThicknessSlid);
             mirror.hairLengthSlider.onValueChanged.AddListener(HairLengthSlid);
-            mirror.hairColorPicker.onValueChanged.AddListener(HairColorPicker);
+            //mirror.hairColorPicker.onValueChanged.AddListener(HairColorPicker);
             mirror.hairCurlSlider.onValueChanged.AddListener(HairCurlSlid);
             mirror.muscleSlider.onValueChanged.AddListener(MuscleSlid);
             mirror.switchArms.onClick.AddListener(SwitchArms);
-            mirror.makeDominant.onClick.AddListener(MakeDominant);
-            mirror.startManicure.onClick.AddListener(StartManicure);
+            mirror.dominanceCheckbox.onClick.AddListener(ToggleDominance);
             mirror.pickTattoo.onClick.AddListener(PickTattoo);
             mirror.back.onClick.AddListener(Back);
             mirror.gameObject.SetActive(false);
@@ -157,28 +157,43 @@ namespace RedCard {
             SaveArms();
         }
         void SwitchArms() {
-           currentArm.gameObject.SetActive(false);
-            if (currentArm.side == Chirality.Left) {
-                currentArm = arbitro.rightArm;
-                currentArm.transform.localPosition = arbitro.rightArmLoweredPos;
+            Arm cachedArm = currentArm;
+            currentArm = otherArm;
+            otherArm = cachedArm;
+            
+            if (currentArm.isDominant) {
+                mirror.makeDominantText.text = Language.current[Words.IsDominantChecked];
             }
             else {
-                currentArm = arbitro.leftArm;
-                currentArm.transform.localPosition = arbitro.leftArmLoweredPos;
+
+                mirror.makeDominantText.text = Language.current[Words.IsDominantUnchecked];
             }
+
+            otherArm.gameObject.SetActive(false);
             currentArm.gameObject.SetActive(true);
+            currentArm.transform.localPosition = currentArm.localLoweredPos;
+
             arbitro.SlotEquipped((int)RefEquipment.Barehand);
         }
 
-        void MakeDominant() {
-            currentArm.isDominant = true;
-            if (currentArm.side == Chirality.Right) {
-                arbitro.leftArm.isDominant = false;
+        void ToggleDominance() {
+            if (currentArm.isDominant) {
+                currentArm.isDominant = false;
+                otherArm.isDominant = true;
+                mirror.makeDominantText.text = Language.current[Words.IsDominantUnchecked];
+                arbitro.dominantArm = otherArm;
             }
-            else arbitro.rightArm.isDominant = false;
-            arbitro.dominantArm = currentArm;
+            else {
+
+                currentArm.isDominant = true;
+                otherArm.isDominant = false;
+                mirror.makeDominantText.text = Language.current[Words.IsDominantChecked];
+                arbitro.dominantArm = currentArm;
+            }
+
             SaveArms();
         }
+
         void Back() {
             switch (mode) {
                 case MirrorMode.Approaching:
@@ -265,8 +280,15 @@ namespace RedCard {
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
 
-            if (arbitro.dominantArm == arbitro.leftArm) currentArm = arbitro.leftArm;
-            else currentArm = arbitro.rightArm;
+            if (arbitro.dominantArm == arbitro.leftArm) {
+                currentArm = arbitro.leftArm;
+                otherArm = arbitro.rightArm;
+            }
+            else {
+                currentArm = arbitro.rightArm;
+                otherArm = arbitro.leftArm;
+            }
+            mirror.makeDominantText.text = Language.current[Words.IsDominantChecked];
 
             mode = MirrorMode.Approaching;
         }

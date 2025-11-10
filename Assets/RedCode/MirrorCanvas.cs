@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace RedCard {
 
@@ -10,8 +11,8 @@ namespace RedCard {
         public Slider hairCurlSlider;
         public Slider muscleSlider;
         public Button switchArms;
-        public Button makeDominant;
-        public Button startManicure;
+        public Button dominanceCheckbox;
+        public TMP_Text makeDominantText;
         public Button pickTattoo;
         public Button back;
 

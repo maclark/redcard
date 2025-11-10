@@ -130,6 +130,9 @@ namespace RedCard {
 
         public void Init() {
             if (!initialized) {
+
+                Language.current = Language.english;
+
                 initialized = true;
                 state = State.PreMatchTunnelsAndLocker;
                 teamA = new RedTeam();
