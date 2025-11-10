@@ -76,7 +76,6 @@ namespace RedCard {
             homeCaptain.teamID = 0;
             awayCaptain.teamID = 1;
 
-            arbitro.hud.wheel.PopulateBoxes(arbitro.hud.wheel.nothingToSay);
         }
 
         public void Update() {

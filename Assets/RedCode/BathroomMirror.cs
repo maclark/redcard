@@ -37,17 +37,7 @@ namespace RedCard {
     public class BathroomMirror : MonoBehaviour {
 
         [Header("ASSIGNATIONS")]
-        public Canvas mirrorCan;
-        public Slider hairThicknessSlider;
-        public Slider hairLengthSlider;
-        public Slider hairColorPicker;
-        public Slider hairCurlSlider;
-        public Slider muscleSlider;
-        public Button switchArms;
-        public Button makeDominant;
-        public Button startManicure;
-        public Button pickTattoo;
-        public Button back;
+        public GameObject mirrorCanvasPrefab;
 
         [Header("SETTINGS")]
         public float approachSpeed = 1f;
@@ -56,6 +46,7 @@ namespace RedCard {
         public AnimationCurve approachCurve;
 
         [Header("VARS")]
+        public MirrorCanvas mirror;
         public MirrorMode mode = MirrorMode.Inactive;
         public Arm currentArm;
 
@@ -75,20 +66,22 @@ namespace RedCard {
         }
 
         public void Awake() {
-            mode = MirrorMode.Inactive;
-            enabled = false;
-            mirrorCan.gameObject.SetActive(false);
 
-            hairThicknessSlider.onValueChanged.AddListener(HairThicknessSlid);
-            hairLengthSlider.onValueChanged.AddListener(HairLengthSlid);
-            hairColorPicker.onValueChanged.AddListener(HairColorPicker);
-            hairCurlSlider.onValueChanged.AddListener(HairCurlSlid);
-            muscleSlider.onValueChanged.AddListener(MuscleSlid);
-            switchArms.onClick.AddListener(SwitchArms);
-            makeDominant.onClick.AddListener(MakeDominant);
-            startManicure.onClick.AddListener(StartManicure);
-            pickTattoo.onClick.AddListener(PickTattoo);
-            back.onClick.AddListener(Back);
+            enabled = false;
+            mode = MirrorMode.Inactive;
+
+            mirror = Instantiate(mirrorCanvasPrefab, transform).GetComponent<MirrorCanvas>();
+            mirror.hairThicknessSlider.onValueChanged.AddListener(HairThicknessSlid);
+            mirror.hairLengthSlider.onValueChanged.AddListener(HairLengthSlid);
+            mirror.hairColorPicker.onValueChanged.AddListener(HairColorPicker);
+            mirror.hairCurlSlider.onValueChanged.AddListener(HairCurlSlid);
+            mirror.muscleSlider.onValueChanged.AddListener(MuscleSlid);
+            mirror.switchArms.onClick.AddListener(SwitchArms);
+            mirror.makeDominant.onClick.AddListener(MakeDominant);
+            mirror.startManicure.onClick.AddListener(StartManicure);
+            mirror.pickTattoo.onClick.AddListener(PickTattoo);
+            mirror.back.onClick.AddListener(Back);
+            mirror.gameObject.SetActive(false);
 
             string map = MIRROR_ACTION_MAP;
             var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("MoveWASD");
@@ -222,6 +215,7 @@ namespace RedCard {
             }
 
             switch (mode) {
+                case MirrorMode.GazingAtArm:
                 case MirrorMode.Approaching:
                     t += Time.deltaTime * approachSpeed;
                     if (t >= 1f) {
@@ -235,9 +229,15 @@ namespace RedCard {
                     Quaternion lookingIntoMirror = Quaternion.LookRotation(-transform.forward, Vector3.up);
                     arbitro.cam.transform.rotation = Quaternion.Slerp(approachStartGaze, lookingIntoMirror, s);
                     //arbitro.cam.fieldOfView = Mathf.Lerp(arbitro.normal_vert_fov, arm_fov, s);
+
+                    // in ref controls, in update, we're doing this:
+                    // cameraTransform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
+                    // so we need pitch and yaw to match as though they're looking straight
+                    arbitro.pitch = arbitro.cam.transform.localEulerAngles.x;
+                    arbitro.yaw = arbitro.cam.transform.localEulerAngles.y;
+                    arbitro.lastLook = Vector2.zero;
                     break;
             }
-
         }
 
 
@@ -259,7 +259,7 @@ namespace RedCard {
             t = 0f;
 
             arbitro.hud.gameObject.SetActive(false);
-            mirrorCan.gameObject.SetActive(true);
+            mirror.gameObject.SetActive(true);
             approachStartPos = arbitro.transform.position;
             approachStartGaze = arbitro.cam.transform.rotation;
 
@@ -287,7 +287,7 @@ namespace RedCard {
                 else Debug.LogError("can't find map: " + RedMatch.REFEREEING_ACTION_MAP);
             }
 
-            mirrorCan.gameObject.SetActive(false);
+            mirror.gameObject.SetActive(false);
             enabled = false;
             arbitro.hud.gameObject.SetActive(true);
             arbitro.cam.fieldOfView = arbitro.normal_vert_fov;

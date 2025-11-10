@@ -268,11 +268,19 @@ namespace RedCard {
             }
             RedMatch.Match.arbitro = this;
 
-            if (!Input.mousePresent) lookingWithArrows = true;
-            else if (System.IO.Directory.Exists("C:\\Users\\maxac")) {
+            if (System.IO.Directory.Exists("C:\\Users\\maxac")) {
                 lookingWithArrows = true;
-                print("on laptop, using arrows-look");
+                print("on laptop, lookingWithArrows initialized: " + lookingWithArrows);
             }
+            else if (Mouse.current == null) {
+                // a trackpad will count as a mouse, so this isn't as valuable as i intended
+                lookingWithArrows = true;
+                print("no mouse present, lookingWithArrows initialized: " + lookingWithArrows);
+            }
+            else {
+                print("mouse present, not on laptop, lookingWithArrows initialized: " + lookingWithArrows);
+            }
+
 
             if (Application.isEditor) debugStartWithEquipment = true;
 
@@ -281,7 +289,7 @@ namespace RedCard {
             hud = FindAnyObjectByType<HUD>();
             hud.MakeVisible(RefEquipment.Barehand);
             hud.wheel.Init();
-
+            hud.wheel.PopulateBoxes(hud.wheel.nothingToSay);
 
             acquiredEquipment.Clear();
             acquiredEquipment.Add(RefEquipment.Barehand);
@@ -476,6 +484,16 @@ namespace RedCard {
             pitch = Mathf.Clamp(pitch, -90f, 90f); // Prevent flipping
             lookDelta = lastLook - look;
             lastLook = look;
+        }
+
+        private void ArrowInput(InputAction.CallbackContext ctx) {
+            if (!lookingWithArrows) return; //////////////earlyreturn//////////////
+
+            arrowsInput = ctx.ReadValue<Vector2>();
+            if (hud.wheel.on && !hud.wheel.preppedDialog) {
+                hud.wheel.HighlightOption(arrowsInput, true);
+                arrowsInput = Vector2.zero;
+            }
         }
 
         private void Sprint(InputAction.CallbackContext ctx) {
@@ -911,16 +929,6 @@ namespace RedCard {
             }
         }
 
-        private void ArrowInput(InputAction.CallbackContext ctx) {
-            if (!lookingWithArrows) return; //////////////earlyreturn//////////////
-
-            arrowsInput = ctx.ReadValue<Vector2>();
-            if (hud.wheel.on && !hud.wheel.preppedDialog) {
-                hud.wheel.HighlightOption(arrowsInput, true);
-                arrowsInput = Vector2.zero;
-            }
-        }
-
         private void OpenDialogWheel(InputAction.CallbackContext ctx) {
             zooming = false;
             arrowsInput = Vector2.zero;
@@ -1078,7 +1086,7 @@ namespace RedCard {
 
         float dt;
         Ray lookRay;
-        Vector2 lastLook;
+        public Vector2 lastLook;
         Vector2 lookDelta;
         void Update() {
 
