@@ -746,6 +746,7 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   equipped: 0
+  lastLook: {x: 0, y: 0}
 --- !u!1 &2820231803916580727
 GameObject:
   m_ObjectHideFlags: 0
@@ -7638,6 +7639,14 @@ PrefabInstance:
     - target: {fileID: 3030906997345557888, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
       propertyPath: m_Name
       value: LeftThumb
+      objectReference: {fileID: 0}
+    - target: {fileID: 3165208551582278830, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
+      propertyPath: localRaisedPos.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3165208551582278830, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
+      propertyPath: localLoweredPos.x
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4663620802481398292, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
       propertyPath: m_Name

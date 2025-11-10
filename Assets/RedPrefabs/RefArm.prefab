@@ -3826,6 +3826,8 @@ MonoBehaviour:
   - {fileID: 5424826760274852571}
   nails:
   - {fileID: 4444508481651965750}
+  localLoweredPos: {x: 0.5, y: -0.55, z: -1}
+  localRaisedPos: {x: 0.5, y: -0.385, z: 0}
 --- !u!114 &6653957317531445373
 MonoBehaviour:
   m_ObjectHideFlags: 0

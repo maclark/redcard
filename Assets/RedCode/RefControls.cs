@@ -198,10 +198,6 @@ namespace RedCard {
         [Header("INDICATING ARM")]
         public Arm dominantArm;
         public Vector2 armTilt = new Vector2(1f, .5f);
-        public Vector3 rightArmLoweredPos = new Vector3(0.5f, -.55f, -1f);
-        public Vector3 leftArmLoweredPos = new Vector3(-0.5f, -.55f, -1f);
-        public Vector3 rightArmRaisedPos = new Vector3(0.5f, -0.385f, 0f);
-        public Vector3 leftArmRaisedPos = new Vector3(-0.5f, -.55f, -1f);
         public float yawIndicatingTolerance = 10f;
         public float yawSpring = 5f;
         private bool indicating = false;
@@ -825,8 +821,7 @@ namespace RedCard {
 
         void ContinueIndicating() {
             if (indicatedTarget) {
-                if (dominantArm.side == Chirality.Right) dominantArm.transform.localPosition = rightArmRaisedPos;
-                else dominantArm.transform.localPosition = leftArmRaisedPos;
+                dominantArm.transform.localPosition = dominantArm.localRaisedPos;
                 Vector3 dir = Vector3.zero;
                 switch (indicatedTarget.targetType) {
                     // for corner, point "45 degree" in direction of flag
@@ -868,8 +863,7 @@ namespace RedCard {
 
         void StopIndicating() {
             indicatedTarget = null;
-            if (dominantArm.side == Chirality.Right) dominantArm.transform.localPosition = rightArmLoweredPos;
-            else dominantArm.transform.localPosition = leftArmLoweredPos;
+            dominantArm.transform.localPosition = dominantArm.localLoweredPos;
             dominantArm.transform.localRotation = Quaternion.identity;
             indicating = false;
         }
@@ -988,8 +982,7 @@ namespace RedCard {
                 case RefEquipment.Barehand:
                     scanning = true;
                     dominantArm.gameObject.SetActive(true);
-                    if (dominantArm.side == Chirality.Right) dominantArm.transform.localPosition = rightArmLoweredPos;
-                    else dominantArm.transform.localPosition = leftArmLoweredPos;
+                    dominantArm.transform.localPosition = dominantArm.localLoweredPos;
                     HUD.SelectIcon(hud, RefEquipment.Barehand);
                     break;
                 case RefEquipment.Watch:
