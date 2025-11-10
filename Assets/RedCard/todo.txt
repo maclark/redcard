@@ -1,0 +1,31 @@
+using #GAMEPAD to note things that need to be tested with...the gamepad!
+
+Does Left click take things out of the bag? Do we need to teach throwing items? Or is E to grab?
+grabbing insta drops or something, then it falls thru floor lel
+
+
+do we split up RedMatch.Period prematch into LockerRoom, Tunnel, CoinToss, PreGame?
+counterstrike controls or QERF abilities or wheel
+
+inferred position of foul + gesture to correct
+turn off simulator audiolistener once embodied within redref with audiolistener
+if ball waay out of bounds, and no call, players should behave appropriately (gesture for call?)
+if ball slightly out of bounds, linesman should start waving flag
+
+in ref's gym bag:
+- men's fitness;w
+
+- crossword puzzle(s)
+- henry george
+- the nature of refereeing and ruling
+- note from daughter
+- IFAB laws of the game
+
+difficulty:
+kids, no cussing, parents get angry?
+
+ref hit by ball?
+
+sounds:
+- coin toss
+- open book, flip page
