@@ -61,7 +61,7 @@ MonoBehaviour:
   rightLine: {fileID: 4818040562618068653}
   leftLine: {fileID: 8654187908119137998}
   swatchHighlight: {fileID: 5149636940134624383}
-  noColorIcon: {fileID: 0}
+  noColorIcon: {fileID: 21300000, guid: cffa2ef146e5a024792c59f930310c53, type: 3}
 --- !u!1 &2486870769592396513
 GameObject:
   m_ObjectHideFlags: 0
