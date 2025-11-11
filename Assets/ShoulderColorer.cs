@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class ShoulderColorer : MonoBehaviour
 {
+    public MeshRenderer[] skin;
     [SerializeField] MeshRenderer sleeve;
-    [SerializeField] MeshRenderer[] skin;
     [SerializeField] Color sleeveColor = Color.yellow;
     [SerializeField] Color skinColor = Color.white;
 

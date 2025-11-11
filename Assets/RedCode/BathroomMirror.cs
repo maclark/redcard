@@ -59,7 +59,7 @@ namespace RedCard {
         Quaternion approachStartGaze;
         float t;
         RefControls arbitro;
-
+        int nailIndexHighlighted;
 
         void SaveArms() {
             // #TODO
@@ -147,6 +147,37 @@ namespace RedCard {
             mode = MirrorMode.Manicure;
             currentArm.RandomNailColor();
             // #TODO zoom to nails
+        }
+        void SetSkinColor(Color skinColor) {
+            for (int i = 0; i < arbitro.leftArm.colorer.skin.Length; i++) {
+                arbitro.leftArm.colorer.skin[i].materials[0].color = skinColor;
+                arbitro.rightArm.colorer.skin[i].materials[0].color = skinColor;
+            }
+            for (int i = 0; i < mirror.fingers.Length; i++) {
+                mirror.fingers[i].color = skinColor;
+            }
+        }
+        void NailLengthSlid(float value) {
+            float nailLength = value;
+            mirror.pinkyFinger.image.rectTransform.sizeDelta = new Vector2(mirror.pinkyNailWidth, nailLength); 
+            mirror.ringFinger.image.rectTransform.sizeDelta = new Vector2(mirror.nailWidth, nailLength); 
+            mirror.pinkyFinger.image.rectTransform.sizeDelta = new Vector2(mirror.nailWidth, nailLength); 
+            mirror.pinkyFinger.image.rectTransform.sizeDelta = new Vector2(mirror.nailWidth, nailLength); 
+            mirror.pinkyFinger.image.rectTransform.sizeDelta = new Vector2(mirror.nailWidth, nailLength); 
+        }
+        void HighlightNail(int index) {
+            nailIndexHighlighted = index;
+        }
+        void PaintNail(Color c) {
+            if (nailIndexHighlighted > 0 && nailIndexHighlighted < mirror.nails.Length) {
+                mirror.nails[nailIndexHighlighted].image.color = c;
+            }
+            else Debug.LogError("oob mirror nailindex highlighted: " + nailIndexHighlighted);
+
+            if (nailIndexHighlighted > 0 && nailIndexHighlighted < currentArm.nails.Length) {
+                currentArm.nails[nailIndexHighlighted].materials[0].color = c;
+            }
+            else Debug.LogError("oob arm nailindex highlighted: " + nailIndexHighlighted);
         }
         void PickTattoo() {
             Debug.LogWarning("pick tatoooo");
@@ -251,7 +282,6 @@ namespace RedCard {
                     float tStartFadingCanvasIn = 1f - mirrorCanvasFadeDuration;
                     if (t > tStartFadingCanvasIn) {
                         float tGUI = t - tStartFadingCanvasIn;
-                        print("tGUI " + tGUI);
                         mirror.group.alpha = Mathf.Lerp(0f, 1f, tGUI / mirrorCanvasFadeDuration);
                     }
                     break;

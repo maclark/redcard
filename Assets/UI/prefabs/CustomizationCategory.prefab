@@ -309,7 +309,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7749258291212151769}
-  - component: {fileID: 5523477789601868526}
   m_Layer: 5
   m_Name: CustomizationCategory
   m_TagString: Untagged
@@ -344,22 +343,6 @@ RectTransform:
   m_AnchoredPosition: {x: -16.049988, y: 351}
   m_SizeDelta: {x: 400, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5523477789601868526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173895480114334775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a50304479bdda146b3efc3fc431c773, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  fingers: []
-  nails: []
-  pinky: {fileID: 0}
-  thumb: {fileID: 0}
 --- !u!1 &1442538102139273542
 GameObject:
   m_ObjectHideFlags: 0

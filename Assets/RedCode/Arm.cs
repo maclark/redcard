@@ -2,6 +2,15 @@ using UnityEngine;
 using System.Collections.Generic;
 
 namespace RedCard {
+
+    public enum Finger {
+        Pinky,
+        Ring,
+        Middle,
+        Index,
+        Thumb
+    }
+
     public class Arm : MonoBehaviour {
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         // #TODO
@@ -23,6 +32,7 @@ namespace RedCard {
         public Transform limb;
         public MeshRenderer[] folicles = new MeshRenderer[0];
         public MeshRenderer[] nails = new MeshRenderer[0];
+        public ShoulderColorer colorer;
 
         [Header("SETTINGS")]
         public Vector3 localLoweredPos;
