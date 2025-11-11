@@ -11,6 +11,7 @@ namespace RedCard {
         public Image grabHand;
         public TMP_Text fToDrop;
         public DialogWheel wheel;
+        public Texture2D cursor;
 
 
         [Header("BIOMETRICS")]

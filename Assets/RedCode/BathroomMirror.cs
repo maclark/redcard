@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
@@ -43,6 +42,7 @@ namespace RedCard {
         public float approachSpeed = 1f;
         public float inFrontOfMirrorOffset = 1f;
         public float arm_fov = 50f;
+        public float mirrorCanvasFadeDuration = .25f;
         public AnimationCurve approachCurve;
 
         [Header("VARS")]
@@ -149,8 +149,9 @@ namespace RedCard {
             // #TODO zoom to nails
         }
         void PickTattoo() {
-            throw new System.NotImplementedException();
+            Debug.LogWarning("pick tatoooo");
         }
+
         public void ApplyTattoo(Tattoo tat, float r, float theta) {
             currentArm.tattoos.Add(tat);
             // #TODO
@@ -223,11 +224,6 @@ namespace RedCard {
         }
 
         private void Update() {
-            if (!arbitro) {
-                Debug.LogError("mirror active but has no arbitro");
-                enabled = false;
-                return;
-            }
 
             switch (mode) {
                 case MirrorMode.Approaching:
@@ -250,6 +246,25 @@ namespace RedCard {
                     arbitro.pitch = arbitro.cam.transform.localEulerAngles.x;
                     arbitro.yaw = arbitro.cam.transform.localEulerAngles.y;
                     arbitro.lastLook = Vector2.zero;
+
+
+                    float tStartFadingCanvasIn = 1f - mirrorCanvasFadeDuration;
+                    if (t > tStartFadingCanvasIn) {
+                        float tGUI = t - tStartFadingCanvasIn;
+                        print("tGUI " + tGUI);
+                        mirror.group.alpha = Mathf.Lerp(0f, 1f, tGUI / mirrorCanvasFadeDuration);
+                    }
+                    break;
+
+                case MirrorMode.Inactive:
+                    if (mirror.group.alpha > 0f) {
+                        float fadeOutSpeed = 1f / (1f - mirrorCanvasFadeDuration);
+                        mirror.group.alpha -= fadeOutSpeed * Time.deltaTime;
+                    }
+                    else {
+                        mirror.gameObject.SetActive(false);
+                        enabled = false;
+                    }
                     break;
             }
         }
@@ -274,6 +289,7 @@ namespace RedCard {
 
             arbitro.hud.gameObject.SetActive(false);
             mirror.gameObject.SetActive(true);
+            mirror.group.alpha = 0f;
             approachStartPos = arbitro.transform.position;
             approachStartGaze = arbitro.cam.transform.rotation;
 
@@ -308,8 +324,6 @@ namespace RedCard {
                 else Debug.LogError("can't find map: " + RedMatch.REFEREEING_ACTION_MAP);
             }
 
-            mirror.gameObject.SetActive(false);
-            enabled = false;
             arbitro.hud.gameObject.SetActive(true);
             arbitro.cam.fieldOfView = arbitro.normal_vert_fov;
             if (arbitro.TryGetComponent(out CharacterController cc)) cc.enabled = true;

@@ -287,6 +287,10 @@ namespace RedCard {
             hud.wheel.Init();
             hud.wheel.PopulateBoxes(hud.wheel.nothingToSay);
 
+            float x = hud.cursor.width / 2f;
+            float y = hud.cursor.height / 2f;
+            Cursor.SetCursor(hud.cursor, new Vector2(x, y), CursorMode.Auto);
+
             acquiredEquipment.Clear();
             acquiredEquipment.Add(RefEquipment.Barehand);
 

@@ -5,6 +5,7 @@ using TMPro;
 namespace RedCard {
 
     public class MirrorCanvas : MonoBehaviour {
+        public CanvasGroup group;
         public Slider hairThicknessSlider;
         public Slider hairLengthSlider;
         public Slider hairColorPicker;
