@@ -18,11 +18,19 @@ namespace RedCard {
         public const float horz_line_gap = 12f;
         public const float line_width = 4f;
         public const float box_width = 400f;
+        public const float first_row_offset = 10f;
 
         void SelectedSwatch(Button b) {
             swatchHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
             if (mirror.transform.parent && mirror.transform.parent.TryGetComponent(out BathroomMirror bathMirror)) {
                 bathMirror.SelectedColor(b.image.color);
+            }
+        }
+
+        void ClearColor(Button b) {
+            swatchHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
+            if (mirror.transform.parent && mirror.transform.parent.TryGetComponent(out BathroomMirror bathMirror)) {
+                bathMirror.ClearColor();
             }
         }
 
@@ -53,26 +61,35 @@ namespace RedCard {
             for(int i = 0; i < rowsNeeded; i++) {
                 ColorRow row = Instantiate(mirror.colorRowPrefab, box.transform).GetComponent<ColorRow>();
                 if (row.TryGetComponent(out RectTransform rtRow)) {
-                    rtRow.anchoredPosition = new Vector2(0f, -i * mirror.colorRowHeight - vert_line_gap);
+                    rtRow.anchoredPosition = new Vector2(0f, first_row_offset -i * mirror.colorRowHeight);
                 }
                 else Debug.LogWarning("no rt on color row");
 
-                for (int j = row.swatches.Length; j < row.swatches.Length; j++) {
+                print("row.swatches.length " + row.swatches.Length);
+                for (int j = 0; j < row.swatches.Length; j++) {
+
                     Button b = row.swatches[j];
-                    b.image.color = colors[colorIndex];
-                    Debug.LogWarning("swatch! clolr : " + b.image.color);
-                    void ClickedSwatch() {
-                        box.SelectedSwatch(b);
-                    }
-                    ;
-                    b.onClick.AddListener(ClickedSwatch);
-                    colorIndex++;
                     if (colorIndex >= colors.Length) {
-                        // there should be no more rows needed
-                        Debug.Assert(i == rowsNeeded);
-                        // but just in case...
-                        colorIndex = 0;
-                        break;
+                        b.image.color = Color.clear;
+                        b.interactable = false;
+                    }
+                    else {
+                        Color c = colors[colorIndex];
+                        if (c.a == 0f) {
+                            b.image.sprite = box.noColorIcon;
+                            void ClickedClearSwatch() {
+                                box.ClearColor(b);
+                            };
+                            b.onClick.AddListener(ClickedClearSwatch);
+                        }
+                        else {
+                            b.image.color = c;
+                            void ClickedSwatch() {
+                                box.SelectedSwatch(b);
+                            };
+                            b.onClick.AddListener(ClickedSwatch);
+                        }
+                        colorIndex++;
                     }
                 }
             }

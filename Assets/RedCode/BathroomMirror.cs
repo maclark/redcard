@@ -261,6 +261,15 @@ namespace RedCard {
                     break;
             }
         }
+        public void ClearColor() {
+
+            switch (colorBoxCat) {
+                case Category.Nails:
+                    mirror.nailPolishJar.liquid.image.color = mirror.keratinColor;
+                    mirror.nailPolishBrush.bristles.color = mirror.keratinColor;
+                    break;
+            }
+        }
 
         public void ApplyTattoo(Tattoo tat, float r, float theta) {
             currentArm.tattoos.Add(tat);
@@ -365,7 +374,7 @@ namespace RedCard {
                 Vector2 mousePosition = Vector2.zero;
                 if (Mouse.current != null) mousePosition = Mouse.current.position.ReadValue();
 
-                if (false && RectTransformUtility.RectangleContainsScreenPoint(mirror.nailBox, mousePosition, null)) {
+                if (RectTransformUtility.RectangleContainsScreenPoint(mirror.nailBox, mousePosition, null)) {
 
                     Cursor.visible = false;
 
@@ -396,7 +405,8 @@ namespace RedCard {
             }
 
 
-            if (mirror.colorBox) {
+            //#TEMP
+            if (false && mirror.colorBox) {
 
                 Vector2 mousePosition = Vector2.zero;
                 if (Mouse.current != null) mousePosition = Mouse.current.position.ReadValue();
