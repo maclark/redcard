@@ -299,6 +299,7 @@ namespace RedCard {
         }
 
         private void Update() {
+            // mouse no longer over the NAILS category
 
             if (equippedNailPolishBrush) {
 
