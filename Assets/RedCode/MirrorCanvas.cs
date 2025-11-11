@@ -12,6 +12,7 @@ namespace RedCard {
         public TMP_Text makeDominantText;
         public Button back;
 
+
         [Header("SKIN COLOR")]
         public Button[] skinColorSwatches = new Button[0];
 
@@ -30,14 +31,25 @@ namespace RedCard {
 
         [Header("NAILS")]
         public RectTransform nailBox;
+        public RectTransform nailBoxShadow;
         public NailPolishJar nailPolishJar;
         public NailPolishBrush nailPolishBrush;
         public Color keratinColor = new Color(1f, 1f, 1f, .3f);
         public float nailWidth = 30f;
         public float pinkyNailWidth = 28f;
+        public float maxNailHeight = 60f;
+        public float minNailHeight = 20f;
+        public float minPinkNailHeight = 15f;
         public Slider nailLengthSlider;
         public Button[] nails = new Button[0]; // pinky to thumb
         public Image[] fingers = new Image[0]; // pinky to thumb
+        public Color[] nailColors = new Color[0];
 
+        [Header("COLOR BOXES")]
+        public GameObject colorBoxPrefab;
+        public GameObject colorRowPrefab;
+        public float minColorBoxHeight = 30f;
+        public float colorRowHeight = 60f;
+        public ColorBox colorBox;
     }
 }
