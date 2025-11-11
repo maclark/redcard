@@ -5,6 +5,7 @@ namespace RedCard {
     public class NailPolishJar : MonoBehaviour {
         public RectTransform closedJar;
         public RectTransform openJar;
-        public Image liquid; 
+        public Button liquid; 
+        public Button brushHandle; 
     }
 }

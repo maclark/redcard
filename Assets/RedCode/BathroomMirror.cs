@@ -60,6 +60,7 @@ namespace RedCard {
         float t;
         RefControls arbitro;
         int nailIndexHighlighted;
+        bool equippedNailPolishBrush = false;
 
         void SaveArms() {
             // #TODO
@@ -72,16 +73,34 @@ namespace RedCard {
             mode = MirrorMode.Inactive;
 
             mirror = Instantiate(mirrorCanvasPrefab, transform).GetComponent<MirrorCanvas>();
+
+            mirror.switchArms.onClick.AddListener(SwitchArms);
+            mirror.dominanceCheckbox.onClick.AddListener(ToggleDominance);
+            mirror.back.onClick.AddListener(Back);
+
+            //mirror.skinColorSwatches
+
             mirror.hairThicknessSlider.onValueChanged.AddListener(HairThicknessSlid);
             mirror.hairLengthSlider.onValueChanged.AddListener(HairLengthSlid);
             //mirror.hairColorPicker.onValueChanged.AddListener(HairColorPicker);
             mirror.hairCurlSlider.onValueChanged.AddListener(HairCurlSlid);
+
             mirror.muscleSlider.onValueChanged.AddListener(MuscleSlid);
-            mirror.switchArms.onClick.AddListener(SwitchArms);
-            mirror.dominanceCheckbox.onClick.AddListener(ToggleDominance);
-            mirror.pickTattoo.onClick.AddListener(PickTattoo);
-            mirror.back.onClick.AddListener(Back);
+
+            mirror.nailLengthSlider.onValueChanged.AddListener(NailLengthSlid);
+            mirror.nailPolishJar.liquid.onClick.AddListener(ClickedOnNailPolishJar);
+            mirror.nailPolishJar.brushHandle.onClick.AddListener(ClickedOnNailPolishBrushInJar);
             mirror.gameObject.SetActive(false);
+
+            mirror.pickTattoo.onClick.AddListener(PickTattoo);
+            
+            for (int i = 0; i < mirror.nails.Length; i++) {
+                int fingerIndex = i;
+                void PaintThisNail() {
+                    PaintNail(fingerIndex);
+                }
+                mirror.nails[i].onClick.AddListener(PaintThisNail);
+            }
 
             string map = MIRROR_ACTION_MAP;
             var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("MoveWASD");
@@ -159,28 +178,50 @@ namespace RedCard {
         }
         void NailLengthSlid(float value) {
             float nailLength = value;
-            mirror.pinkyFinger.image.rectTransform.sizeDelta = new Vector2(mirror.pinkyNailWidth, nailLength); 
-            mirror.ringFinger.image.rectTransform.sizeDelta = new Vector2(mirror.nailWidth, nailLength); 
-            mirror.pinkyFinger.image.rectTransform.sizeDelta = new Vector2(mirror.nailWidth, nailLength); 
-            mirror.pinkyFinger.image.rectTransform.sizeDelta = new Vector2(mirror.nailWidth, nailLength); 
-            mirror.pinkyFinger.image.rectTransform.sizeDelta = new Vector2(mirror.nailWidth, nailLength); 
-        }
-        void HighlightNail(int index) {
-            nailIndexHighlighted = index;
-        }
-        void PaintNail(Color c) {
-            if (nailIndexHighlighted > 0 && nailIndexHighlighted < mirror.nails.Length) {
-                mirror.nails[nailIndexHighlighted].image.color = c;
+            for (int i = 1; i < mirror.nails.Length; i++) {
+                if (mirror.nails[i].TryGetComponent(out RectTransform rt)) {
+                    rt.sizeDelta = new Vector2(mirror.nailWidth, value);
+                }
             }
-            else Debug.LogError("oob mirror nailindex highlighted: " + nailIndexHighlighted);
-
-            if (nailIndexHighlighted > 0 && nailIndexHighlighted < currentArm.nails.Length) {
-                currentArm.nails[nailIndexHighlighted].materials[0].color = c;
+            if (mirror.nails[0].TryGetComponent(out RectTransform rtPinky)) {
+                rtPinky.sizeDelta = new Vector2(mirror.pinkyNailWidth, value);
             }
-            else Debug.LogError("oob arm nailindex highlighted: " + nailIndexHighlighted);
+        }
+        void PaintNail(int index) {
+            if (equippedNailPolishBrush) mirror.nails[index].image.color = mirror.nailPolishBrush.bristles.color;
+        }
+        void ClearNailColor() {
+            for (int i = 0; i < mirror.nails.Length; i++) {
+                mirror.nails[i].image.color = mirror.keratinColor;
+            }
         }
         void PickTattoo() {
             Debug.LogWarning("pick tatoooo");
+        }
+
+        void ClickedOnNailPolishJar() {
+            if (mirror.nailPolishBrush.gameObject.activeSelf) {
+                // we were painting, we're stopping
+                equippedNailPolishBrush = false;
+                mirror.nailPolishBrush.gameObject.SetActive(false);
+                mirror.nailPolishJar.openJar.gameObject.SetActive(false);
+                mirror.nailPolishJar.closedJar.gameObject.SetActive(true);
+            }
+            else {
+                // we're not painting, we're changing color
+                //#TODO color picker
+                Color c = Random.ColorHSV();
+                mirror.nailPolishJar.liquid.image.color = c;
+                mirror.nailPolishBrush.bristles.color = c;
+            }
+        }
+        void ClickedOnNailPolishBrushInJar() {
+            // we must not have been painting, bc jar is closed
+            // start paiting our nails
+            mirror.nailPolishJar.closedJar.gameObject.SetActive(false);
+            mirror.nailPolishJar.openJar.gameObject.SetActive(true);
+            mirror.nailPolishBrush.gameObject.SetActive(true);
+            equippedNailPolishBrush = true;
         }
 
         public void ApplyTattoo(Tattoo tat, float r, float theta) {
@@ -204,6 +245,9 @@ namespace RedCard {
             otherArm.gameObject.SetActive(false);
             currentArm.gameObject.SetActive(true);
             currentArm.transform.localPosition = currentArm.localLoweredPos;
+
+            // flip fingers in NAILS category
+            //#TODO
 
             arbitro.SlotEquipped((int)RefEquipment.Barehand);
         }
@@ -255,6 +299,42 @@ namespace RedCard {
         }
 
         private void Update() {
+
+            if (equippedNailPolishBrush) {
+
+                Vector2 mousePosition = Vector2.zero;
+                if (Mouse.current != null) mousePosition = Mouse.current.position.ReadValue();
+
+                if (RectTransformUtility.RectangleContainsScreenPoint(mirror.nailBox, mousePosition, null)) {
+
+                    Cursor.visible = false;
+
+                    if (mirror.nailPolishBrush.TryGetComponent(out RectTransform follower)) {
+                        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                            follower.parent as RectTransform,
+                            mousePosition,
+                            null, // null for Screen Space - Overlay
+                            out Vector2 pos
+                        );
+                        follower.anchoredPosition = pos;
+                        // adding slight tilt to angle of nail brush heh
+                        if (currentArm.side == Chirality.Left) {
+                            // painting with right hand
+                            follower.localRotation = Quaternion.Euler(0f, 0f, 150f);
+                        }
+                        else {
+                            // painting with left hand
+                            follower.localRotation = Quaternion.Euler(0f, 0f, 210f);
+                        }
+                    }
+                }
+                else {
+
+                    // mouse no longer over the NAILS category
+                    Cursor.visible = true;
+
+                }
+            }
 
             switch (mode) {
                 case MirrorMode.Approaching:

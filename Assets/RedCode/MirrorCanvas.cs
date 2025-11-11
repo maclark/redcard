@@ -29,16 +29,15 @@ namespace RedCard {
         public Button pickTattoo;
 
         [Header("NAILS")]
+        public RectTransform nailBox;
+        public NailPolishJar nailPolishJar;
+        public NailPolishBrush nailPolishBrush;
+        public Color keratinColor = new Color(1f, 1f, 1f, .3f);
         public float nailWidth = 30f;
         public float pinkyNailWidth = 28f;
         public Slider nailLengthSlider;
-        public Button[] nails = new Button[0];
-        public Button pinkyFinger;
-        public Button ringFinger;
-        public Button middleFinger;
-        public Button indexFinger;
-        public Button thumb;
-        public Image[] fingers = new Image[0];
+        public Button[] nails = new Button[0]; // pinky to thumb
+        public Image[] fingers = new Image[0]; // pinky to thumb
 
     }
 }
