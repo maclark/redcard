@@ -290,6 +290,8 @@ namespace RedCard {
             float x = hud.cursor.width / 2f;
             float y = hud.cursor.height / 2f;
             Cursor.SetCursor(hud.cursor, new Vector2(x, y), CursorMode.Auto);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
 
             acquiredEquipment.Clear();
             acquiredEquipment.Add(RefEquipment.Barehand);
@@ -364,8 +366,6 @@ namespace RedCard {
             cameraTransform = cam.transform;
 
             controller = GetComponent<CharacterController>();
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
 
             SlotEquipped((int)RefEquipment.Barehand);
 

@@ -33,6 +33,8 @@ namespace RedCard {
         public RectTransform nailBox;
         public RectTransform nailBoxShadow;
         public NailPolishJar nailPolishJar;
+        public RectTransform nailPolishRemoverSponge;
+        public RectTransform nailPolishRemoverMiniSponge;
         public NailPolishBrush nailPolishBrush;
         public Color keratinColor = new Color(1f, 1f, 1f, .3f);
         public float maxNailHeight = 60f;
@@ -41,6 +43,7 @@ namespace RedCard {
         public Slider nailLengthSlider;
         public Button[] nails = new Button[0]; // pinky to thumb
         public Image[] fingers = new Image[0]; // pinky to thumb
+        public int nailColorSelectedIndex = 1;
         public Color[] nailColors = new Color[0];
 
         [Header("COLOR BOXES")]

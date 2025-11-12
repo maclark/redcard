@@ -75,6 +75,7 @@ namespace RedCard {
         float t;
         RefControls arbitro;
         bool equippedNailPolishBrush = false;
+        bool usingSponge = false;
         Category colorBoxCat;
 
         void SaveArms() {
@@ -97,16 +98,18 @@ namespace RedCard {
 
             mirror.hairThicknessSlider.onValueChanged.AddListener(HairThicknessSlid);
             mirror.hairLengthSlider.onValueChanged.AddListener(HairLengthSlid);
-            //mirror.hairColorPicker.onValueChanged.AddListener(HairColorPicker);
             mirror.hairCurlSlider.onValueChanged.AddListener(HairCurlSlid);
 
             mirror.muscleSlider.onValueChanged.AddListener(MuscleSlid);
 
             mirror.nailLengthSlider.onValueChanged.AddListener(NailLengthSlid);
-            mirror.nailPolishJar.liquid.onClick.AddListener(ClickedOnNailPolishJar);
-            mirror.nailPolishJar.brushHandle.onClick.AddListener(ClickedOnNailPolishBrushInJar);
+            mirror.nailPolishJar.jarButton.onClick.AddListener(ClickedOnNailPolishJar);
             mirror.gameObject.SetActive(false);
             mirror.nailPolishBrush.gameObject.SetActive(false);
+            mirror.nailPolishRemoverSponge.gameObject.SetActive(false);
+            mirror.nailPolishRemoverMiniSponge.gameObject.SetActive(false);
+            mirror.nailColorSelectedIndex = 1;
+            mirror.nailPolishJar.liquid.color = mirror.nailColors[mirror.nailColorSelectedIndex];
             Debug.Assert(mirror.colorBoxPrefab);
             Debug.Assert(mirror.colorRowPrefab);
 
@@ -155,12 +158,6 @@ namespace RedCard {
             arbitro.rightArm.UpdateHairLength();
             SaveArms();
         } 
-        void HairColorPicker(float value) {
-            Color c = Random.ColorHSV();
-            arbitro.leftArm.SetHairColor(c);
-            arbitro.rightArm.SetHairColor(c);
-            SaveArms();
-        }
         void HairCurlSlid(float value) {
             arbitro.leftArm.hairCurlDegrees = value;
             arbitro.rightArm.hairCurlDegrees = -value;
@@ -206,7 +203,12 @@ namespace RedCard {
             }
         }
         void PaintNail(int index) {
-            if (equippedNailPolishBrush) mirror.nails[index].image.color = mirror.nailPolishBrush.bristles.color;
+            if (equippedNailPolishBrush) {
+                if (mirror.nailPolishRemoverSponge.gameObject.activeSelf) {
+                    mirror.nails[index].image.color = mirror.keratinColor;
+                }
+                else mirror.nails[index].image.color = mirror.nailPolishBrush.bristles.color;
+            }
         }
         void ClearNailColor() {
             for (int i = 0; i < mirror.nails.Length; i++) {
@@ -217,8 +219,10 @@ namespace RedCard {
             Debug.LogWarning("pick tatoooo");
         }
 
-        void ClearColorBox() {
+        void CloseColorBox() {
             if (mirror.colorBox) {
+                mirror.nailPolishRemoverMiniSponge.SetParent(null);
+                mirror.nailPolishRemoverMiniSponge.gameObject.SetActive(false);
                 Vector2 ogSizeDelta = new Vector2(mirror.colorBox.rtParent.sizeDelta.x, mirror.colorBox.parentHeightCache);
                 mirror.colorBox.rtParent.sizeDelta = ogSizeDelta;
                 mirror.colorBox.rtParentShadow.sizeDelta = ogSizeDelta;
@@ -228,41 +232,54 @@ namespace RedCard {
             }
         }
         void ClickedOnNailPolishJar() {
-            if (mirror.nailPolishBrush.gameObject.activeSelf) {
+            if (equippedNailPolishBrush) {
 
                 equippedNailPolishBrush = false;
 
                 mirror.nailPolishBrush.gameObject.SetActive(false);
+                mirror.nailPolishRemoverSponge.gameObject.SetActive(false);
                 mirror.nailPolishJar.openJar.gameObject.SetActive(false);
                 mirror.nailPolishJar.closedJar.gameObject.SetActive(true);
-                ClearColorBox();
+                CloseColorBox();
 
                 Cursor.visible = true;
             }
             else {
-                TakeOutNailBrush();
-            }
-        }
-        void ClickedOnNailPolishBrushInJar() {
-            TakeOutNailBrush();
-        }
-        void TakeOutNailBrush() {
                 equippedNailPolishBrush = true;
 
                 mirror.nailPolishJar.closedJar.gameObject.SetActive(false);
                 mirror.nailPolishJar.openJar.gameObject.SetActive(true);
-                mirror.nailPolishBrush.gameObject.SetActive(true);
+                mirror.nailPolishBrush.gameObject.SetActive(!usingSponge);
+                mirror.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
 
-                if (mirror.colorBox) ClearColorBox();
+                if (mirror.colorBox) CloseColorBox();
 
                 colorBoxCat = Category.Nails;
+
                 mirror.colorBox = ColorBox.MakeColorBox(mirror, mirror.nailBox, mirror.nailBoxShadow, mirror.nailColors);
+                RectTransform first = mirror.colorBox.rows[0].swatches[0].GetComponent<RectTransform>();
+                mirror.nailPolishRemoverMiniSponge.SetParent(first.transform.parent);
+                mirror.nailPolishRemoverMiniSponge.anchoredPosition = first.anchoredPosition;
+                mirror.nailPolishRemoverMiniSponge.gameObject.SetActive(true);
+                int count = mirror.nailColorSelectedIndex;
+                for(int i = 0; i < mirror.colorBox.rows.Length; i++) {
+                    int l = mirror.colorBox.rows[i].swatches.Length;
+                    if (l >= count) {
+                        mirror.colorBox.SelectedSwatch(mirror.colorBox.rows[i].swatches[count]);
+                        break;
+                    }
+                    else count -= l;
+                }
+            }
         }
         public void SelectedColor(Color c) {
             switch (colorBoxCat) {
                 case Category.Nails:
-                    mirror.nailPolishJar.liquid.image.color = c;
+                    usingSponge = false;
+                    mirror.nailPolishJar.liquid.color = c;
                     mirror.nailPolishBrush.bristles.color = c;
+                    mirror.nailPolishBrush.gameObject.SetActive(!usingSponge);
+                    mirror.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
                     break;
             }
         }
@@ -270,8 +287,10 @@ namespace RedCard {
 
             switch (colorBoxCat) {
                 case Category.Nails:
-                    mirror.nailPolishJar.liquid.image.color = mirror.keratinColor;
-                    mirror.nailPolishBrush.bristles.color = mirror.keratinColor;
+                    usingSponge = true;
+                    mirror.nailPolishJar.liquid.color = mirror.keratinColor;
+                    mirror.nailPolishBrush.gameObject.SetActive(!usingSponge);
+                    mirror.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
                     break;
             }
         }
@@ -391,6 +410,7 @@ namespace RedCard {
                             out Vector2 pos
                         );
                         follower.anchoredPosition = pos;
+                        mirror.nailPolishRemoverSponge.anchoredPosition = pos;
                         // adding slight tilt to angle of nail brush heh
                         if (currentArm.side == Chirality.Left) {
                             // painting with right hand
@@ -406,18 +426,6 @@ namespace RedCard {
 
                     // mouse no longer over the NAILS category
                     Cursor.visible = true;
-                }
-            }
-
-
-            //#TEMP
-            if (false && mirror.colorBox) {
-
-                Vector2 mousePosition = Vector2.zero;
-                if (Mouse.current != null) mousePosition = Mouse.current.position.ReadValue();
-
-                if (!RectTransformUtility.RectangleContainsScreenPoint(mirror.colorBox.rtParent, mousePosition, null)) {
-                    ClearColorBox();
                 }
             }
 
