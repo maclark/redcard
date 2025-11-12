@@ -35,8 +35,6 @@ namespace RedCard {
         public NailPolishJar nailPolishJar;
         public NailPolishBrush nailPolishBrush;
         public Color keratinColor = new Color(1f, 1f, 1f, .3f);
-        public float nailWidth = 30f;
-        public float pinkyNailWidth = 28f;
         public float maxNailHeight = 60f;
         public float minNailHeight = 20f;
         public float minPinkNailHeight = 15f;

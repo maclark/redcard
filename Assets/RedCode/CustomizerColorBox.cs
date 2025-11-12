@@ -14,24 +14,28 @@ namespace RedCard {
         public RectTransform swatchHighlight;
         public Sprite noColorIcon;
 
-        public const float vert_line_gap = 15f;
         public const float horz_line_gap = 12f;
         public const float line_width = 4f;
         public const float box_width = 400f;
         public const float first_row_offset = 10f;
 
         void SelectedSwatch(Button b) {
-            swatchHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
+            Debug.LogWarning("selected");
             if (mirror.transform.parent && mirror.transform.parent.TryGetComponent(out BathroomMirror bathMirror)) {
                 bathMirror.SelectedColor(b.image.color);
             }
+            swatchHighlight.SetParent(b.transform.parent);
+            swatchHighlight.SetAsFirstSibling();
+            swatchHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
         }
 
         void ClearColor(Button b) {
-            swatchHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
             if (mirror.transform.parent && mirror.transform.parent.TryGetComponent(out BathroomMirror bathMirror)) {
                 bathMirror.ClearColor();
             }
+            swatchHighlight.SetParent(b.transform.parent);
+            swatchHighlight.SetAsFirstSibling();
+            swatchHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
         }
 
         public static ColorBox MakeColorBox(MirrorCanvas mirror, RectTransform rt, RectTransform rtShadow, Color[] colors) {
@@ -46,16 +50,15 @@ namespace RedCard {
             box.rtParentShadow = rtShadow;
 
             int rowsNeeded = Mathf.CeilToInt(colors.Length / 6f);
-            Debug.LogWarning("rows needed " + rowsNeeded);
             float extension = mirror.minColorBoxHeight + rowsNeeded * mirror.colorRowHeight;
             Vector2 newSize = new Vector2(rt.sizeDelta.x, rt.sizeDelta.y + extension);
             box.rtParent.sizeDelta = newSize;
             box.rtParentShadow.sizeDelta = newSize;
-            box.botLine.anchoredPosition = new Vector2(0f, -vert_line_gap - mirror.colorRowHeight * rowsNeeded);
-            box.leftLine.sizeDelta = new Vector2(line_width, extension - vert_line_gap);
+            box.botLine.anchoredPosition = new Vector2(0f, -first_row_offset - mirror.colorRowHeight * rowsNeeded);
+            box.leftLine.sizeDelta = new Vector2(line_width, extension - first_row_offset);
             box.leftLine.anchoredPosition = new Vector2(-box_width / 2f + horz_line_gap, 0f);
-            box.rightLine.sizeDelta = new Vector2(line_width, extension - vert_line_gap);
-            box.rightLine.anchoredPosition = new Vector2(box_width / 2f - horz_line_gap, 0f);
+            box.rightLine.sizeDelta = new Vector2(line_width, extension - first_row_offset);
+            box.rightLine.anchoredPosition = new Vector2(box_width / 2f - first_row_offset, 0f);
 
             int colorIndex = 0;
             for(int i = 0; i < rowsNeeded; i++) {
@@ -65,7 +68,6 @@ namespace RedCard {
                 }
                 else Debug.LogWarning("no rt on color row");
 
-                print("row.swatches.length " + row.swatches.Length);
                 for (int j = 0; j < row.swatches.Length; j++) {
 
                     Button b = row.swatches[j];

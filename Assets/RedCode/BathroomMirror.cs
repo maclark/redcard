@@ -198,11 +198,11 @@ namespace RedCard {
             float nailExtension = Mathf.Lerp(0f, mirror.maxNailHeight, value);
             for (int i = 1; i < mirror.nails.Length; i++) {
                 if (mirror.nails[i].TryGetComponent(out RectTransform rt)) {
-                    rt.sizeDelta = new Vector2(mirror.nailWidth, mirror.minNailHeight + nailExtension);
+                    rt.sizeDelta = new Vector2(rt.sizeDelta.x, mirror.minNailHeight + nailExtension);
                 }
             }
             if (mirror.nails[0].TryGetComponent(out RectTransform rtPinky)) {
-                rtPinky.sizeDelta = new Vector2(mirror.pinkyNailWidth, mirror.minPinkNailHeight + nailExtension);
+                rtPinky.sizeDelta = new Vector2(rtPinky.sizeDelta.x, mirror.minPinkNailHeight + nailExtension);
             }
         }
         void PaintNail(int index) {
@@ -217,41 +217,46 @@ namespace RedCard {
             Debug.LogWarning("pick tatoooo");
         }
 
+        void ClearColorBox() {
+            if (mirror.colorBox) {
+                Vector2 ogSizeDelta = new Vector2(mirror.colorBox.rtParent.sizeDelta.x, mirror.colorBox.parentHeightCache);
+                mirror.colorBox.rtParent.sizeDelta = ogSizeDelta;
+                mirror.colorBox.rtParentShadow.sizeDelta = ogSizeDelta;
+                Destroy(mirror.colorBox.gameObject); //#HACK
+                mirror.colorBox = null;
+                colorBoxCat = Category.None;
+            }
+        }
         void ClickedOnNailPolishJar() {
             if (mirror.nailPolishBrush.gameObject.activeSelf) {
-                // we were painting, we're stopping
+
                 equippedNailPolishBrush = false;
+
                 mirror.nailPolishBrush.gameObject.SetActive(false);
                 mirror.nailPolishJar.openJar.gameObject.SetActive(false);
                 mirror.nailPolishJar.closedJar.gameObject.SetActive(true);
+                ClearColorBox();
+
+                Cursor.visible = true;
             }
             else {
-
-                if (mirror.colorBox) {
-                    ClearColorBox();
-                }
-                else {
-                    // we're not painting, we're changing color
-                    colorBoxCat = Category.Nails;
-                    mirror.colorBox = ColorBox.MakeColorBox(mirror, mirror.nailBox, mirror.nailBoxShadow, mirror.nailColors);
-                }
+                TakeOutNailBrush();
             }
         }
-        void ClearColorBox() {
-            Vector2 ogSizeDelta = new Vector2(mirror.colorBox.rtParent.sizeDelta.x, mirror.colorBox.parentHeightCache);
-            mirror.colorBox.rtParent.sizeDelta = ogSizeDelta;
-            mirror.colorBox.rtParentShadow.sizeDelta = ogSizeDelta; 
-            Destroy(mirror.colorBox.gameObject); //#HACK
-            mirror.colorBox = null;
-            colorBoxCat = Category.None;
-        }
         void ClickedOnNailPolishBrushInJar() {
-            // we must not have been painting, bc jar is closed
-            // start paiting our nails
-            mirror.nailPolishJar.closedJar.gameObject.SetActive(false);
-            mirror.nailPolishJar.openJar.gameObject.SetActive(true);
-            mirror.nailPolishBrush.gameObject.SetActive(true);
-            equippedNailPolishBrush = true;
+            TakeOutNailBrush();
+        }
+        void TakeOutNailBrush() {
+                equippedNailPolishBrush = true;
+
+                mirror.nailPolishJar.closedJar.gameObject.SetActive(false);
+                mirror.nailPolishJar.openJar.gameObject.SetActive(true);
+                mirror.nailPolishBrush.gameObject.SetActive(true);
+
+                if (mirror.colorBox) ClearColorBox();
+
+                colorBoxCat = Category.Nails;
+                mirror.colorBox = ColorBox.MakeColorBox(mirror, mirror.nailBox, mirror.nailBoxShadow, mirror.nailColors);
         }
         public void SelectedColor(Color c) {
             switch (colorBoxCat) {
