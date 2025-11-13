@@ -38,8 +38,8 @@ namespace RedCard {
         }
         public void SelectedSwatch(Button b) {
             if (mirror.transform.parent && mirror.transform.parent.TryGetComponent(out BathroomMirror bathMirror)) {
-                if (b.image.color.a == 0f) bathMirror.ClearColor();
-                else bathMirror.SelectedColor(b.image.color);
+                if (b.image.color.a == 0f) bathMirror.ClearColor(Category.Nails);
+                else bathMirror.SelectedColor(Category.Nails, b.image.color);
             }
             swatchSelectionHighlight.gameObject.SetActive(true);
             swatchSelectionHighlight.SetParent(b.transform.parent);

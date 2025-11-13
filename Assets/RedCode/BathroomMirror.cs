@@ -76,7 +76,6 @@ namespace RedCard {
         RefControls arbitro;
         bool equippedNailPolishBrush = false;
         bool usingSponge = false;
-        Category colorBoxCat;
 
         void SaveArms() {
             // #TODO
@@ -228,7 +227,6 @@ namespace RedCard {
                 mirror.colorBox.rtParentShadow.sizeDelta = ogSizeDelta;
                 Destroy(mirror.colorBox.gameObject); //#HACK
                 mirror.colorBox = null;
-                colorBoxCat = Category.None;
             }
         }
         void ClickedOnNailPolishJar() {
@@ -254,8 +252,6 @@ namespace RedCard {
 
                 if (mirror.colorBox) CloseColorBox();
 
-                colorBoxCat = Category.Nails;
-
                 mirror.colorBox = ColorBox.MakeColorBox(mirror, mirror.nailBox, mirror.nailBoxShadow, mirror.nailColors);
                 RectTransform first = mirror.colorBox.rows[0].swatches[0].GetComponent<RectTransform>();
                 mirror.nailPolishRemoverMiniSponge.SetParent(first.transform.parent);
@@ -272,8 +268,8 @@ namespace RedCard {
                 }
             }
         }
-        public void SelectedColor(Color c) {
-            switch (colorBoxCat) {
+        public void SelectedColor(Category cat, Color c) {
+            switch (cat) {
                 case Category.Nails:
                     usingSponge = false;
                     mirror.nailPolishJar.liquid.color = c;
@@ -283,9 +279,9 @@ namespace RedCard {
                     break;
             }
         }
-        public void ClearColor() {
+        public void ClearColor(Category cat) {
 
-            switch (colorBoxCat) {
+            switch (cat) {
                 case Category.Nails:
                     usingSponge = true;
                     mirror.nailPolishJar.liquid.color = mirror.keratinColor;
@@ -474,6 +470,8 @@ namespace RedCard {
 
 
         public void ApproachMirror(RefControls approacher) {
+
+            mirror.InitSkinAndHairColorButtons(this, approacher.skinIndex, approacher.hairIndex);
             
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             foreach (PlayerInput input in allInput) {

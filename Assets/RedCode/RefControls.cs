@@ -52,6 +52,8 @@ namespace RedCard {
         public CrossHairs crossHairs;
         public Arm leftArm;
         public Arm rightArm;
+        public int skinIndex = 0;
+        public int hairIndex = 0;
 
         [Header("STAMINA")]
         public AnimationCurve lactateBuildupCurve;
