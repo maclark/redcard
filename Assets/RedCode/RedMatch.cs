@@ -84,6 +84,7 @@ namespace RedCard {
     public partial class RedMatch : MonoBehaviour {
 
         internal RedSettings settings;
+        public CustomizationOptions customizationOptions;
         public State state = State.Unset;
         public bool frozenWaitingForCall = false;
 
@@ -149,6 +150,8 @@ namespace RedCard {
 
                 hud = FindFirstObjectByType<HUD>();
                 Debug.Assert(hud);
+
+                Debug.Assert(customizationOptions);
             }
         }
 

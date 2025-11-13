@@ -371,6 +371,10 @@ namespace RedCard {
 
             SlotEquipped((int)RefEquipment.Barehand);
 
+            ArmData armData = ArmData.LoadArms();
+            leftArm.LoadData(armData);
+            rightArm.LoadData(armData);
+
             if (PlayerInput.all.Count == 0) {
                 Debug.LogError("did we start the game from the stadium scene, hm? no player inputs");
                 return; ///////////////early return///////////

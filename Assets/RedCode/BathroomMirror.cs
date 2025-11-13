@@ -2,9 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-// #TODO rings, bracelets?
-// amputation
-// scars
 
 namespace RedCard {
 

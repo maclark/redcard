@@ -49,6 +49,32 @@ namespace RedCard {
             UpdateHairLength();
         }
 
+        public void LoadData(ArmData data) {
+            CustomizationOptions cops = RedMatch.Match.customizationOptions;
+
+            isDominant = (data.leftArmIsDominant && side.Equals(Chirality.Left)) || (!data.leftArmIsDominant && !side.Equals(Chirality.Left));
+
+            //skin color
+
+            hairDensity = data.hairThickness;
+            hairLength = data.hairLength;
+            hairCurlDegrees = data.hairCurl;
+            UpdateHairLength();
+            SetHairColor(cops.hairMeshColors[data.hairColorIndex]);
+
+            radius = data.muscleSize;
+
+
+            throw new System.NotImplementedException();
+
+        }
+
+        public ArmData SaveArm() {
+
+            throw new System.NotImplementedException();
+            return null;
+        }
+
 
         public void UpdateHairLength() {
             for (int i = 0; i < folicles.Length; i++) {
