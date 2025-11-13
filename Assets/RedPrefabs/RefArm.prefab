@@ -3826,6 +3826,7 @@ MonoBehaviour:
   - {fileID: 5424826760274852571}
   nails:
   - {fileID: 4444508481651965750}
+  colorer: {fileID: 6653957317531445373}
   localLoweredPos: {x: 0.5, y: -0.55, z: -1}
   localRaisedPos: {x: 0.5, y: -0.385, z: 0}
 --- !u!114 &6653957317531445373
@@ -3840,11 +3841,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d753f385027d242aaaccff8eb474ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sleeve: {fileID: 6789428384564836785}
   skin:
   - {fileID: 6731156990586793949}
   - {fileID: 8819412079022440233}
   - {fileID: 5965248925258108307}
+  sleeve: {fileID: 6789428384564836785}
   sleeveColor: {r: 0.7924528, g: 0.7429912, b: 0.15325737, a: 1}
   skinColor: {r: 0.4528302, g: 0.30021727, b: 0.21573514, a: 1}
 --- !u!1 &1217546934889241823

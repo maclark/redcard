@@ -29,3 +29,12 @@ ref hit by ball?
 sounds:
 - coin toss
 - open book, flip page
+- mirror ui
+
+mirror stuff:
+- muscle slider breaking
+- nail painting doesn't change world
+- some of the skin colors are a little too albino...but maybe need a mapping from skin color to mesh color
+- init hair thickness
+- solve unpainted long nails visuals
+- arm data

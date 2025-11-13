@@ -36,7 +36,7 @@ namespace RedCard {
         public RectTransform nailPolishRemoverSponge;
         public RectTransform nailPolishRemoverMiniSponge;
         public NailPolishBrush nailPolishBrush;
-        public Color keratinColor = new Color(1f, 1f, 1f, .3f);
+        public Color keratinColor = new Color(1f, 1f, 1f, .8f);
         public float maxNailHeight = 60f;
         public float minNailHeight = 20f;
         public float minPinkNailHeight = 15f;
@@ -88,10 +88,11 @@ namespace RedCard {
             swatchHairSelectionHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
         }
 
+        // #TODO pass arm data which will have nail length, colors of each nail, skin color, hair color, tattoos, muscles, hair thickness, curl, length 
         public void InitSkinAndHairColorButtons(BathroomMirror motherMirror, int skinIndex, int hairIndex) {
             if (initialized) return;
             initialized = true;
-            print("initializing skin and hair in mirror");
+            Debug.LogWarning("#TODO make arm data for initializing skin and hair in mirror");
 
             bathMirror = motherMirror;
             for (int i = 0; i < skinColorSwatches.Length; i++) {
@@ -125,6 +126,10 @@ namespace RedCard {
             else Debug.LogError("invalid initial hair index " + hairIndex);
 
             swatchHoverHighlight.gameObject.SetActive(false);
+
+            for (int i = 0; i < nails.Length; i++) {
+                nails[i].image.color = keratinColor;
+            }
         }
     }
 }

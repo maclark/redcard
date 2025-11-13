@@ -49,12 +49,6 @@ namespace RedCard {
             UpdateHairLength();
         }
 
-        public void RandomNailColor() {
-            Color c = Random.ColorHSV();
-            for (int i = 0; i < nails.Length; i++) {
-                nails[i].materials[0].color = c;
-            }
-        }
 
         public void UpdateHairLength() {
             for (int i = 0; i < folicles.Length; i++) {
