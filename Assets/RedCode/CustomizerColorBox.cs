@@ -36,10 +36,9 @@ namespace RedCard {
                 swatchHoverHighlight.gameObject.SetActive(false);
             }
         }
-        public void SelectedSwatch(Button b) {
+        public void SelectedSwatch(Button b, int index) {
             if (mirror.transform.parent && mirror.transform.parent.TryGetComponent(out BathroomMirror bathMirror)) {
-                if (b.image.color.a == 0f) bathMirror.ClearColor(Category.Nails);
-                else bathMirror.SelectedColor(Category.Nails, b.image.color);
+                bathMirror.SelectedColor(Category.Nails, index);
             }
             swatchSelectionHighlight.gameObject.SetActive(true);
             swatchSelectionHighlight.SetParent(b.transform.parent);
@@ -91,8 +90,9 @@ namespace RedCard {
                     else {
                         Color c = colors[colorIndex];
                         b.image.color = c;
+                        int index = colorIndex;
                         void ClickedSwatch() {
-                            box.SelectedSwatch(b);
+                            box.SelectedSwatch(b, index);
                         };
                         b.onClick.AddListener(ClickedSwatch);
 

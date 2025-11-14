@@ -594,6 +594,8 @@ MonoBehaviour:
   crossHairs: {fileID: 0}
   leftArm: {fileID: 5554670760354934707}
   rightArm: {fileID: 7839008046808481352}
+  skinIndex: 0
+  hairIndex: 0
   lactateBuildupCurve:
     serializedVersion: 2
     m_Curve:
@@ -728,10 +730,6 @@ MonoBehaviour:
   foamBlobPrefab: {fileID: 1248490549188596881, guid: 931fcdcd141ba2f45817c25608121e6b, type: 3}
   dominantArm: {fileID: 0}
   armTilt: {x: 1, y: 0.65}
-  rightArmLoweredPos: {x: 0.5, y: -0.55, z: -1}
-  leftArmLoweredPos: {x: -0.5, y: -0.55, z: -1}
-  rightArmRaisedPos: {x: 0.5, y: -0.385, z: 0}
-  leftArmRaisedPos: {x: -0.5, y: -0.55, z: -1}
   yawIndicatingTolerance: 10
   yawSpring: 5
   watch: {fileID: 6547349842550638173}

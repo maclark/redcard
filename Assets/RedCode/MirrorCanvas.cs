@@ -73,42 +73,48 @@ namespace RedCard {
                 swatchHoverHighlight.gameObject.SetActive(false);
             }
         }
-        public void SelectedSkinSwatch(Button b) {
-            bathMirror.SelectedColor(Category.Skin, b.image.color);
+        public void SelectedSkinSwatch(Button b, int index) {
+            bathMirror.SelectedColor(Category.Skin, index);
             swatchSkinSelectionHighlight.gameObject.SetActive(true);
             swatchSkinSelectionHighlight.SetParent(b.transform.parent);
             swatchSkinSelectionHighlight.SetAsFirstSibling();
             swatchSkinSelectionHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
         }
-        public void SelectedHairSwatch(Button b) {
-            bathMirror.SelectedColor(Category.Hair, b.image.color);
+        public void SelectedHairSwatch(Button b, int index) {
+            bathMirror.SelectedColor(Category.Hair, index);
             swatchHairSelectionHighlight.gameObject.SetActive(true);
             swatchHairSelectionHighlight.SetParent(b.transform.parent);
             swatchHairSelectionHighlight.SetAsFirstSibling();
             swatchHairSelectionHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
         }
 
-        // #TODO pass arm data which will have nail length, colors of each nail, skin color, hair color, tattoos, muscles, hair thickness, curl, length 
-        public void InitSkinAndHairColorButtons(BathroomMirror motherMirror, int skinIndex, int hairIndex) {
+        // particular values will be set when el arbitro approaches the mirror
+        public void InitSkinAndHairColorButtons(BathroomMirror motherMirror) {
             if (initialized) return;
             initialized = true;
-            Debug.LogWarning("#TODO make arm data for initializing skin and hair in mirror");
 
             bathMirror = motherMirror;
+            CustomizationOptions cops = RedMatch.Match.customizationOptions;
+
             for (int i = 0; i < skinColorSwatches.Length; i++) {
                 Button b = skinColorSwatches[i];
+                if (i < cops.skinSwatchColors.Length) b.image.color = cops.skinSwatchColors[i];
+                int index = i;
                 void Clicked() {
-                    SelectedSkinSwatch(b);
+                    SelectedSkinSwatch(b, index);
                 }
                 b.onClick.AddListener(Clicked);
                 PointerHandler ph = b.gameObject.AddComponent<PointerHandler>();
-                ph.onEnter += (data) => HighlightedSwatch(b);
-                ph.onExit += (data) => DehighlightedSwatch(b);
+                ph.onEnter += (pointerData) => HighlightedSwatch(b);
+                ph.onExit += (pointerData) => DehighlightedSwatch(b);
             }
+
             for (int i = 0; i < hairColorSwatches.Length; i++) {
                 Button b = hairColorSwatches[i];
+                if (i < cops.hairSwatchColors.Length) b.image.color = cops.hairSwatchColors[i];
+                int index = i;
                 void Clicked() {
-                    SelectedHairSwatch(b);
+                    SelectedHairSwatch(b, index);
                 }
                 b.onClick.AddListener(Clicked);
                 PointerHandler ph = b.gameObject.AddComponent<PointerHandler>();
@@ -116,20 +122,7 @@ namespace RedCard {
                 ph.onExit += (data) => DehighlightedSwatch(b);
             }
 
-            if (skinIndex >= 0 && skinIndex < skinColorSwatches.Length) {
-                SelectedSkinSwatch(skinColorSwatches[skinIndex]);
-            }
-            else Debug.LogError("invalid initial skin index " + skinIndex);
-            if (hairIndex >= 0 && hairIndex < hairColorSwatches.Length) {
-                SelectedHairSwatch(hairColorSwatches[hairIndex]);
-            }
-            else Debug.LogError("invalid initial hair index " + hairIndex);
-
-            swatchHoverHighlight.gameObject.SetActive(false);
-
-            for (int i = 0; i < nails.Length; i++) {
-                nails[i].image.color = keratinColor;
-            }
+            nailColors = (Color[])cops.nailSwatchColors.Clone();
         }
     }
 }

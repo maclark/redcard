@@ -44,6 +44,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f429e470746c854696f49333522b7d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customizationOptions: {fileID: 11400000, guid: b8118786ed2cbeb4589ed7619bf32db4, type: 2}
+  state: 0
+  frozenWaitingForCall: 0
+  throwInDotThreshold: 0.33
+  botLeftBox0: {fileID: 0}
+  topRightBox0: {fileID: 0}
+  botLeftBox1: {fileID: 0}
+  topRightBox1: {fileID: 0}
   playerOutlinePrefab: {fileID: 4881715132754059330, guid: 3a8e98bc8afd3724683c3ad7a27790e6, type: 3}
   uiSprayLinePrefab: {fileID: 2187131136949513723, guid: fca99d3a75fc2dd4dabd4633566e2d8b, type: 3}
-  cornerFlags: []
+  arbitro: {fileID: 0}
+  hud: {fileID: 0}
+  targets: []
+  correctCalls: []

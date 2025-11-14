@@ -73,11 +73,7 @@ namespace RedCard {
         RefControls arbitro;
         bool equippedNailPolishBrush = false;
         bool usingSponge = false;
-
-        void SaveArms() {
-            // #TODO
-            Debug.LogWarning("save arms not implemented");
-        }
+        int nailColorIndex;
 
         public void Awake() {
 
@@ -89,8 +85,6 @@ namespace RedCard {
             mirrorCan.switchArms.onClick.AddListener(SwitchArms);
             mirrorCan.dominanceCheckbox.onClick.AddListener(ToggleDominance);
             mirrorCan.back.onClick.AddListener(Back);
-
-            //mirror.skinColorSwatches
 
             mirrorCan.hairThicknessSlider.onValueChanged.AddListener(HairThicknessSlid);
             mirrorCan.hairLengthSlider.onValueChanged.AddListener(HairLengthSlid);
@@ -141,39 +135,48 @@ namespace RedCard {
         }
 
         void HairThicknessSlid(float value) {
-            arbitro.leftArm.hairDensity = value;
-            arbitro.rightArm.hairDensity = value;
+            print("new thickness " + value);
+            arbitro.leftArm.data.hairThickness = value;
+            arbitro.rightArm.data.hairThickness = value;
             arbitro.leftArm.UpdateHairDensity();
             arbitro.rightArm.UpdateHairDensity();
-            SaveArms();
+            ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
         void HairLengthSlid(float value) {
-            arbitro.leftArm.hairLength = value * .00667f;
-            arbitro.rightArm.hairLength = value * .00667f;
+            print("new hair length " + value);
+            arbitro.leftArm.data.hairLength = value;
+            arbitro.rightArm.data.hairLength = value;
             arbitro.leftArm.UpdateHairLength();
             arbitro.rightArm.UpdateHairLength();
-            SaveArms();
+            ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         } 
         void HairCurlSlid(float value) {
-            arbitro.leftArm.hairCurlDegrees = value;
-            arbitro.rightArm.hairCurlDegrees = -value;
+            print("new curl");
+            arbitro.leftArm.data.hairCurl = value;
+            arbitro.rightArm.data.hairCurl = -value;
             arbitro.leftArm.UpdateHairDensity();
             arbitro.rightArm.UpdateHairDensity();
-            SaveArms();
+            ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         } 
+        // puny, normal, bulging
         void MuscleSlid(float value) {
-            // default arm size right now is .25f
-            // default slider value is 1 (goes from 0 to 2)
-            float armDiameter = .15f + .1f * value;
-            arbitro.leftArm.radius = .5f * armDiameter;
-            arbitro.rightArm.radius = .5f * armDiameter;
-            arbitro.leftArm.limb.localScale = new Vector3(armDiameter, 1f, armDiameter);
-            arbitro.rightArm.limb.localScale = new Vector3(armDiameter, 1f, armDiameter);
+            int size = Mathf.RoundToInt(value);
+            print("muscle slid " + size);
+
+            arbitro.leftArm.data.muscleSize = size; 
+            arbitro.rightArm.data.muscleSize = size;
+            arbitro.leftArm.UpdateMuscle();
+            arbitro.rightArm.UpdateMuscle();
+
             arbitro.leftArm.UpdateHairDensity();
             arbitro.rightArm.UpdateHairDensity();
-            SaveArms();
+            ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         } 
         void NailLengthSlid(float value) {
+            print("new nail length " + value);
+            currentArm.data.nailLength = value;
+            currentArm.UpdateNails();
+
             float nailExtension = Mathf.Lerp(0f, mirrorCan.maxNailHeight, value);
             for (int i = 1; i < mirrorCan.nails.Length; i++) {
                 if (mirrorCan.nails[i].TryGetComponent(out RectTransform rt)) {
@@ -183,19 +186,24 @@ namespace RedCard {
             if (mirrorCan.nails[0].TryGetComponent(out RectTransform rtPinky)) {
                 rtPinky.sizeDelta = new Vector2(rtPinky.sizeDelta.x, mirrorCan.minPinkNailHeight + nailExtension);
             }
+            ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
-        void PaintNail(int index) {
+        void PaintNail(int nailIndex) {
             if (equippedNailPolishBrush) {
                 if (mirrorCan.nailPolishRemoverSponge.gameObject.activeSelf) {
-                    mirrorCan.nails[index].image.color = mirrorCan.keratinColor;
+                    mirrorCan.nails[nailIndex].image.color = mirrorCan.keratinColor;
                 }
-                else mirrorCan.nails[index].image.color = mirrorCan.nailPolishBrush.bristles.color;
+                else mirrorCan.nails[nailIndex].image.color = mirrorCan.nailPolishBrush.bristles.color;
+
+                currentArm.data.nailColorIndices[nailIndex] = nailColorIndex;
+
+                // #TODO actually pain the referee's 3d nails
             }
-        }
-        void ClearNailColor() {
+            ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
         void PickTattoo() {
             Debug.LogWarning("pick tatoooo");
+            ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
 
         void CloseColorBox() {
@@ -241,64 +249,58 @@ namespace RedCard {
                 for(int i = 0; i < mirrorCan.colorBox.rows.Length; i++) {
                     int l = mirrorCan.colorBox.rows[i].swatches.Length;
                     if (l >= count) {
-                        mirrorCan.colorBox.SelectedSwatch(mirrorCan.colorBox.rows[i].swatches[count]);
+                        mirrorCan.colorBox.SelectedSwatch(mirrorCan.colorBox.rows[i].swatches[count], mirrorCan.nailColorSelectedIndex);
                         break;
                     }
                     else count -= l;
                 }
             }
         }
-        public void SelectedColor(Category cat, Color c) {
+        public void SelectedColor(Category cat, int index) {
+
+            CustomizationOptions cops = RedMatch.Match.customizationOptions;
+
             switch (cat) {
                 case Category.Skin:
-                    for (int i = 0; i < arbitro.leftArm.colorer.skin.Length; i++) {
-                        arbitro.leftArm.colorer.skin[i].materials[0].color = c;
-                        arbitro.rightArm.colorer.skin[i].materials[0].color = c;
-                    }
+                    arbitro.leftArm.SetSkinColor(index);
+                    arbitro.rightArm.SetSkinColor(index);
                     for (int i = 0; i < mirrorCan.fingers.Length; i++) {
-                        mirrorCan.fingers[i].color = c;
+                        mirrorCan.fingers[i].color = RedMatch.Match.customizationOptions.skinSwatchColors[index];
                     }
                     break;
+
                 case Category.Hair:
-                    arbitro.leftArm.SetHairColor(c);
-                    arbitro.rightArm.SetHairColor(c);
+                    arbitro.leftArm.SetHairColor(index);
+                    arbitro.rightArm.SetHairColor(index);
                     break;
+
                 case Category.Nails:
-                    usingSponge = false;
+                    nailColorIndex = index;
+                    Color c = RedMatch.Match.customizationOptions.nailSwatchColors[index];
                     mirrorCan.nailPolishJar.liquid.color = c;
                     mirrorCan.nailPolishBrush.bristles.color = c;
-                    mirrorCan.nailPolishBrush.gameObject.SetActive(!usingSponge);
-                    mirrorCan.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
-                    break;
-            }
-        }
-        public void ClearColor(Category cat) {
 
-            switch (cat) {
-                case Category.Nails:
-                    usingSponge = true;
-                    mirrorCan.nailPolishJar.liquid.color = mirrorCan.keratinColor;
-                    mirrorCan.nailPolishBrush.gameObject.SetActive(!usingSponge);
-                    mirrorCan.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
-                    break;
-
-                default:
-                    Debug.LogError("when do we clear color for anything but nails?");
+                    if (c.a < 1f) {
+                        usingSponge = true;
+                        mirrorCan.nailPolishJar.liquid.color = mirrorCan.keratinColor;
+                        mirrorCan.nailPolishBrush.gameObject.SetActive(!usingSponge);
+                        mirrorCan.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
+                    }
+                    else {
+                        usingSponge = false;
+                        mirrorCan.nailPolishBrush.gameObject.SetActive(true);
+                        mirrorCan.nailPolishRemoverSponge.gameObject.SetActive(false);
+                    }
                     break;
             }
         }
 
-        public void ApplyTattoo(Tattoo tat, float r, float theta) {
-            currentArm.tattoos.Add(tat);
-            // #TODO
-            SaveArms();
-        }
         void SwitchArms() {
             Arm cachedArm = currentArm;
             currentArm = otherArm;
             otherArm = cachedArm;
             
-            if (currentArm.isDominant) {
+            if (currentArm.data.isDominant) {
                 mirrorCan.makeDominantText.text = Language.current[Words.IsDominantChecked];
             }
             else {
@@ -338,21 +340,21 @@ namespace RedCard {
         }
 
         void ToggleDominance() {
-            if (currentArm.isDominant) {
-                currentArm.isDominant = false;
-                otherArm.isDominant = true;
+            if (currentArm.data.isDominant) {
+                currentArm.data.isDominant = false;
+                otherArm.data.isDominant = true;
                 mirrorCan.makeDominantText.text = Language.current[Words.IsDominantUnchecked];
                 arbitro.dominantArm = otherArm;
             }
             else {
 
-                currentArm.isDominant = true;
-                otherArm.isDominant = false;
+                currentArm.data.isDominant = true;
+                otherArm.data.isDominant = false;
                 mirrorCan.makeDominantText.text = Language.current[Words.IsDominantChecked];
                 arbitro.dominantArm = currentArm;
             }
 
-            SaveArms();
+            ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
 
         void Back() {
@@ -468,6 +470,7 @@ namespace RedCard {
 
         public void ApproachMirror(RefControls approacher) {
 
+            mirrorCan.InitSkinAndHairColorButtons(this);
             
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             foreach (PlayerInput input in allInput) {
@@ -486,6 +489,7 @@ namespace RedCard {
             t = 0f;
 
             mirrorCan.gameObject.SetActive(true);
+            mirrorCan.swatchHoverHighlight.gameObject.SetActive(false);
             mirrorCan.group.alpha = 0f;
             mirrorCan.makeDominantText.text = Language.current[Words.IsDominantChecked];
 
@@ -501,17 +505,59 @@ namespace RedCard {
                 otherArm = arbitro.leftArm;
             }
 
+            // now let's match all the bells and whistles to our current arm!
+            ////////////////////////// 
+            ////////////////////////// 
+            //////////////////////////
+            //////////////////////////
+
+
+            // #TODO
+            // what about "is dominant [X]" ?
+            // #TODO sounds, but don't play if in mode approaching
+
+            // skin
+            int skinIndex = arbitro.leftArm.data.skinColorIndex;
+            if (skinIndex >= 0 && skinIndex < mirrorCan.skinColorSwatches.Length) {
+                mirrorCan.SelectedSkinSwatch(mirrorCan.skinColorSwatches[skinIndex], skinIndex);
+            }
+            else Debug.LogError("invalid initial skin index " + skinIndex);
+
+            // skin
+            mirrorCan.hairThicknessSlider.SetValueWithoutNotify(currentArm.data.hairThickness);
+            mirrorCan.hairLengthSlider.SetValueWithoutNotify(currentArm.data.hairLength);
+            mirrorCan.hairCurlSlider.SetValueWithoutNotify(currentArm.data.hairCurl);
+            int hairIndex = arbitro.leftArm.data.hairColorIndex;
+            if (hairIndex >= 0 && hairIndex < mirrorCan.hairColorSwatches.Length) {
+                mirrorCan.SelectedHairSwatch(mirrorCan.hairColorSwatches[hairIndex], hairIndex);
+            }
+            else Debug.LogError("invalid initial hair index " + hairIndex);
+
+            // muscle
+            mirrorCan.muscleSlider.SetValueWithoutNotify(currentArm.data.muscleSize);
+            // set stamina/respect! #TODO
+
+            // nails
+            // have to set the nail visuals
+            mirrorCan.nailLengthSlider.SetValueWithoutNotify(currentArm.data.nailLength);
+            OrientFingers();
+            NailLengthSlid(currentArm.data.nailLength);
+            CustomizationOptions cops = RedMatch.Match.customizationOptions;
+            Color skinColor = cops.skinSwatchColors[currentArm.data.skinColorIndex];
+            for (int i = 0; i < mirrorCan.fingers.Length; i++) {
+                mirrorCan.fingers[i].color = skinColor;
+                mirrorCan.nails[i].image.color = cops.nailSwatchColors[currentArm.data.nailColorIndices[i]];
+            }
+
+            // tattoos
+            // tattoos
+            // tattoos
+            // tattoos
+
+
             approachStartPos = arbitro.transform.position;
             approachStartGaze = arbitro.cam.transform.rotation;
             mode = MirrorMode.Approaching;
-
-            // hm. maybe new convention where i avoid calling out until end of function...
-            // bc turns out OrientFingers relied on currentArm being assigned
-            // and InitSkin.. relied on approacher being assigned
-            // it's obvious now, but maybe this convention will help
-            // ofc, if OrientFingers relied on something in InitSkin then oh well
-            OrientFingers();
-            mirrorCan.InitSkinAndHairColorButtons(this, approacher.skinIndex, approacher.hairIndex);
         }
 
         public void LeaveMirror() {
@@ -520,7 +566,7 @@ namespace RedCard {
                 return; //////earlyreturn///
             }
 
-            if (!currentArm.isDominant) SwitchArms();
+            if (!currentArm.data.isDominant) SwitchArms();
 
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             foreach (PlayerInput input in allInput) {

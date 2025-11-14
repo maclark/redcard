@@ -52,8 +52,6 @@ namespace RedCard {
         public CrossHairs crossHairs;
         public Arm leftArm;
         public Arm rightArm;
-        public int skinIndex = 0;
-        public int hairIndex = 0;
 
         [Header("STAMINA")]
         public AnimationCurve lactateBuildupCurve;
@@ -326,12 +324,18 @@ namespace RedCard {
                 else print("couldn't find coin to start with?");
             }
 
+            ArmData.ClearArmData();
 
-            rightArm.gameObject.SetActive(false);
             leftArm.gameObject.SetActive(false);
-            rightArm.isDominant = true;
-            leftArm.isDominant = false;
-            dominantArm = rightArm;
+            rightArm.gameObject.SetActive(false);
+            bool rightHanded = (Random.value > .1f);
+            leftArm.data = ArmData.LoadArms(Chirality.Left, !rightHanded);
+            leftArm.Init();
+            rightArm.data = ArmData.LoadArms(Chirality.Right, rightHanded);
+            rightArm.Init();
+            ArmData.SaveArms(leftArm.data, rightArm.data);
+            if (leftArm.data.isDominant) dominantArm = leftArm;
+            else dominantArm = rightArm;
 
             if (coin) coin.gameObject.SetActive(false);
 
@@ -370,10 +374,6 @@ namespace RedCard {
             controller = GetComponent<CharacterController>();
 
             SlotEquipped((int)RefEquipment.Barehand);
-
-            ArmData armData = ArmData.LoadArms();
-            leftArm.LoadData(armData);
-            rightArm.LoadData(armData);
 
             if (PlayerInput.all.Count == 0) {
                 Debug.LogError("did we start the game from the stadium scene, hm? no player inputs");
