@@ -97,6 +97,7 @@ namespace RedCard {
             }
         }
 
+        // if this changes, then UpdateHair needs to be called
         public void UpdateMuscle() {
 
             float armDiameter = .175f;

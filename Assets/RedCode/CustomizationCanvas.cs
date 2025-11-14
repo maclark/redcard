@@ -24,8 +24,9 @@ namespace RedCard {
 
         [Header("MUSCLE")]
         public Slider muscleSlider;
-        public TMP_Text staminaUpDown;
-        public TMP_Text respectUpDown;
+        public RectTransform respectAndStamina;
+        public RectTransform plusIcon;
+        public RectTransform minusIcon;
 
         [Header("INK")]
         public Button pickTattoo;
@@ -77,6 +78,7 @@ namespace RedCard {
             swatchSkinSelectionHighlight.SetParent(b.transform.parent);
             swatchSkinSelectionHighlight.SetAsFirstSibling();
             swatchSkinSelectionHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
+            if (bathMirror.mode != MirrorMode.Approaching) AudioManager.am.sfxAso.PlayOneShot(bathMirror.selectedSound);
         }
         public void SelectedHairSwatch(Button b, int index) {
             bathMirror.SelectedColor(Category.Hair, index);
@@ -84,6 +86,7 @@ namespace RedCard {
             swatchHairSelectionHighlight.SetParent(b.transform.parent);
             swatchHairSelectionHighlight.SetAsFirstSibling();
             swatchHairSelectionHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
+            if (bathMirror.mode != MirrorMode.Approaching) AudioManager.am.sfxAso.PlayOneShot(bathMirror.selectedSound);
         }
 
         // particular values will be set when el arbitro approaches the mirror

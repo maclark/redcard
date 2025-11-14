@@ -524,6 +524,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &234121507
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 234121509}
+  - component: {fileID: 234121508}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &234121508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234121507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 891de170ad220c345a343930f4795300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  mixer: {fileID: 0}
+--- !u!4 &234121509
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234121507}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &255714146
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1579,7 +1624,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 606362566681441447, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.9056
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 606362566681441447, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1587,7 +1632,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 606362566681441447, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.9056
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 606362566681441447, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1648,3 +1693,4 @@ SceneRoots:
   - {fileID: 630176903}
   - {fileID: 22317356}
   - {fileID: 118741931}
+  - {fileID: 234121509}

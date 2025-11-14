@@ -55,6 +55,8 @@ namespace RedCard {
         public float inFrontOfMirrorOffset = 1f;
         public float arm_fov = 50f;
         public float mirrorCanvasFadeDuration = .25f;
+        public AudioClip selectedSound;
+        public AudioClip sliderSound;
         public AnimationCurve approachCurve;
 
         [Header("VARS")]
@@ -140,6 +142,7 @@ namespace RedCard {
             arbitro.rightArm.data.hairThickness = value;
             arbitro.leftArm.UpdateHairDensity();
             arbitro.rightArm.UpdateHairDensity();
+            AudioManager.am.sfxAso.PlayOneShot(sliderSound);
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
         void HairLengthSlid(float value) {
@@ -148,6 +151,7 @@ namespace RedCard {
             arbitro.rightArm.data.hairLength = value;
             arbitro.leftArm.UpdateHairLength();
             arbitro.rightArm.UpdateHairLength();
+            AudioManager.am.sfxAso.PlayOneShot(sliderSound);
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         } 
         void HairCurlSlid(float value) {
@@ -156,22 +160,55 @@ namespace RedCard {
             arbitro.rightArm.data.hairCurl = -value;
             arbitro.leftArm.UpdateHairDensity();
             arbitro.rightArm.UpdateHairDensity();
+            AudioManager.am.sfxAso.PlayOneShot(sliderSound);
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         } 
         // puny, normal, bulging
         void MuscleSlid(float value) {
             int size = Mathf.RoundToInt(value);
             print("muscle slid " + size);
+            if (size == 0) {
+                customCan.respectAndStamina.gameObject.SetActive(true);
+                // puny, so respect (which is on top) should have the MINUS icon
+                if (customCan.minusIcon.anchoredPosition.y > customCan.plusIcon.anchoredPosition.y) {
+                    // we're good
+                }
+                else {
+                    Vector2 cache = customCan.minusIcon.anchoredPosition;
+                    customCan.minusIcon.anchoredPosition = customCan.plusIcon.anchoredPosition;
+                    customCan.plusIcon.anchoredPosition = cache;
+                }
+            }
+            else if (size == 1) {
+                customCan.respectAndStamina.gameObject.SetActive(false);
+            }
+            else {
+                customCan.respectAndStamina.gameObject.SetActive(true);
+                // bulging, so respect (which is on top) should have the PLUS icon
+                if (customCan.minusIcon.anchoredPosition.y > customCan.plusIcon.anchoredPosition.y) {
+                    Vector2 cache = customCan.minusIcon.anchoredPosition;
+                    customCan.minusIcon.anchoredPosition = customCan.plusIcon.anchoredPosition;
+                    customCan.plusIcon.anchoredPosition = cache;
+                }
+                else {
+                    // we're good
+                }
+            }
 
-            arbitro.leftArm.data.muscleSize = size; 
-            arbitro.rightArm.data.muscleSize = size;
-            arbitro.leftArm.UpdateMuscle();
-            arbitro.rightArm.UpdateMuscle();
+            // we only do this if necessay, so we don't shuffle the hair when approaching
+            if (arbitro.leftArm.data.muscleSize != size) {
+                arbitro.leftArm.data.muscleSize = size;
+                arbitro.rightArm.data.muscleSize = size;
+                arbitro.leftArm.UpdateMuscle();
+                arbitro.rightArm.UpdateMuscle();
+                arbitro.leftArm.UpdateHairDensity();
+                arbitro.rightArm.UpdateHairDensity();
+            }
 
-            arbitro.leftArm.UpdateHairDensity();
-            arbitro.rightArm.UpdateHairDensity();
+            if (mode != MirrorMode.Approaching) AudioManager.am.sfxAso.PlayOneShot(sliderSound);
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         } 
+
         void NailLengthSlid(float value) {
             // from 375 to 900
             // initialize at 425
@@ -179,6 +216,7 @@ namespace RedCard {
             // width is not touched (use self reference)
             currentArm.data.nailLength = value;
             currentArm.UpdateNails();
+
 
             for (int i = 1; i < customCan.nails.Length; i++) {
                 if (customCan.nails[i].TryGetComponent(out RectTransform rt)) {
@@ -191,8 +229,11 @@ namespace RedCard {
                 rtPinky.sizeDelta = new Vector2(rtPinky.sizeDelta.x, value - 40f);
                 customCan.nailLines[0].rectTransform.sizeDelta = new Vector2(rtPinky.sizeDelta.x, value - 40f);
             }
+
+            if (mode != MirrorMode.Approaching) AudioManager.am.sfxAso.PlayOneShot(sliderSound);
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
+
         void PaintNail(int nailIndex) {
             if (equippedNailPolishBrush) {
                 customCan.nails[nailIndex].image.color = customCan.nailPolishBrush.bristles.color;
@@ -201,6 +242,7 @@ namespace RedCard {
             }
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
+
         void PickTattoo() {
             Debug.LogWarning("pick tatoooo");
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
@@ -534,7 +576,7 @@ namespace RedCard {
 
             // muscle
             customCan.muscleSlider.SetValueWithoutNotify(currentArm.data.muscleSize);
-            // set stamina/respect! #TODO
+            MuscleSlid(currentArm.data.muscleSize);
 
             // nails
             // have to set the nail visuals
