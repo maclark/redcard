@@ -89,7 +89,7 @@ namespace RedCard {
                 newArms.hairCurl = 60f;
                 newArms.hairColorIndex = 0; // Random.Range(0, cops.hairMeshColors.Length);
                 newArms.muscleSize = 1; // normal
-                newArms.nailLength = 0.095f; // very short
+                newArms.nailLength = 425f; // short
                 newArms.nailColorIndices = new int[5]; // all zeroes for clear
                 // #TODO tattoo data
             }

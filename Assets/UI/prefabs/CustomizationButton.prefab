@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 5718752044483488594}
   - component: {fileID: 4341516123565808724}
   m_Layer: 5
-  m_Name: MirrorButton
+  m_Name: CustomizationButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

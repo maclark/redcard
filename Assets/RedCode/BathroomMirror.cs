@@ -48,7 +48,7 @@ namespace RedCard {
     public class BathroomMirror : MonoBehaviour {
 
         [Header("ASSIGNATIONS")]
-        public GameObject mirrorCanvasPrefab;
+        public GameObject customizationCanvasPrefab;
 
         [Header("SETTINGS")]
         public float approachSpeed = 1f;
@@ -58,7 +58,7 @@ namespace RedCard {
         public AnimationCurve approachCurve;
 
         [Header("VARS")]
-        public MirrorCanvas mirrorCan;
+        public CustomizationCanvas customCan;
         public MirrorMode mode = MirrorMode.Inactive;
         public Arm currentArm;
         public Arm otherArm;
@@ -80,37 +80,37 @@ namespace RedCard {
             enabled = false;
             mode = MirrorMode.Inactive;
 
-            mirrorCan = Instantiate(mirrorCanvasPrefab, transform).GetComponent<MirrorCanvas>();
+            customCan = Instantiate(customizationCanvasPrefab, transform).GetComponent<CustomizationCanvas>();
 
-            mirrorCan.switchArms.onClick.AddListener(SwitchArms);
-            mirrorCan.dominanceCheckbox.onClick.AddListener(ToggleDominance);
-            mirrorCan.back.onClick.AddListener(Back);
+            customCan.switchArms.onClick.AddListener(SwitchArms);
+            customCan.dominanceCheckbox.onClick.AddListener(ToggleDominance);
+            customCan.back.onClick.AddListener(Back);
 
-            mirrorCan.hairThicknessSlider.onValueChanged.AddListener(HairThicknessSlid);
-            mirrorCan.hairLengthSlider.onValueChanged.AddListener(HairLengthSlid);
-            mirrorCan.hairCurlSlider.onValueChanged.AddListener(HairCurlSlid);
+            customCan.hairThicknessSlider.onValueChanged.AddListener(HairThicknessSlid);
+            customCan.hairLengthSlider.onValueChanged.AddListener(HairLengthSlid);
+            customCan.hairCurlSlider.onValueChanged.AddListener(HairCurlSlid);
 
-            mirrorCan.muscleSlider.onValueChanged.AddListener(MuscleSlid);
+            customCan.muscleSlider.onValueChanged.AddListener(MuscleSlid);
 
-            mirrorCan.nailLengthSlider.onValueChanged.AddListener(NailLengthSlid);
-            mirrorCan.nailPolishJar.jarButton.onClick.AddListener(ClickedOnNailPolishJar);
-            mirrorCan.gameObject.SetActive(false);
-            mirrorCan.nailPolishBrush.gameObject.SetActive(false);
-            mirrorCan.nailPolishRemoverSponge.gameObject.SetActive(false);
-            mirrorCan.nailPolishRemoverMiniSponge.gameObject.SetActive(false);
-            mirrorCan.nailColorSelectedIndex = 1;
-            mirrorCan.nailPolishJar.liquid.color = mirrorCan.nailColors[mirrorCan.nailColorSelectedIndex];
-            Debug.Assert(mirrorCan.colorBoxPrefab);
-            Debug.Assert(mirrorCan.colorRowPrefab);
+            customCan.nailLengthSlider.onValueChanged.AddListener(NailLengthSlid);
+            customCan.nailPolishJar.jarButton.onClick.AddListener(ClickedOnNailPolishJar);
+            customCan.gameObject.SetActive(false);
+            customCan.nailPolishBrush.gameObject.SetActive(false);
+            customCan.nailPolishRemoverSponge.gameObject.SetActive(false);
+            customCan.nailPolishRemoverMiniSponge.gameObject.SetActive(false);
+            customCan.nailColorSelectedIndex = 1;
+            customCan.nailPolishJar.liquid.color = customCan.nailColors[customCan.nailColorSelectedIndex];
+            Debug.Assert(customCan.colorBoxPrefab);
+            Debug.Assert(customCan.colorRowPrefab);
 
-            mirrorCan.pickTattoo.onClick.AddListener(PickTattoo);
+            customCan.pickTattoo.onClick.AddListener(PickTattoo);
             
-            for (int i = 0; i < mirrorCan.nails.Length; i++) {
+            for (int i = 0; i < customCan.nails.Length; i++) {
                 int fingerIndex = i;
                 void PaintThisNail() {
                     PaintNail(fingerIndex);
                 }
-                mirrorCan.nails[i].onClick.AddListener(PaintThisNail);
+                customCan.nails[i].onClick.AddListener(PaintThisNail);
             }
 
             string map = MIRROR_ACTION_MAP;
@@ -173,30 +173,30 @@ namespace RedCard {
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         } 
         void NailLengthSlid(float value) {
-            print("new nail length " + value);
+            // from 375 to 900
+            // initialize at 425
+            // for pinky... subtract 40
+            // width is not touched (use self reference)
             currentArm.data.nailLength = value;
             currentArm.UpdateNails();
 
-            float nailExtension = Mathf.Lerp(0f, mirrorCan.maxNailHeight, value);
-            for (int i = 1; i < mirrorCan.nails.Length; i++) {
-                if (mirrorCan.nails[i].TryGetComponent(out RectTransform rt)) {
-                    rt.sizeDelta = new Vector2(rt.sizeDelta.x, mirrorCan.minNailHeight + nailExtension);
+            for (int i = 1; i < customCan.nails.Length; i++) {
+                if (customCan.nails[i].TryGetComponent(out RectTransform rt)) {
+                    rt.sizeDelta = new Vector2(rt.sizeDelta.x, value);
+                    customCan.nailLines[i].rectTransform.sizeDelta = new Vector2(rt.sizeDelta.x, value);
                 }
             }
-            if (mirrorCan.nails[0].TryGetComponent(out RectTransform rtPinky)) {
-                rtPinky.sizeDelta = new Vector2(rtPinky.sizeDelta.x, mirrorCan.minPinkNailHeight + nailExtension);
+            if (customCan.nails[0].TryGetComponent(out RectTransform rtPinky)) {
+                // pinky is shorter
+                rtPinky.sizeDelta = new Vector2(rtPinky.sizeDelta.x, value - 40f);
+                customCan.nailLines[0].rectTransform.sizeDelta = new Vector2(rtPinky.sizeDelta.x, value - 40f);
             }
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
         void PaintNail(int nailIndex) {
             if (equippedNailPolishBrush) {
-                if (mirrorCan.nailPolishRemoverSponge.gameObject.activeSelf) {
-                    mirrorCan.nails[nailIndex].image.color = mirrorCan.keratinColor;
-                }
-                else mirrorCan.nails[nailIndex].image.color = mirrorCan.nailPolishBrush.bristles.color;
-
+                customCan.nails[nailIndex].image.color = customCan.nailPolishBrush.bristles.color;
                 currentArm.data.nailColorIndices[nailIndex] = nailColorIndex;
-
                 // #TODO actually pain the referee's 3d nails
             }
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
@@ -207,14 +207,14 @@ namespace RedCard {
         }
 
         void CloseColorBox() {
-            if (mirrorCan.colorBox) {
-                mirrorCan.nailPolishRemoverMiniSponge.SetParent(null);
-                mirrorCan.nailPolishRemoverMiniSponge.gameObject.SetActive(false);
-                Vector2 ogSizeDelta = new Vector2(mirrorCan.colorBox.rtParent.sizeDelta.x, mirrorCan.colorBox.parentHeightCache);
-                mirrorCan.colorBox.rtParent.sizeDelta = ogSizeDelta;
-                mirrorCan.colorBox.rtParentShadow.sizeDelta = ogSizeDelta;
-                Destroy(mirrorCan.colorBox.gameObject); //#HACK
-                mirrorCan.colorBox = null;
+            if (customCan.colorBox) {
+                customCan.nailPolishRemoverMiniSponge.SetParent(null);
+                customCan.nailPolishRemoverMiniSponge.gameObject.SetActive(false);
+                Vector2 ogSizeDelta = new Vector2(customCan.colorBox.rtParent.sizeDelta.x, customCan.colorBox.parentHeightCache);
+                customCan.colorBox.rtParent.sizeDelta = ogSizeDelta;
+                customCan.colorBox.rtParentShadow.sizeDelta = ogSizeDelta;
+                Destroy(customCan.colorBox.gameObject); //#HACK
+                customCan.colorBox = null;
             }
         }
         void ClickedOnNailPolishJar() {
@@ -222,10 +222,10 @@ namespace RedCard {
 
                 equippedNailPolishBrush = false;
 
-                mirrorCan.nailPolishBrush.gameObject.SetActive(false);
-                mirrorCan.nailPolishRemoverSponge.gameObject.SetActive(false);
-                mirrorCan.nailPolishJar.openJar.gameObject.SetActive(false);
-                mirrorCan.nailPolishJar.closedJar.gameObject.SetActive(true);
+                customCan.nailPolishBrush.gameObject.SetActive(false);
+                customCan.nailPolishRemoverSponge.gameObject.SetActive(false);
+                customCan.nailPolishJar.openJar.gameObject.SetActive(false);
+                customCan.nailPolishJar.closedJar.gameObject.SetActive(true);
                 CloseColorBox();
 
                 Cursor.visible = true;
@@ -233,23 +233,23 @@ namespace RedCard {
             else {
                 equippedNailPolishBrush = true;
 
-                mirrorCan.nailPolishJar.closedJar.gameObject.SetActive(false);
-                mirrorCan.nailPolishJar.openJar.gameObject.SetActive(true);
-                mirrorCan.nailPolishBrush.gameObject.SetActive(!usingSponge);
-                mirrorCan.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
+                customCan.nailPolishJar.closedJar.gameObject.SetActive(false);
+                customCan.nailPolishJar.openJar.gameObject.SetActive(true);
+                customCan.nailPolishBrush.gameObject.SetActive(!usingSponge);
+                customCan.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
 
-                if (mirrorCan.colorBox) CloseColorBox();
+                if (customCan.colorBox) CloseColorBox();
 
-                mirrorCan.colorBox = ColorBox.MakeColorBox(mirrorCan, mirrorCan.nailBox, mirrorCan.nailBoxShadow, mirrorCan.nailColors);
-                RectTransform first = mirrorCan.colorBox.rows[0].swatches[0].GetComponent<RectTransform>();
-                mirrorCan.nailPolishRemoverMiniSponge.SetParent(first.transform.parent);
-                mirrorCan.nailPolishRemoverMiniSponge.anchoredPosition = first.anchoredPosition;
-                mirrorCan.nailPolishRemoverMiniSponge.gameObject.SetActive(true);
-                int count = mirrorCan.nailColorSelectedIndex;
-                for(int i = 0; i < mirrorCan.colorBox.rows.Length; i++) {
-                    int l = mirrorCan.colorBox.rows[i].swatches.Length;
+                customCan.colorBox = ColorBox.MakeColorBox(customCan, customCan.nailBox, customCan.nailBoxShadow, customCan.nailColors);
+                RectTransform first = customCan.colorBox.rows[0].swatches[0].GetComponent<RectTransform>();
+                customCan.nailPolishRemoverMiniSponge.SetParent(first.transform.parent);
+                customCan.nailPolishRemoverMiniSponge.anchoredPosition = first.anchoredPosition;
+                customCan.nailPolishRemoverMiniSponge.gameObject.SetActive(true);
+                int count = customCan.nailColorSelectedIndex;
+                for(int i = 0; i < customCan.colorBox.rows.Length; i++) {
+                    int l = customCan.colorBox.rows[i].swatches.Length;
                     if (l >= count) {
-                        mirrorCan.colorBox.SelectedSwatch(mirrorCan.colorBox.rows[i].swatches[count], mirrorCan.nailColorSelectedIndex);
+                        customCan.colorBox.SelectedSwatch(customCan.colorBox.rows[i].swatches[count], customCan.nailColorSelectedIndex);
                         break;
                     }
                     else count -= l;
@@ -264,8 +264,8 @@ namespace RedCard {
                 case Category.Skin:
                     arbitro.leftArm.SetSkinColor(index);
                     arbitro.rightArm.SetSkinColor(index);
-                    for (int i = 0; i < mirrorCan.fingers.Length; i++) {
-                        mirrorCan.fingers[i].color = RedMatch.Match.customizationOptions.skinSwatchColors[index];
+                    for (int i = 0; i < customCan.fingers.Length; i++) {
+                        customCan.fingers[i].color = RedMatch.Match.customizationOptions.skinSwatchColors[index];
                     }
                     break;
 
@@ -277,19 +277,18 @@ namespace RedCard {
                 case Category.Nails:
                     nailColorIndex = index;
                     Color c = RedMatch.Match.customizationOptions.nailSwatchColors[index];
-                    mirrorCan.nailPolishJar.liquid.color = c;
-                    mirrorCan.nailPolishBrush.bristles.color = c;
+                    customCan.nailPolishJar.liquid.color = c;
+                    customCan.nailPolishBrush.bristles.color = c;
 
                     if (c.a < 1f) {
                         usingSponge = true;
-                        mirrorCan.nailPolishJar.liquid.color = mirrorCan.keratinColor;
-                        mirrorCan.nailPolishBrush.gameObject.SetActive(!usingSponge);
-                        mirrorCan.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
+                        customCan.nailPolishBrush.gameObject.SetActive(!usingSponge);
+                        customCan.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
                     }
                     else {
                         usingSponge = false;
-                        mirrorCan.nailPolishBrush.gameObject.SetActive(true);
-                        mirrorCan.nailPolishRemoverSponge.gameObject.SetActive(false);
+                        customCan.nailPolishBrush.gameObject.SetActive(true);
+                        customCan.nailPolishRemoverSponge.gameObject.SetActive(false);
                     }
                     break;
             }
@@ -301,10 +300,10 @@ namespace RedCard {
             otherArm = cachedArm;
             
             if (currentArm.data.isDominant) {
-                mirrorCan.makeDominantText.text = Language.current[Words.IsDominantChecked];
+                customCan.makeDominantText.text = Language.current[Words.IsDominantChecked];
             }
             else {
-                mirrorCan.makeDominantText.text = Language.current[Words.IsDominantUnchecked];
+                customCan.makeDominantText.text = Language.current[Words.IsDominantUnchecked];
             }
 
             otherArm.gameObject.SetActive(false);
@@ -320,15 +319,15 @@ namespace RedCard {
 
             // default position was painting left hand with the right
             float pinkySign = (currentArm.side) == Chirality.Left ? -1f : 1f; 
-            if (mirrorCan.fingers.Length >= 5) {
+            if (customCan.fingers.Length >= 5) {
 
                 // pinky is first finger, i know, weird!
-                if (mirrorCan.fingers[0].transform.parent is RectTransform rtPinky) { 
+                if (customCan.fingers[0].transform.parent is RectTransform rtPinky) { 
                     rtPinky.localPosition = new Vector3(pinkySign *Mathf.Abs(rtPinky.localPosition.x), rtPinky.localPosition.y);
                 } 
 
                 // thumb
-                if (mirrorCan.fingers[4].transform.parent is RectTransform rtThumb) {
+                if (customCan.fingers[4].transform.parent is RectTransform rtThumb) {
                     rtThumb.localPosition = new Vector3(-pinkySign * Mathf.Abs(rtThumb.localPosition.x), rtThumb.localPosition.y);
                     rtThumb.localRotation = Quaternion.Euler(0f, 0f, pinkySign * 12);
                 } 
@@ -343,14 +342,14 @@ namespace RedCard {
             if (currentArm.data.isDominant) {
                 currentArm.data.isDominant = false;
                 otherArm.data.isDominant = true;
-                mirrorCan.makeDominantText.text = Language.current[Words.IsDominantUnchecked];
+                customCan.makeDominantText.text = Language.current[Words.IsDominantUnchecked];
                 arbitro.dominantArm = otherArm;
             }
             else {
 
                 currentArm.data.isDominant = true;
                 otherArm.data.isDominant = false;
-                mirrorCan.makeDominantText.text = Language.current[Words.IsDominantChecked];
+                customCan.makeDominantText.text = Language.current[Words.IsDominantChecked];
                 arbitro.dominantArm = currentArm;
             }
 
@@ -393,11 +392,11 @@ namespace RedCard {
                 Vector2 mousePosition = Vector2.zero;
                 if (Mouse.current != null) mousePosition = Mouse.current.position.ReadValue();
 
-                if (RectTransformUtility.RectangleContainsScreenPoint(mirrorCan.nailBox, mousePosition, null)) {
+                if (RectTransformUtility.RectangleContainsScreenPoint(customCan.nailBox, mousePosition, null)) {
 
                     Cursor.visible = false;
 
-                    if (mirrorCan.nailPolishBrush.TryGetComponent(out RectTransform follower)) {
+                    if (customCan.nailPolishBrush.TryGetComponent(out RectTransform follower)) {
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             follower.parent as RectTransform,
                             mousePosition,
@@ -405,7 +404,7 @@ namespace RedCard {
                             out Vector2 pos
                         );
                         follower.anchoredPosition = pos;
-                        mirrorCan.nailPolishRemoverSponge.anchoredPosition = pos;
+                        customCan.nailPolishRemoverSponge.anchoredPosition = pos;
                         // adding slight tilt to angle of nail brush heh
                         if (currentArm.side == Chirality.Left) {
                             // painting with right hand
@@ -450,17 +449,17 @@ namespace RedCard {
                     float tStartFadingCanvasIn = 1f - mirrorCanvasFadeDuration;
                     if (t > tStartFadingCanvasIn) {
                         float tGUI = t - tStartFadingCanvasIn;
-                        mirrorCan.group.alpha = Mathf.Lerp(0f, 1f, tGUI / mirrorCanvasFadeDuration);
+                        customCan.group.alpha = Mathf.Lerp(0f, 1f, tGUI / mirrorCanvasFadeDuration);
                     }
                     break;
 
                 case MirrorMode.Inactive:
-                    if (mirrorCan.group.alpha > 0f) {
+                    if (customCan.group.alpha > 0f) {
                         float fadeOutSpeed = 1f / (1f - mirrorCanvasFadeDuration);
-                        mirrorCan.group.alpha -= fadeOutSpeed * Time.deltaTime;
+                        customCan.group.alpha -= fadeOutSpeed * Time.deltaTime;
                     }
                     else {
-                        mirrorCan.gameObject.SetActive(false);
+                        customCan.gameObject.SetActive(false);
                         enabled = false;
                     }
                     break;
@@ -470,7 +469,7 @@ namespace RedCard {
 
         public void ApproachMirror(RefControls approacher) {
 
-            mirrorCan.InitSkinAndHairColorButtons(this);
+            customCan.InitSkinAndHairColorButtons(this);
             
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             foreach (PlayerInput input in allInput) {
@@ -488,10 +487,10 @@ namespace RedCard {
             enabled = true;
             t = 0f;
 
-            mirrorCan.gameObject.SetActive(true);
-            mirrorCan.swatchHoverHighlight.gameObject.SetActive(false);
-            mirrorCan.group.alpha = 0f;
-            mirrorCan.makeDominantText.text = Language.current[Words.IsDominantChecked];
+            customCan.gameObject.SetActive(true);
+            customCan.swatchHoverHighlight.gameObject.SetActive(false);
+            customCan.group.alpha = 0f;
+            customCan.makeDominantText.text = Language.current[Words.IsDominantChecked];
 
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
@@ -518,35 +517,35 @@ namespace RedCard {
 
             // skin
             int skinIndex = arbitro.leftArm.data.skinColorIndex;
-            if (skinIndex >= 0 && skinIndex < mirrorCan.skinColorSwatches.Length) {
-                mirrorCan.SelectedSkinSwatch(mirrorCan.skinColorSwatches[skinIndex], skinIndex);
+            if (skinIndex >= 0 && skinIndex < customCan.skinColorSwatches.Length) {
+                customCan.SelectedSkinSwatch(customCan.skinColorSwatches[skinIndex], skinIndex);
             }
             else Debug.LogError("invalid initial skin index " + skinIndex);
 
             // skin
-            mirrorCan.hairThicknessSlider.SetValueWithoutNotify(currentArm.data.hairThickness);
-            mirrorCan.hairLengthSlider.SetValueWithoutNotify(currentArm.data.hairLength);
-            mirrorCan.hairCurlSlider.SetValueWithoutNotify(currentArm.data.hairCurl);
+            customCan.hairThicknessSlider.SetValueWithoutNotify(currentArm.data.hairThickness);
+            customCan.hairLengthSlider.SetValueWithoutNotify(currentArm.data.hairLength);
+            customCan.hairCurlSlider.SetValueWithoutNotify(currentArm.data.hairCurl);
             int hairIndex = arbitro.leftArm.data.hairColorIndex;
-            if (hairIndex >= 0 && hairIndex < mirrorCan.hairColorSwatches.Length) {
-                mirrorCan.SelectedHairSwatch(mirrorCan.hairColorSwatches[hairIndex], hairIndex);
+            if (hairIndex >= 0 && hairIndex < customCan.hairColorSwatches.Length) {
+                customCan.SelectedHairSwatch(customCan.hairColorSwatches[hairIndex], hairIndex);
             }
             else Debug.LogError("invalid initial hair index " + hairIndex);
 
             // muscle
-            mirrorCan.muscleSlider.SetValueWithoutNotify(currentArm.data.muscleSize);
+            customCan.muscleSlider.SetValueWithoutNotify(currentArm.data.muscleSize);
             // set stamina/respect! #TODO
 
             // nails
             // have to set the nail visuals
-            mirrorCan.nailLengthSlider.SetValueWithoutNotify(currentArm.data.nailLength);
+            customCan.nailLengthSlider.SetValueWithoutNotify(currentArm.data.nailLength);
             OrientFingers();
             NailLengthSlid(currentArm.data.nailLength);
             CustomizationOptions cops = RedMatch.Match.customizationOptions;
             Color skinColor = cops.skinSwatchColors[currentArm.data.skinColorIndex];
-            for (int i = 0; i < mirrorCan.fingers.Length; i++) {
-                mirrorCan.fingers[i].color = skinColor;
-                mirrorCan.nails[i].image.color = cops.nailSwatchColors[currentArm.data.nailColorIndices[i]];
+            for (int i = 0; i < customCan.fingers.Length; i++) {
+                customCan.fingers[i].color = skinColor;
+                customCan.nails[i].image.color = cops.nailSwatchColors[currentArm.data.nailColorIndices[i]];
             }
 
             // tattoos

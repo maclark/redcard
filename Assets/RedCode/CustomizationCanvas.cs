@@ -4,7 +4,7 @@ using TMPro;
 
 namespace RedCard {
 
-    public class MirrorCanvas : MonoBehaviour {
+    public class CustomizationCanvas : MonoBehaviour {
 
         public CanvasGroup group;
         public Button switchArms;
@@ -19,12 +19,13 @@ namespace RedCard {
         [Header("HAIR")]
         public Slider hairThicknessSlider;
         public Slider hairLengthSlider;
-        public Slider hairColorPicker;
         public Slider hairCurlSlider;
         public Button[] hairColorSwatches = new Button[0];
 
         [Header("MUSCLE")]
         public Slider muscleSlider;
+        public TMP_Text staminaUpDown;
+        public TMP_Text respectUpDown;
 
         [Header("INK")]
         public Button pickTattoo;
@@ -36,12 +37,9 @@ namespace RedCard {
         public RectTransform nailPolishRemoverSponge;
         public RectTransform nailPolishRemoverMiniSponge;
         public NailPolishBrush nailPolishBrush;
-        public Color keratinColor = new Color(1f, 1f, 1f, .8f);
-        public float maxNailHeight = 60f;
-        public float minNailHeight = 20f;
-        public float minPinkNailHeight = 15f;
         public Slider nailLengthSlider;
         public Button[] nails = new Button[0]; // pinky to thumb
+        public Image[] nailLines = new Image[0]; // pinky to thumb
         public Image[] fingers = new Image[0]; // pinky to thumb
         public int nailColorSelectedIndex = 1;
         public Color[] nailColors = new Color[0];

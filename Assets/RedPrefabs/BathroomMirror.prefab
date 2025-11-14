@@ -49,10 +49,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95cd373225bef604a9a3f12bd3572d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RedCard.BathroomMirror
-  mirrorCanvasPrefab: {fileID: 4414233266155591460, guid: d56c0365c3c439148b139784838d64ab, type: 3}
+  customizationCanvasPrefab: {fileID: 4414233266155591460, guid: d56c0365c3c439148b139784838d64ab, type: 3}
   approachSpeed: 1
   inFrontOfMirrorOffset: 1
   arm_fov: 50
+  mirrorCanvasFadeDuration: 0.25
   approachCurve:
     serializedVersion: 2
     m_Curve:
@@ -86,9 +87,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mirror: {fileID: 0}
+  customCan: {fileID: 0}
   mode: 0
   currentArm: {fileID: 0}
+  otherArm: {fileID: 0}
 --- !u!114 &1312482671516348449
 MonoBehaviour:
   m_ObjectHideFlags: 0

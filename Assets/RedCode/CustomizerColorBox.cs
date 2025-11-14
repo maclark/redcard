@@ -14,7 +14,7 @@ namespace RedCard {
         public RectTransform swatchSelectionHighlight;
 
         [Header("VARS")]
-        public MirrorCanvas mirror;
+        public CustomizationCanvas mirror;
         public float parentHeightCache;
         public ColorRow[] rows = new ColorRow[0];
         public Button highlighted;
@@ -46,7 +46,7 @@ namespace RedCard {
             swatchSelectionHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
         }
 
-        public static ColorBox MakeColorBox(MirrorCanvas mirror, RectTransform rt, RectTransform rtShadow, Color[] colors) {
+        public static ColorBox MakeColorBox(CustomizationCanvas mirror, RectTransform rt, RectTransform rtShadow, Color[] colors) {
 
             ColorBox box = Instantiate(mirror.colorBoxPrefab, rt).GetComponent<ColorBox>();
 
