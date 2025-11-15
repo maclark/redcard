@@ -282,7 +282,7 @@ namespace RedCard {
 
                 if (customCan.colorBox) CloseColorBox();
 
-                customCan.colorBox = ColorBox.MakeColorBox(customCan, customCan.nailBox, customCan.nailBoxShadow, customCan.nailColors);
+                customCan.colorBox = ColorBox.MakeColorBox(customCan, customCan.nailsRect, customCan.nailsBackground, customCan.nailsBackgroundShadow, customCan.nailColors);
                 RectTransform first = customCan.colorBox.rows[0].swatches[0].GetComponent<RectTransform>();
                 customCan.nailPolishRemoverMiniSponge.SetParent(first.transform.parent);
                 customCan.nailPolishRemoverMiniSponge.anchoredPosition = first.anchoredPosition;
@@ -435,7 +435,7 @@ namespace RedCard {
                 Vector2 mousePosition = Vector2.zero;
                 if (Mouse.current != null) mousePosition = Mouse.current.position.ReadValue();
 
-                if (RectTransformUtility.RectangleContainsScreenPoint(customCan.nailBox, mousePosition, null)) {
+                if (RectTransformUtility.RectangleContainsScreenPoint(customCan.nailsBackground, mousePosition, null)) {
 
                     Cursor.visible = false;
 

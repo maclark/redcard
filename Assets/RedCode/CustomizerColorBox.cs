@@ -20,9 +20,7 @@ namespace RedCard {
         public Button highlighted;
 
         public const float horz_line_gap = 12f;
-        public const float line_width = 4f;
-        public const float box_width = 400f;
-        public const float vert_line_gap = 10f;
+        public const float line_width = 40f;
 
         void HighlightedSwatch(Button b) {
             highlighted = b;
@@ -46,11 +44,12 @@ namespace RedCard {
             swatchSelectionHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
         }
 
-        public static ColorBox MakeColorBox(CustomizationCanvas mirror, RectTransform rt, RectTransform rtShadow, Color[] colors) {
+        public static ColorBox MakeColorBox(CustomizationCanvas mirror, RectTransform parent, RectTransform rt, RectTransform rtShadow, Color[] colors) {
 
-            ColorBox box = Instantiate(mirror.colorBoxPrefab, rt).GetComponent<ColorBox>();
-
-            rt.parent.SetAsLastSibling();
+            ColorBox box = Instantiate(mirror.colorBoxPrefab, parent).GetComponent<ColorBox>();
+            mirror.nailPolishBrush.transform.SetAsLastSibling();
+            mirror.nailPolishRemoverSponge.transform.SetAsLastSibling();
+            parent.SetAsLastSibling();
 
             box.parentHeightCache = rt.sizeDelta.y;
             box.mirror = mirror;
@@ -59,19 +58,20 @@ namespace RedCard {
             box.swatchHoverHighlight.gameObject.SetActive(false);
             box.swatchSelectionHighlight.gameObject.SetActive(false);
 
-
-            // multiplying left and ride lines by 10 to adjust for scale
-            // and adding 15 to height 
             int rowsNeeded = Mathf.CeilToInt(colors.Length / 6f);
             float extension = mirror.minColorBoxHeight + rowsNeeded * mirror.colorRowHeight;
-            Vector2 newSize = new Vector2(rt.sizeDelta.x, rt.sizeDelta.y + extension);
+
+            // have to scale sizes of boxes
+            Vector2 newSize = new Vector2(rt.sizeDelta.x, rt.sizeDelta.y + 10f * extension);
             box.rtParent.sizeDelta = newSize;
             box.rtParentShadow.sizeDelta = newSize;
-            box.botLine.anchoredPosition = new Vector2(0f, -extension + horz_line_gap);
-            box.leftLine.sizeDelta = 10f * new Vector2(line_width, extension - vert_line_gap + 15f);
-            box.leftLine.anchoredPosition = new Vector2(-box_width / 2f + horz_line_gap, 0f);
-            box.rightLine.sizeDelta = 10f * new Vector2(line_width, extension - vert_line_gap + 15f);
-            box.rightLine.anchoredPosition = new Vector2(box_width / 2f - horz_line_gap, 0f);
+
+            // but positions aren't scaled 
+            float yBotLine = -extension + horz_line_gap;
+            box.botLine.anchoredPosition = new Vector2(0f, yBotLine);
+            box.leftLine.sizeDelta = new Vector2(line_width, 10f * Mathf.Abs(yBotLine) + line_width);
+            box.rightLine.sizeDelta = new Vector2(line_width, 10f * Mathf.Abs(yBotLine)+ line_width);
+
 
             int colorIndex = 0;
             box.rows = new ColorRow[rowsNeeded];
@@ -79,7 +79,7 @@ namespace RedCard {
                 ColorRow row = Instantiate(mirror.colorRowPrefab, box.transform).GetComponent<ColorRow>();
                 box.rows[i] = row;
                 if (row.TryGetComponent(out RectTransform rtRow)) {
-                    rtRow.anchoredPosition = new Vector2(0f, vert_line_gap -i * mirror.colorRowHeight);
+                    rtRow.anchoredPosition = new Vector2(0f, -i * mirror.colorRowHeight + 7f);
                 }
                 else Debug.LogWarning("no rt on color row");
 

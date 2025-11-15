@@ -32,8 +32,9 @@ namespace RedCard {
         public Button pickTattoo;
 
         [Header("NAILS")]
-        public RectTransform nailBox;
-        public RectTransform nailBoxShadow;
+        public RectTransform nailsRect;
+        public RectTransform nailsBackground;
+        public RectTransform nailsBackgroundShadow;
         public NailPolishJar nailPolishJar;
         public RectTransform nailPolishRemoverSponge;
         public RectTransform nailPolishRemoverMiniSponge;
