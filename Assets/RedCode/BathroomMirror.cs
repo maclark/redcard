@@ -319,6 +319,7 @@ namespace RedCard {
                 case Category.Nails:
                     nailColorIndex = index;
                     Color c = RedMatch.Match.customizationOptions.nailSwatchColors[index];
+                    customCan.nailColorSelectedIndex = index;
                     customCan.nailPolishJar.liquid.color = c;
                     customCan.nailPolishBrush.bristles.color = c;
 

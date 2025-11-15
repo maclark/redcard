@@ -310,21 +310,7 @@ namespace RedCard {
                 hud.MakeVisible(RefEquipment.Book);
                 acquiredEquipment.Add(RefEquipment.SprayCan);
                 hud.MakeVisible(RefEquipment.SprayCan);
-
-                Coin c = FindAnyObjectByType<Coin>();
-                if (coin) {
-                    if (coin.TryGetComponent(out Item it)) {
-                        // will this mess up the duffel bag tho?
-                        print("are we finding the coin to grab?");
-                        //itemHeld = it;
-                        //GrabItem();
-                    }
-                    else Debug.LogWarning("coin doesn't have item attached?");
-                }
-                else print("couldn't find coin to start with?");
             }
-
-            ArmData.ClearArmData();
 
             leftArm.gameObject.SetActive(false);
             rightArm.gameObject.SetActive(false);
