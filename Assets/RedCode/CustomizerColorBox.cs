@@ -59,15 +59,18 @@ namespace RedCard {
             box.swatchHoverHighlight.gameObject.SetActive(false);
             box.swatchSelectionHighlight.gameObject.SetActive(false);
 
+
+            // multiplying left and ride lines by 10 to adjust for scale
+            // and adding 15 to height 
             int rowsNeeded = Mathf.CeilToInt(colors.Length / 6f);
             float extension = mirror.minColorBoxHeight + rowsNeeded * mirror.colorRowHeight;
             Vector2 newSize = new Vector2(rt.sizeDelta.x, rt.sizeDelta.y + extension);
             box.rtParent.sizeDelta = newSize;
             box.rtParentShadow.sizeDelta = newSize;
             box.botLine.anchoredPosition = new Vector2(0f, -extension + horz_line_gap);
-            box.leftLine.sizeDelta = new Vector2(line_width, extension - vert_line_gap);
+            box.leftLine.sizeDelta = 10f * new Vector2(line_width, extension - vert_line_gap + 15f);
             box.leftLine.anchoredPosition = new Vector2(-box_width / 2f + horz_line_gap, 0f);
-            box.rightLine.sizeDelta = new Vector2(line_width, extension - vert_line_gap);
+            box.rightLine.sizeDelta = 10f * new Vector2(line_width, extension - vert_line_gap + 15f);
             box.rightLine.anchoredPosition = new Vector2(box_width / 2f - horz_line_gap, 0f);
 
             int colorIndex = 0;
