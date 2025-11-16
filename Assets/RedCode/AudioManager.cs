@@ -17,6 +17,7 @@ namespace RedCard {
         public AudioMixerGroup voicesGroup;
         public AudioMixerGroup musicGroup;
         public AudioSource sfxAso;
+        public AudioSource musicAso;
 
         public static AudioManager am;
 
@@ -31,7 +32,7 @@ namespace RedCard {
 
             am = this;
             DontDestroyOnLoad(gameObject);
-            GrowSFXPool(20);
+            //GrowSFXPool(20);
         }
 
         public void Play(AudioClip clip, AudioGroup group) {

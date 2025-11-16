@@ -55,8 +55,6 @@ namespace RedCard {
         public float inFrontOfMirrorOffset = 1f;
         public float arm_fov = 50f;
         public float mirrorCanvasFadeDuration = .25f;
-        public AudioClip selectedSound;
-        public AudioClip sliderSound;
         public AnimationCurve approachCurve;
 
         [Header("VARS")]
@@ -137,36 +135,38 @@ namespace RedCard {
         }
 
         void HairThicknessSlid(float value) {
-            print("new thickness " + value);
+            //print("new thickness " + value);
             arbitro.leftArm.data.hairThickness = value;
             arbitro.rightArm.data.hairThickness = value;
             arbitro.leftArm.UpdateHairDensity();
             arbitro.rightArm.UpdateHairDensity();
-            AudioManager.am.sfxAso.PlayOneShot(sliderSound);
+            if (mode != MirrorMode.Approaching) customCan.PlaySliderSound();
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
         void HairLengthSlid(float value) {
-            print("new hair length " + value);
+            //print("new hair length " + value);
             arbitro.leftArm.data.hairLength = value;
             arbitro.rightArm.data.hairLength = value;
             arbitro.leftArm.UpdateHairLength();
             arbitro.rightArm.UpdateHairLength();
-            AudioManager.am.sfxAso.PlayOneShot(sliderSound);
+            if (mode != MirrorMode.Approaching) customCan.PlaySliderSound();
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         } 
+
         void HairCurlSlid(float value) {
-            print("new curl");
+            //print("new curl: " + value);
             arbitro.leftArm.data.hairCurl = value;
             arbitro.rightArm.data.hairCurl = -value;
             arbitro.leftArm.UpdateHairDensity();
             arbitro.rightArm.UpdateHairDensity();
-            AudioManager.am.sfxAso.PlayOneShot(sliderSound);
+            if (mode != MirrorMode.Approaching) customCan.PlaySliderSound();
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         } 
+
         // puny, normal, bulging
         void MuscleSlid(float value) {
+            //print("muscle slid " + value);
             int size = Mathf.RoundToInt(value);
-            print("muscle slid " + size);
             if (size == 0) {
                 customCan.respectAndStamina.gameObject.SetActive(true);
                 // puny, so respect (which is on top) should have the MINUS icon
@@ -205,7 +205,7 @@ namespace RedCard {
                 arbitro.rightArm.UpdateHairDensity();
             }
 
-            if (mode != MirrorMode.Approaching) AudioManager.am.sfxAso.PlayOneShot(sliderSound);
+            if (mode != MirrorMode.Approaching) customCan.PlaySliderSound();
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         } 
 
@@ -230,12 +230,19 @@ namespace RedCard {
                 customCan.nailLines[0].rectTransform.sizeDelta = new Vector2(rtPinky.sizeDelta.x, value - 40f);
             }
 
-            if (mode != MirrorMode.Approaching) AudioManager.am.sfxAso.PlayOneShot(sliderSound);
+            if (mode != MirrorMode.Approaching) customCan.PlaySliderSound();
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
 
         void PaintNail(int nailIndex) {
             if (equippedNailPolishBrush) {
+                Color c = customCan.nailPolishBrush.bristles.color;
+                if (c.a < 1f) {
+                    AudioManager.am.sfxAso.PlayOneShot(customCan.cleanedNail);
+                }
+                else {
+                    AudioManager.am.sfxAso.PlayOneShot(customCan.paintedNail);
+                }
                 customCan.nails[nailIndex].image.color = customCan.nailPolishBrush.bristles.color;
                 currentArm.data.nailColorIndices[nailIndex] = nailColorIndex;
                 // #TODO actually pain the referee's 3d nails
@@ -271,6 +278,7 @@ namespace RedCard {
                 CloseColorBox();
 
                 Cursor.visible = true;
+                AudioManager.am.sfxAso.PlayOneShot(customCan.grabbedBrush);
             }
             else {
                 equippedNailPolishBrush = true;
@@ -291,6 +299,8 @@ namespace RedCard {
                 for(int i = 0; i < customCan.colorBox.rows.Length; i++) {
                     int l = customCan.colorBox.rows[i].swatches.Length;
                     if (l >= count) {
+                        print("nailColorSelectedIndex " + customCan.nailColorSelectedIndex);
+                        print("count: " + count);
                         customCan.colorBox.SelectedSwatch(customCan.colorBox.rows[i].swatches[count], customCan.nailColorSelectedIndex);
                         break;
                     }
@@ -298,6 +308,7 @@ namespace RedCard {
                 }
             }
         }
+
         public void SelectedColor(Category cat, int index) {
 
             CustomizationOptions cops = RedMatch.Match.customizationOptions;
@@ -324,11 +335,13 @@ namespace RedCard {
                     customCan.nailPolishBrush.bristles.color = c;
 
                     if (c.a < 1f) {
+                        AudioManager.am.sfxAso.PlayOneShot(customCan.selectedSponge);
                         usingSponge = true;
                         customCan.nailPolishBrush.gameObject.SetActive(!usingSponge);
                         customCan.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
                     }
                     else {
+                        AudioManager.am.sfxAso.PlayOneShot(customCan.selectedNailColor);
                         usingSponge = false;
                         customCan.nailPolishBrush.gameObject.SetActive(true);
                         customCan.nailPolishRemoverSponge.gameObject.SetActive(false);
@@ -512,6 +525,8 @@ namespace RedCard {
 
         public void ApproachMirror(RefControls approacher) {
 
+            mode = MirrorMode.Approaching;
+
             customCan.InitSkinAndHairColorButtons(this);
             
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
@@ -529,6 +544,9 @@ namespace RedCard {
             arbitro.pitch = 0f;
             enabled = true;
             t = 0f;
+
+            approachStartPos = arbitro.transform.position;
+            approachStartGaze = arbitro.cam.transform.rotation;
 
             customCan.gameObject.SetActive(true);
             customCan.swatchHoverHighlight.gameObject.SetActive(false);
@@ -571,7 +589,7 @@ namespace RedCard {
             customCan.hairCurlSlider.SetValueWithoutNotify(currentArm.data.hairCurl);
             int hairIndex = arbitro.leftArm.data.hairColorIndex;
             if (hairIndex >= 0 && hairIndex < customCan.hairColorSwatches.Length) {
-                customCan.SelectedHairSwatch(customCan.hairColorSwatches[hairIndex], hairIndex);
+                customCan.SelectedHairSwatch(customCan.hairColorSwatches[hairIndex], hairIndex, true);
             }
             else Debug.LogError("invalid initial hair index " + hairIndex);
 
@@ -597,9 +615,6 @@ namespace RedCard {
             // tattoos
 
 
-            approachStartPos = arbitro.transform.position;
-            approachStartGaze = arbitro.cam.transform.rotation;
-            mode = MirrorMode.Approaching;
         }
 
         public void LeaveMirror() {

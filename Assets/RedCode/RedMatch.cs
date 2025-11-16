@@ -122,6 +122,9 @@ namespace RedCard {
 
 
         private void Awake() {
+
+            Unity.Collections.NativeLeakDetection.Mode = Unity.Collections.NativeLeakDetectionMode.EnabledWithStackTrace;
+
             if (_Match) {
                 Debug.LogError("a meatch already exists!");
             }

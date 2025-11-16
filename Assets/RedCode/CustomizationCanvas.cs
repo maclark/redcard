@@ -12,6 +12,17 @@ namespace RedCard {
         public TMP_Text makeDominantText;
         public Button back;
 
+        [Header("AUDIO")]
+        public float sliderSoundGap = .05f; // 1/20th
+        public AudioClip selectedSound;
+        public AudioClip sliderSound;
+        public AudioClip grabbedBrush; // also for put away brush?
+        public AudioClip paintedNail;
+        public AudioClip cleanedNail;
+        public AudioClip selectedNailColor;
+        public AudioClip selectedSponge;
+        public float lastSlideSoundPlayed;
+
 
         [Header("SKIN COLOR")]
         public Button[] skinColorSwatches = new Button[0];
@@ -73,21 +84,29 @@ namespace RedCard {
                 swatchHoverHighlight.gameObject.SetActive(false);
             }
         }
-        public void SelectedSkinSwatch(Button b, int index) {
+        public void SelectedSkinSwatch(Button b, int index, bool silence = false) {
             bathMirror.SelectedColor(Category.Skin, index);
             swatchSkinSelectionHighlight.gameObject.SetActive(true);
             swatchSkinSelectionHighlight.SetParent(b.transform.parent);
             swatchSkinSelectionHighlight.SetAsFirstSibling();
             swatchSkinSelectionHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
-            if (bathMirror.mode != MirrorMode.Approaching) AudioManager.am.sfxAso.PlayOneShot(bathMirror.selectedSound);
+            if (!silence & bathMirror.mode != MirrorMode.Approaching) AudioManager.am.sfxAso.PlayOneShot(selectedSound);
         }
-        public void SelectedHairSwatch(Button b, int index) {
+
+        public void PlaySliderSound() {
+            if (Time.time - lastSlideSoundPlayed > sliderSoundGap) {
+                AudioManager.am.sfxAso.PlayOneShot(selectedSound);
+                lastSlideSoundPlayed = Time.time;
+            }
+        }
+
+        public void SelectedHairSwatch(Button b, int index, bool silence=false) {
             bathMirror.SelectedColor(Category.Hair, index);
             swatchHairSelectionHighlight.gameObject.SetActive(true);
             swatchHairSelectionHighlight.SetParent(b.transform.parent);
             swatchHairSelectionHighlight.SetAsFirstSibling();
             swatchHairSelectionHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
-            if (bathMirror.mode != MirrorMode.Approaching) AudioManager.am.sfxAso.PlayOneShot(bathMirror.selectedSound);
+            if (!silence && bathMirror.mode != MirrorMode.Approaching) AudioManager.am.sfxAso.PlayOneShot(selectedSound); 
         }
 
         // particular values will be set when el arbitro approaches the mirror
