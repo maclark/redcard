@@ -31,8 +31,13 @@ namespace RedCard {
             }
 
             am = this;
+            Debug.Assert(sfxAso);
             DontDestroyOnLoad(gameObject);
             //GrowSFXPool(20);
+        }
+
+        public static void PlaySFX(AudioClip clip) {
+            if (am) am.sfxAso.PlayOneShot(clip);
         }
 
         public void Play(AudioClip clip, AudioGroup group) {
