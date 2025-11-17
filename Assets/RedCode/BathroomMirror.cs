@@ -114,24 +114,13 @@ namespace RedCard {
             }
 
             string map = MIRROR_ACTION_MAP;
-            var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("MoveWASD");
-            if (action != null) {
-                action.started += MoveInput;
-            }
-            else Debug.LogWarning("couldn't find MoveWASD action");
-
-            action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("Look");
-            if (action != null) action.performed += LookInput;
-            else Debug.LogWarning("couldn't find Look action");
-
-            action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("PrimaryAction");
+            var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("PrimaryAction");
             if (action != null) {
                 action.started += PrimaryAction;
                 action.canceled += PrimaryAction;
             }
             else Debug.LogWarning("couldn't find PrimaryAction action");
 
-            action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("SecondaryAction");
         }
 
         void HairThicknessSlid(float value) {
@@ -425,19 +414,10 @@ namespace RedCard {
             }
         }
 
-        private void MoveInput(InputAction.CallbackContext ctx) {
-
-        }
-        private void LookInput(InputAction.CallbackContext ctx) {
-
-        }
         private void PrimaryAction(InputAction.CallbackContext ctx) {
             if (mode == MirrorMode.PlacingTattoo) {
 
             }
-        }
-        private void SecondaryAction(InputAction.CallbackContext ctx) {
-
         }
 
         private void Update() {
@@ -641,6 +621,15 @@ namespace RedCard {
             Cursor.visible = false;
 
             mode = MirrorMode.Inactive;
+        }
+
+        private void OnDestroy() {
+            string map = MIRROR_ACTION_MAP;
+            var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("PrimaryAction");
+            if (action != null) {
+                action.started -= PrimaryAction;
+                action.canceled -= PrimaryAction;
+            }
         }
 
     }

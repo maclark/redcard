@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using TMPro;
+using System;
 
 namespace RedCard {
 
@@ -256,6 +257,8 @@ namespace RedCard {
         public static readonly int RefBody_Layer = 14;
 
         private bool debugStartWithEquipment = false;
+        private Dictionary<InputAction, List<Action<InputAction.CallbackContext>>> actionRegistry = new Dictionary<InputAction, List<Action<InputAction.CallbackContext>>>();
+
 
         void Start() {
 
@@ -314,7 +317,7 @@ namespace RedCard {
 
             leftArm.gameObject.SetActive(false);
             rightArm.gameObject.SetActive(false);
-            bool rightHanded = (Random.value > .1f);
+            bool rightHanded = (UnityEngine.Random.value > .1f);
             leftArm.data = ArmData.LoadArms(Chirality.Left, !rightHanded);
             leftArm.Init();
             rightArm.data = ArmData.LoadArms(Chirality.Right, rightHanded);
@@ -382,11 +385,15 @@ namespace RedCard {
                 action.started += MoveInput;
                 action.performed += MoveInput;
                 action.canceled += MoveInput;
+                RegisterInput(action, MoveInput);
             }
             else Debug.LogWarning("couldn't find MoveWASD action");
 
             action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Look");
-            if (action != null) action.performed += LookInput;
+            if (action != null) {
+                action.performed += LookInput;
+                RegisterInput(action, LookInput);
+            }
             else Debug.LogWarning("couldn't find Look action");
 
             action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
@@ -394,6 +401,7 @@ namespace RedCard {
                 action.started += PrimaryAction;
                 action.performed += PrimaryAction;
                 action.canceled += PrimaryAction;
+                RegisterInput(action, PrimaryAction);
             }
             else Debug.LogWarning("couldn't find PrimaryAction action");
 
@@ -402,6 +410,7 @@ namespace RedCard {
                 action.started += SecondaryAction;
                 action.performed += SecondaryAction;
                 action.canceled += SecondaryAction;
+                RegisterInput(action, SecondaryAction);
             }
             else Debug.LogWarning("couldn't find SecondaryAction action");
 
@@ -409,12 +418,14 @@ namespace RedCard {
             if (action != null) {
                 action.canceled += Sprint;
                 action.started += Sprint;
+                RegisterInput(action, Sprint);
             }
             else Debug.LogWarning("couldn't find Sprint action");
 
             action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Interact");
             if (action != null) {
                 action.started += Interact;
+                RegisterInput(action, Interact);
             }
             else Debug.LogWarning("couldn't find Interact action");
 
@@ -422,12 +433,15 @@ namespace RedCard {
             if (action != null) {
                 action.started += OpenDialogWheel;
                 action.canceled += CloseDialogWheel;
+                RegisterInput(action, OpenDialogWheel);
+                RegisterInput(action, CloseDialogWheel);
             }
             else Debug.LogWarning("couldn't find Speech action");
 
             action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Arrows");
             if (action != null) {
                 action.performed += ArrowInput;
+                RegisterInput(action, ArrowInput);
             }
             else Debug.LogWarning("couldn't find Arrows action");
 
@@ -437,10 +451,13 @@ namespace RedCard {
                 action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Slot" + slotIndex);
 
                 int callbackIndex = slotIndex;
-                void SlotEquippedDel (InputAction.CallbackContext txt) {
+                void SlotEquippedDel(InputAction.CallbackContext txt) {
                     SlotEquipped(callbackIndex);
                 }
-                if (action != null) action.started += SlotEquippedDel;
+                if (action != null) { 
+                    action.started += SlotEquippedDel;
+                    RegisterInput(action, SlotEquippedDel);
+                }
                 else Debug.LogWarning("couldn't find Slot" + slotIndex + " action");
             }
 
@@ -1391,6 +1408,26 @@ namespace RedCard {
             }
 
             secondsElapsedSinceKickoff += dt;
-        }       
+        }
+
+
+        private void RegisterInput(InputAction action, Action<InputAction.CallbackContext> callback) {
+            if (actionRegistry.TryGetValue(action, out var list)) {
+                list.Add(callback);
+            }
+            else actionRegistry.Add(action, new List<Action<InputAction.CallbackContext>> { callback });
+        }
+
+        private void OnDestroy() {
+            // clean up the input shit
+            foreach(var kvp in actionRegistry) {
+                foreach(var v in kvp.Value) {
+                    kvp.Key.started -= v;
+                    kvp.Key.performed -= v;
+                    kvp.Key.canceled -= v;
+                }
+            }
+            actionRegistry.Clear();
+        }
     }
 } 

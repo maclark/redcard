@@ -36,7 +36,7 @@ namespace RedCard {
             //GrowSFXPool(20);
         }
 
-        public static void PlaySFX(AudioClip clip) {
+        public static void PlaySFXOneShot(AudioClip clip) {
             if (am) am.sfxAso.PlayOneShot(clip);
         }
 
