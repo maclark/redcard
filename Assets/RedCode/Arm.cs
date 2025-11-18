@@ -58,6 +58,7 @@ namespace RedCard {
             float radius = limb.localScale.x / 2f; // yes, i checked, the cylinder x value is the diameter
             float surfaceArea = Mathf.PI * radius * (zEnd - zStart);
             int folicleCount = Mathf.RoundToInt(surfaceArea * data.hairThickness);
+            print("folicount " + folicleCount);
             for (int i = 0; i < folicles.Length; i++) {
                 if (i < folicleCount) {
                     float h = Random.Range(zStart, zEnd);

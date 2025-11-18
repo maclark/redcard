@@ -125,6 +125,7 @@ namespace RedCard {
 
         void HairThicknessSlid(float value) {
             //print("new thickness " + value);
+            // from what to what??
             arbitro.leftArm.data.hairThickness = value;
             arbitro.rightArm.data.hairThickness = value;
             arbitro.leftArm.UpdateHairDensity();
