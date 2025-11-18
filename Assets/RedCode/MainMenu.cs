@@ -12,6 +12,8 @@ namespace RedCard {
         public Camera mainCam;
         public Image fadeOverlay;
         public Texture2D cursor;
+        public Rigidbody rbWhistle;
+
         [Header("TOP LEVEL")]
         public RectTransform rtTopLevel;
         public RectTransform rtSettings;
@@ -52,11 +54,11 @@ namespace RedCard {
         public AudioClip sliderSlidSound;
         public float lastSliderSlidSoundPlayed;
         Button vulgaritySelected;
+        TMP_Text vulgaritySelectedTxt;
         Button vulgarityHighlighted;
 
 
         [Header("WHISTLE")]
-        public Rigidbody rbWhistle;
         public AudioClip[] bumpedWhistles = new AudioClip[0];
         public float initialTorque = 1f;
         public float bumpPower = 10f;
@@ -153,6 +155,16 @@ namespace RedCard {
                 vsyncX.text = "";
             }
 
+            PointerHandler ph = explicitLanguage.gameObject.AddComponent<PointerHandler>();
+            ph.onEnter += (data) => VulgarityHighlighted(Vulgarity.Explicit);
+            ph.onExit += (data) => VulgarityDehighlighted(Vulgarity.Explicit);
+            ph = mincedOaths.gameObject.AddComponent<PointerHandler>();
+            ph.onEnter += (data) => VulgarityHighlighted(Vulgarity.MincedOaths);
+            ph.onExit += (data) => VulgarityDehighlighted(Vulgarity.MincedOaths);
+            ph = momIsWatching.gameObject.AddComponent<PointerHandler>();
+            ph.onEnter += (data) => VulgarityHighlighted(Vulgarity.MomIsWatching);
+            ph.onExit += (data) => VulgarityDehighlighted(Vulgarity.MomIsWatching);
+            
             explicitLanguage.colors = vulgarityNotSelectedColors;
             mincedOaths.colors = vulgarityNotSelectedColors;
             momIsWatching.colors = vulgarityNotSelectedColors;
@@ -347,14 +359,14 @@ namespace RedCard {
             if (QualitySettings.vSyncCount == 0) {
                 // vsync was off
                 // turn it on!
-                vsyncX.text = "[X]";
+                vsyncX.text = "x";
                 QualitySettings.vSyncCount = 1;
-                PlayerPrefs.SetInt("Vsync", 1);
+                PlayerPrefs.SetInt(Prefs_Vsync, 1);
             }
             else {
-                vsyncX.text = "[  ]";
+                vsyncX.text = "x";
                 QualitySettings.vSyncCount = 0;
-                PlayerPrefs.SetInt("Vsync", 0);
+                PlayerPrefs.SetInt(Prefs_Vsync, 0);
             }
         }
 
@@ -364,46 +376,113 @@ namespace RedCard {
                 // we are in full screen
                 // go windowed
                 Screen.fullScreen = false;
-                fullscreenX.text = "[  ]";
-                PlayerPrefs.SetInt("Fullscreen", 0);
+                fullscreenX.text = "";
+                PlayerPrefs.SetInt(Prefs_Fullscreen, 0);
             }
             else {
                 Screen.fullScreen = true;
-                fullscreenX.text = "[X]";
-                PlayerPrefs.SetInt("Fullscreen", 1);
+                fullscreenX.text = "x";
+                PlayerPrefs.SetInt(Prefs_Fullscreen, 1);
             }
         }
 
-        private void VulgarityHighlighted(Button b) {
+        private void VulgarityHighlighted(Vulgarity v) {
+            Button b = explicitLanguage;
+            TMP_Text txt = explicitLangaugeTxt;
+            switch (v) {
+                case Vulgarity.Explicit:
+                    break;
+                case Vulgarity.MincedOaths:
+                    b = mincedOaths;
+                    txt = mincedOathsTxt;
+                    break;
+                case Vulgarity.MomIsWatching:
+                    b = momIsWatching;
+                    txt = momIsWatchingTxt;
+                    break;
+                default:
+                    Debug.LogError("unhandled vulgarity " + v);
+                    break;
+            }
+
             if (b.TryGetComponent(out RectTransform rt)) {
                 vulgarityHighlighted = b;
                 vulgarityHighlight.gameObject.SetActive(true);
                 vulgarityHighlight.anchoredPosition = new Vector2(vulgarityHighlight.anchoredPosition.x, rt.anchoredPosition.y);
+
+                if (vulgarityHighlighted == vulgaritySelected) txt.color = Color.green;
+                else txt.color = Colors.blackish_green;
+                if (!txt.text.StartsWith("> ")) txt.text = "> " + txt.text;
             }
         }
 
-        private void VulgarityDehighlighted(Button b) {
+        private void VulgarityDehighlighted(Vulgarity v) {
+            Button b = explicitLanguage;
+            TMP_Text txt = explicitLangaugeTxt;
+            switch (v) {
+                case Vulgarity.Explicit:
+                    break;
+                case Vulgarity.MincedOaths:
+                    b = mincedOaths;
+                    txt = mincedOathsTxt;
+                    break;
+                case Vulgarity.MomIsWatching:
+                    b = momIsWatching;
+                    txt = momIsWatchingTxt;
+                    break;
+                default:
+                    Debug.LogError("unhandled vulgarity " + v);
+                    break;
+            }
+
             // if we're dehighlighting the highlighted vulgarity, we hide vulgarity highlight
             if (b.TryGetComponent(out RectTransform rt)) {
                 if (b == vulgarityHighlighted) {
                     vulgarityHighlight.gameObject.SetActive(false);
                 }
+
+                // could we be unhighlighting something that wasn't highlighted? doesn't matter?
+                if (txt.text.StartsWith("> ")) txt.text = txt.text.Substring(2);
+                if (txt == vulgaritySelectedTxt) {
+                    txt.color = Color.white;
+                }
+                else txt.color = Colors.blackish_green;
             }
         }
         public void SelectVulgarity(Vulgarity v) {
-            if (vulgaritySelected) vulgaritySelected.colors = vulgarityNotSelectedColors;
-
             Button b = explicitLanguage;
-            if (v == Vulgarity.MincedOaths) b = mincedOaths;
-            else if (v == Vulgarity.MomIsWatching) b = momIsWatching;
-            vulgaritySelected = b;
+            TMP_Text txt = explicitLangaugeTxt;
+            if (vulgaritySelected) {
+                vulgaritySelected.colors = vulgarityNotSelectedColors;
+                vulgaritySelectedTxt.color = Colors.blackish_green;
+            }
+
+            switch (v) {
+                case Vulgarity.Explicit:
+                    vulgaritySelected = explicitLanguage;
+                    vulgaritySelectedTxt = explicitLangaugeTxt;
+                    break;
+                case Vulgarity.MincedOaths:
+                    vulgaritySelected = mincedOaths;
+                    vulgaritySelectedTxt = mincedOathsTxt;
+                    break;
+                case Vulgarity.MomIsWatching:
+                    vulgaritySelected = momIsWatching;
+                    vulgaritySelectedTxt = momIsWatchingTxt;
+                    break;
+                default:
+                    Debug.LogError("unhandled vulgarity " + v);
+                    break;
+            }
+
             vulgaritySelected.colors = vulgaritySelectedColors;
-            if (explicitLanguage.TryGetComponent(out RectTransform rt)) {
+            if (vulgaritySelected != vulgarityHighlighted) vulgaritySelectedTxt.color = Color.white;
+            else vulgaritySelectedTxt.color = Color.green; // in case we clicked on highlighted text
+            if (vulgaritySelected.TryGetComponent(out RectTransform rt)) {
                 vulgaritySelectedBackground.anchoredPosition = new Vector2(vulgaritySelectedBackground.anchoredPosition.x, rt.anchoredPosition.y);
             }
 
             PlayerPrefs.SetInt(Prefs_Vulgarity, (int)v);
-            // #TODO actually update vulgarity in gameplay!
         }
 
         private void ClickedExplicitLanguage() {
