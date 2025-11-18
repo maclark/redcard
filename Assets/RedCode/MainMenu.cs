@@ -18,6 +18,7 @@ namespace RedCard {
         public RectTransform rtTopLevel;
         public RectTransform rtSettings;
         public RectTransform rtCredits;
+        public RectTransform rtControls;
         public AudioClip selectedSound;
         public Button playButton;
         public Button settingsButton;
@@ -31,6 +32,7 @@ namespace RedCard {
         public Button[] backs = new Button[0];
 
         [Header("SETTINGS MENU")]
+        public Button controlsButton;
         public float sliderSoundGap = .05f;
         public Slider sfxVolSlider;
         public Slider voicesSlider;
@@ -99,6 +101,7 @@ namespace RedCard {
             rtTopLevel.gameObject.SetActive(true);
             rtSettings.gameObject.SetActive(false);
             rtCredits.gameObject.SetActive(false);
+            rtControls.gameObject.SetActive(false);
             fadeOverlay.gameObject.SetActive(false);
 
             playButton.onClick.AddListener(PlayGame);
@@ -110,6 +113,14 @@ namespace RedCard {
                 Application.Quit();
             });
             foreach (Button b in backs) b.onClick.AddListener(BackToMainMenu);
+
+
+            // SETTINGS MENU
+            // needs to be made independent of the main menu
+            // because we want to just reuse this same settings menu in-game, duh!
+            // this isn't Flock of Dogs!!!
+
+            controlsButton.onClick.AddListener(OpenControls);
 
             sfxVolSlider.onValueChanged.AddListener(SlidSFX);
             voicesSlider.onValueChanged.AddListener(SlidVoices);
@@ -274,12 +285,16 @@ namespace RedCard {
             AudioManager.PlaySFXOneShot(selectedSound);
             rtTopLevel.gameObject.SetActive(false);
             rtSettings.gameObject.SetActive(true);
-            // full screen/full screen borderless/window
-            // language
-            // vsync
-            // foul language/minced oaths/baby talkk
-            // lingua
-            // back
+            rtControls.gameObject.SetActive(false);
+            rtCredits.gameObject.SetActive(false);
+        }
+
+        private void OpenControls() {
+            AudioManager.PlaySFXOneShot(selectedSound);
+            rtTopLevel.gameObject.SetActive(false);
+            rtSettings.gameObject.SetActive(false);
+            rtControls.gameObject.SetActive(true);
+            rtCredits.gameObject.SetActive(false);
         }
 
         private void OpenWishlist() {
@@ -295,8 +310,9 @@ namespace RedCard {
         private void BackToMainMenu() {
             AudioManager.PlaySFXOneShot(selectedSound);
             rtTopLevel.gameObject.SetActive(true);
-            rtCredits.gameObject.SetActive(false);
             rtSettings.gameObject.SetActive(false);
+            rtControls.gameObject.SetActive(false);
+            rtCredits.gameObject.SetActive(false);
         }
 
         private void OnDestroy() {
