@@ -19,18 +19,35 @@ namespace RedCard {
         public AudioSource sfxAso;
         public AudioSource musicAso;
 
-        public static AudioManager am;
+        private static AudioManager _instance;
 
         private List<AudioSource> sfxPool = new List<AudioSource>();
         private int sfxIndex = 0;
 
+
+        // duh, this was Awakening after MainMenu and am was null, I think
+        public static AudioManager am {
+            get {
+                if (_instance) return _instance;
+                else {
+                    _instance = FindAnyObjectByType<AudioManager>();
+                    if (_instance) return _instance;
+                    else {
+                        Debug.LogError("cannot find audiomanager in scene");
+                        return null;
+                    }
+                } 
+
+            }
+        }
+
         void Awake() {
-            if (am != null && am != this) {
+            if (_instance != null && _instance != this) {
                 Destroy(gameObject);
                 return;
             }
 
-            am = this;
+            _instance = this;
             Debug.Assert(sfxAso);
             DontDestroyOnLoad(gameObject);
             //GrowSFXPool(20);

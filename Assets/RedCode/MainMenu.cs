@@ -28,7 +28,8 @@ namespace RedCard {
         public Button youTubeButton;
         public Button[] backs = new Button[0];
 
-        [Header("SETTINGS")]
+        [Header("SETTINGS MENU")]
+        public float sliderSoundGap = .05f;
         public Slider sfxVolSlider;
         public Slider voicesSlider;
         public Slider musicSlider;
@@ -36,9 +37,22 @@ namespace RedCard {
         public TMP_Text fullscreenX;
         public Button vsync;
         public TMP_Text vsyncX;
+        public RectTransform vulgarityHighlight;
+        public RectTransform vulgaritySelectedBackground;
+        // highlight color: dark green text for both
+        // normal color: white for selected, dark green for not selected
+        public ColorBlock vulgaritySelectedColors;
+        public ColorBlock vulgarityNotSelectedColors;
+        public Button explicitLanguage;
+        public TMP_Text explicitLangaugeTxt;
+        public Button mincedOaths;
+        public TMP_Text mincedOathsTxt;
+        public Button momIsWatching;
+        public TMP_Text momIsWatchingTxt;
         public AudioClip sliderSlidSound;
-        public float sliderSoundGap = .05f;
         public float lastSliderSlidSoundPlayed;
+        Button vulgaritySelected;
+        Button vulgarityHighlighted;
 
 
         [Header("WHISTLE")]
@@ -54,7 +68,8 @@ namespace RedCard {
         public const string Prefs_SFXVol = "SFXVolume";
         public const string Prefs_VoicesVol = "VoicesVolume";
         public const string Prefs_Fullscreen = "Fullscreen";
-        public const string Prefs_Vsync = "Vsycn";
+        public const string Prefs_Vsync = "Vsync";
+        public const string Prefs_Vulgarity = "Vulgarity";
 
 
         private bool startPlaying = false;
@@ -120,23 +135,35 @@ namespace RedCard {
             // default is full screen, so if key is not present or set to 1, we full screen
             if (!PlayerPrefs.HasKey(Prefs_Fullscreen) || PlayerPrefs.GetInt(Prefs_Fullscreen) == 1) {
                 Screen.fullScreen = true;
-                fullscreenX.text = "[X]";
+                fullscreenX.text = "x";
             }
             else {
                 Screen.fullScreen = false;
-                fullscreenX.text = "[  ]";
+                fullscreenX.text = "";
             }
 
             vsync.onClick.AddListener(ToggleVsync);
             // default is vysnc on, so if no key present or we've set vsync to 1...
             if (!PlayerPrefs.HasKey(Prefs_Vsync) || PlayerPrefs.GetInt(Prefs_Vsync) == 1) {
                 QualitySettings.vSyncCount = 1;
-                vsyncX.text = "[X]";
+                vsyncX.text = "x";
             }
             else {
                 QualitySettings.vSyncCount = 0;
-                vsyncX.text = "[  ]";
+                vsyncX.text = "";
             }
+
+            explicitLanguage.colors = vulgarityNotSelectedColors;
+            mincedOaths.colors = vulgarityNotSelectedColors;
+            momIsWatching.colors = vulgarityNotSelectedColors;
+            explicitLanguage.onClick.AddListener(ClickedExplicitLanguage);
+            mincedOaths.onClick.AddListener(ClickedMincedOaths);
+            momIsWatching.onClick.AddListener(ClickedMomIsWatching);
+            Vulgarity v = Vulgarity.Explicit;
+            if (PlayerPrefs.HasKey(Prefs_Vulgarity)) {
+                v = (Vulgarity)PlayerPrefs.GetInt(Prefs_Vulgarity);
+            }
+            SelectVulgarity(v);
 
 
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
@@ -309,10 +336,14 @@ namespace RedCard {
             PlayerPrefs.DeleteKey(Prefs_VoicesVol);
             PlayerPrefs.DeleteKey(Prefs_Fullscreen);
             PlayerPrefs.DeleteKey(Prefs_Vsync);
-            Debug.LogWarning("#TODO reset ref preferences");
+            PlayerPrefs.DeleteKey("Vsycn"); // temporary
+            PlayerPrefs.DeleteKey(Prefs_Vulgarity);
+
+            Debug.LogWarning("#TODO reset ref arm preferences");
         }
 
         private void ToggleVsync() {
+            AudioManager.am.sfxAso.PlayOneShot(selectedSound);
             if (QualitySettings.vSyncCount == 0) {
                 // vsync was off
                 // turn it on!
@@ -328,6 +359,7 @@ namespace RedCard {
         }
 
         private void ToggleFullscreen() {
+            AudioManager.am.sfxAso.PlayOneShot(selectedSound);
             if (Screen.fullScreen) {
                 // we are in full screen
                 // go windowed
@@ -341,5 +373,53 @@ namespace RedCard {
                 PlayerPrefs.SetInt("Fullscreen", 1);
             }
         }
+
+        private void VulgarityHighlighted(Button b) {
+            if (b.TryGetComponent(out RectTransform rt)) {
+                vulgarityHighlighted = b;
+                vulgarityHighlight.gameObject.SetActive(true);
+                vulgarityHighlight.anchoredPosition = new Vector2(vulgarityHighlight.anchoredPosition.x, rt.anchoredPosition.y);
+            }
+        }
+
+        private void VulgarityDehighlighted(Button b) {
+            // if we're dehighlighting the highlighted vulgarity, we hide vulgarity highlight
+            if (b.TryGetComponent(out RectTransform rt)) {
+                if (b == vulgarityHighlighted) {
+                    vulgarityHighlight.gameObject.SetActive(false);
+                }
+            }
+        }
+        public void SelectVulgarity(Vulgarity v) {
+            if (vulgaritySelected) vulgaritySelected.colors = vulgarityNotSelectedColors;
+
+            Button b = explicitLanguage;
+            if (v == Vulgarity.MincedOaths) b = mincedOaths;
+            else if (v == Vulgarity.MomIsWatching) b = momIsWatching;
+            vulgaritySelected = b;
+            vulgaritySelected.colors = vulgaritySelectedColors;
+            if (explicitLanguage.TryGetComponent(out RectTransform rt)) {
+                vulgaritySelectedBackground.anchoredPosition = new Vector2(vulgaritySelectedBackground.anchoredPosition.x, rt.anchoredPosition.y);
+            }
+
+            PlayerPrefs.SetInt(Prefs_Vulgarity, (int)v);
+            // #TODO actually update vulgarity in gameplay!
+        }
+
+        private void ClickedExplicitLanguage() {
+            AudioManager.am.sfxAso.PlayOneShot(selectedSound);
+            SelectVulgarity(Vulgarity.Explicit);
+        }
+
+        private void ClickedMincedOaths() {
+            AudioManager.am.sfxAso.PlayOneShot(selectedSound);
+            SelectVulgarity(Vulgarity.MincedOaths);
+        }
+
+        private void ClickedMomIsWatching() {
+            AudioManager.am.sfxAso.PlayOneShot(selectedSound);
+            SelectVulgarity(Vulgarity.MomIsWatching);
+        }
+
     }
 }

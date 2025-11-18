@@ -19,6 +19,11 @@ namespace RedCard {
         Count,
     }
 
+    public enum Vulgarity {
+        MomIsWatching,
+        MincedOaths,
+        Explicit,
+    }
 
     // we need match jobs
     // calling fouls/missing fouls
