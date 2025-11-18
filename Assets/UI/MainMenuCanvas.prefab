@@ -1155,7 +1155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8632998301301573398, guid: 7c250d22c6865374cbc41bd26a169e24, type: 3}
       propertyPath: m_Name
-      value: CustomizationSlider (2)
+      value: MusicVolSlider
       objectReference: {fileID: 0}
     - target: {fileID: 8981317338261991751, guid: 7c250d22c6865374cbc41bd26a169e24, type: 3}
       propertyPath: m_text
@@ -2487,7 +2487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8632998301301573398, guid: 7c250d22c6865374cbc41bd26a169e24, type: 3}
       propertyPath: m_Name
-      value: CustomizationSlider
+      value: SFXVolSlider
       objectReference: {fileID: 0}
     - target: {fileID: 8981317338261991751, guid: 7c250d22c6865374cbc41bd26a169e24, type: 3}
       propertyPath: m_text
@@ -2648,7 +2648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8632998301301573398, guid: 7c250d22c6865374cbc41bd26a169e24, type: 3}
       propertyPath: m_Name
-      value: CustomizationSlider (1)
+      value: VoicesVolSlider
       objectReference: {fileID: 0}
     - target: {fileID: 8981317338261991751, guid: 7c250d22c6865374cbc41bd26a169e24, type: 3}
       propertyPath: m_text

@@ -50,6 +50,13 @@ namespace RedCard {
         public float fadeOutDuration = .2f;
 
 
+        public const string Prefs_MusicVol = "MusicVolume";
+        public const string Prefs_SFXVol = "SFXVolume";
+        public const string Prefs_VoicesVol = "VoicesVolume";
+        public const string Prefs_Fullscreen = "Fullscreen";
+        public const string Prefs_Vsync = "Vsycn";
+
+
         private bool startPlaying = false;
         private bool usingMouse = false;
         private Vector2 lastMousePosition;
@@ -62,6 +69,9 @@ namespace RedCard {
 
 
         private void Awake() {
+
+            ResetPrefs(); 
+            Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
 
             float x = cursor.width / 2f;
             float y = cursor.height / 2f;
@@ -93,17 +103,22 @@ namespace RedCard {
             voicesSlider.onValueChanged.AddListener(SlidSlider);
             musicSlider.onValueChanged.AddListener(SlidSlider);
 
-            // initializing, if saved values
-            if (PlayerPrefs.HasKey("SFXVolume")) SlidSFX(PlayerPrefs.GetFloat("SFXVolume"));
-            else SlidSFX(.5f);
-            if (PlayerPrefs.HasKey("VoicesVolume")) SlidVoices(PlayerPrefs.GetFloat("VoicesVolume"));
-            else SlidVoices(.5f);
-            if (PlayerPrefs.HasKey("MusicVolume")) SlidMusic(PlayerPrefs.GetFloat("MusicVolume"));
-            else SlidMusic(.5f);
+            // not decibels
+            float sfxVolSetting = .5f;
+            if (PlayerPrefs.HasKey(Prefs_SFXVol)) sfxVolSetting = PlayerPrefs.GetFloat(Prefs_SFXVol);
+            sfxVolSlider.SetValueWithoutNotify(sfxVolSetting);
 
-            vsync.onClick.AddListener(ToggleFullscreen);
+            float voicesVolSetting = .5f;
+            if (PlayerPrefs.HasKey(Prefs_VoicesVol)) voicesVolSetting = PlayerPrefs.GetFloat(Prefs_VoicesVol);
+            voicesSlider.SetValueWithoutNotify(voicesVolSetting);
+
+            float musicVolSetting = .5f;
+            if (PlayerPrefs.HasKey(Prefs_MusicVol)) musicVolSetting = PlayerPrefs.GetFloat(Prefs_MusicVol);
+            musicSlider.SetValueWithoutNotify(musicVolSetting);
+
+            fullscreen.onClick.AddListener(ToggleFullscreen);
             // default is full screen, so if key is not present or set to 1, we full screen
-            if (!PlayerPrefs.HasKey("Fullscreen") || PlayerPrefs.GetInt("Fullscreen") == 1) {
+            if (!PlayerPrefs.HasKey(Prefs_Fullscreen) || PlayerPrefs.GetInt(Prefs_Fullscreen) == 1) {
                 Screen.fullScreen = true;
                 fullscreenX.text = "[X]";
             }
@@ -114,7 +129,7 @@ namespace RedCard {
 
             vsync.onClick.AddListener(ToggleVsync);
             // default is vysnc on, so if no key present or we've set vsync to 1...
-            if (!PlayerPrefs.HasKey("VSync") || PlayerPrefs.GetInt("Vsync") == 1) {
+            if (!PlayerPrefs.HasKey(Prefs_Vsync) || PlayerPrefs.GetInt(Prefs_Vsync) == 1) {
                 QualitySettings.vSyncCount = 1;
                 vsyncX.text = "[X]";
             }
@@ -124,7 +139,7 @@ namespace RedCard {
             }
 
 
-                ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
+            ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             string mapName = BathroomMirror.MIRROR_ACTION_MAP;
             foreach (PlayerInput input in allInput) {
                 InputActionMap map = input.actions.FindActionMap(mapName);
@@ -262,22 +277,39 @@ namespace RedCard {
         }
 
         private void SlidSlider(float value) {
-            if (Time.time - lastSliderSlidSoundPlayed < sliderSoundGap) {
+            print("slid slider");
+            if (Time.time - lastSliderSlidSoundPlayed > sliderSoundGap) {
                 AudioManager.PlaySFXOneShot(sliderSlidSound);
                 lastSliderSlidSoundPlayed = Time.time;
             }
         }
+
         private void SlidSFX(float value) {
-            PlayerPrefs.SetFloat("SFXVolume", value);
-            AudioManager.am.mixer.SetFloat("SFXVolume", DecibelsFrom01(value));
+            Debug.Log("sliding sfx");
+            PlayerPrefs.SetFloat(Prefs_SFXVol, value);
+            AudioManager.am.mixer.SetFloat(Prefs_SFXVol, DecibelsFrom01(value));
         }
+
         private void SlidVoices(float value) {
-            PlayerPrefs.SetFloat("VoicesVolume", value);
-            AudioManager.am.mixer.SetFloat("VoicesVolume", DecibelsFrom01(value));
+            print("sliding voices");
+            PlayerPrefs.SetFloat(Prefs_VoicesVol, value);
+            AudioManager.am.mixer.SetFloat(Prefs_VoicesVol, DecibelsFrom01(value));
         }
+
         private void SlidMusic(float value) {
-            PlayerPrefs.SetFloat("MusicVolume", value);
-            AudioManager.am.mixer.SetFloat("MusicVolume", DecibelsFrom01(value));
+            print("sliding music");
+            PlayerPrefs.SetFloat(Prefs_MusicVol, value);
+            AudioManager.am.mixer.SetFloat(Prefs_MusicVol, DecibelsFrom01(value));
+        }
+
+        public static void ResetPrefs() {
+            print("reset settings preferences");
+            PlayerPrefs.DeleteKey(Prefs_MusicVol);
+            PlayerPrefs.DeleteKey(Prefs_SFXVol);
+            PlayerPrefs.DeleteKey(Prefs_VoicesVol);
+            PlayerPrefs.DeleteKey(Prefs_Fullscreen);
+            PlayerPrefs.DeleteKey(Prefs_Vsync);
+            Debug.LogWarning("#TODO reset ref preferences");
         }
 
         private void ToggleVsync() {
@@ -296,8 +328,8 @@ namespace RedCard {
         }
 
         private void ToggleFullscreen() {
-            if (Screen.fullScreenMode == FullScreenMode.ExclusiveFullScreen) {
-                // we ware in full screen
+            if (Screen.fullScreen) {
+                // we are in full screen
                 // go windowed
                 Screen.fullScreen = false;
                 fullscreenX.text = "[  ]";
