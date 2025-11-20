@@ -1348,7 +1348,7 @@ namespace RedCard {
                 //print("active lacate generated/min: " + (dLactate / dt).ToString("F8"));
             }
             else {
-                hud.heartRate.color = Color.green;
+                hud.heartRate.color = Colors.lime; // hm matching ui is fine i guesss
                 lactateDecay = Mathf.Pow(.5f, (dt / restingLactateRecoveryHalfLife));
                 dLactate += dt * Mathf.Lerp(oneLactateRRecover, oneLactateARecover, (heartRate - standingHeartRate) / (activeRecoveryThreshold - standingHeartRate));
                 //print("resting lacate generated/min: " + (dLactate / dt).ToString("F8"));

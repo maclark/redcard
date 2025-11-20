@@ -32,7 +32,10 @@ namespace RedCard {
         public Button[] backs = new Button[0];
 
         [Header("SETTINGS MENU")]
+        public Button generalButton;
+        public TMP_Text generalTxt;
         public Button controlsButton;
+        public TMP_Text controlsTxt;
         public float sliderSoundGap = .05f;
         public Slider sfxVolSlider;
         public Slider voicesSlider;
@@ -317,9 +320,11 @@ namespace RedCard {
 
         private void OnDestroy() {
             string mapName = BathroomMirror.MIRROR_ACTION_MAP;
-            var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
-            if (action != null) {
-                action.started -= ClickedOnWhistleMaybe;
+            if (PlayerInput.all.Count > 0) {
+                var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
+                if (action != null) {
+                    action.started -= ClickedOnWhistleMaybe;
+                }
             }
         }
 
@@ -426,7 +431,7 @@ namespace RedCard {
                 vulgarityHighlight.gameObject.SetActive(true);
                 vulgarityHighlight.anchoredPosition = new Vector2(vulgarityHighlight.anchoredPosition.x, rt.anchoredPosition.y);
 
-                if (vulgarityHighlighted == vulgaritySelected) txt.color = Color.green;
+                if (vulgarityHighlighted == vulgaritySelected) txt.color = Colors.lime;
                 else txt.color = Colors.blackish_green;
                 if (!txt.text.StartsWith("> ")) txt.text = "> " + txt.text;
             }
@@ -493,7 +498,7 @@ namespace RedCard {
 
             vulgaritySelected.colors = vulgaritySelectedColors;
             if (vulgaritySelected != vulgarityHighlighted) vulgaritySelectedTxt.color = Color.white;
-            else vulgaritySelectedTxt.color = Color.green; // in case we clicked on highlighted text
+            else vulgaritySelectedTxt.color = Colors.lime; // in case we clicked on highlighted text
             if (vulgaritySelected.TryGetComponent(out RectTransform rt)) {
                 vulgaritySelectedBackground.anchoredPosition = new Vector2(vulgaritySelectedBackground.anchoredPosition.x, rt.anchoredPosition.y);
             }

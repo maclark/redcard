@@ -8,7 +8,7 @@ public class CrossHairs : MonoBehaviour
     public int hairLength = 20;
     public int hairWidth = 20;
     public int outlineThickness = 2;
-    public Color color = Color.green;
+    public Color color = Color.white;
 
     public Image vertTop;
     public Image vertTopOutline;

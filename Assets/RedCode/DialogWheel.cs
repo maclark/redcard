@@ -136,7 +136,7 @@ namespace RedCard {
             Cursor.visible = false;
 
             if (highlighted) {
-                highlighted.background.color = Color.green;
+                highlighted.background.color = Colors.lime;
                 Debug.Log("referee said " + highlighted.datum.semantics);
                 RedMatch.Match.arbitro.NormalWhistlePosition();
                 RedMatch.OnRefSpoke?.Invoke(highlighted.datum.semantics, null);
