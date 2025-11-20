@@ -9,16 +9,14 @@ namespace RedCard {
     public class MainMenu : MonoBehaviour {
 
         [Header("ASSIGNATIONS")]
-        public Camera mainCam;
         public Image fadeOverlay;
-        public Texture2D cursor;
-        public Rigidbody rbWhistle;
 
         [Header("TOP LEVEL")]
         public RectTransform rtTopLevel;
         public RectTransform rtSettings;
         public RectTransform rtCredits;
-        public RectTransform rtControls;
+        public RectTransform rtGeneralSettings;
+        public RectTransform rtControlsSettings;
         public AudioClip selectedSound;
         public Button playButton;
         public Button settingsButton;
@@ -32,10 +30,13 @@ namespace RedCard {
         public Button[] backs = new Button[0];
 
         [Header("SETTINGS MENU")]
-        public Button generalButton;
-        public TMP_Text generalTxt;
-        public Button controlsButton;
-        public TMP_Text controlsTxt;
+        public RectTransform subcategoryHighlight;
+        public Button generalSettingsButton;
+        public TMP_Text generalSettingsTxt;
+        public Button controlsSettingsButton;
+        public TMP_Text controlsSettingsTxt;
+        public TMP_Dropdown languageDropdown;
+        public Image languageDropdownArrow;
         public float sliderSoundGap = .05f;
         public Slider sfxVolSlider;
         public Slider voicesSlider;
@@ -46,10 +47,6 @@ namespace RedCard {
         public TMP_Text vsyncX;
         public RectTransform vulgarityHighlight;
         public RectTransform vulgaritySelectedBackground;
-        // highlight color: dark green text for both
-        // normal color: white for selected, dark green for not selected
-        public ColorBlock vulgaritySelectedColors;
-        public ColorBlock vulgarityNotSelectedColors;
         public Button explicitLanguage;
         public TMP_Text explicitLangaugeTxt;
         public Button mincedOaths;
@@ -62,14 +59,8 @@ namespace RedCard {
         TMP_Text vulgaritySelectedTxt;
         Button vulgarityHighlighted;
 
-
-        [Header("WHISTLE")]
-        public AudioClip[] bumpedWhistles = new AudioClip[0];
-        public float initialTorque = 1f;
-        public float bumpPower = 10f;
-        public float whistleStillThreshold = 1f;
-        public float fadeOutDuration = .2f;
-
+        [Header("VARS")]
+        public TitleScreen title;
 
         public const string Prefs_MusicVol = "MusicVolume";
         public const string Prefs_SFXVol = "SFXVolume";
@@ -79,33 +70,14 @@ namespace RedCard {
         public const string Prefs_Vulgarity = "Vulgarity";
 
 
-        private bool startPlaying = false;
-        private bool usingMouse = false;
-        private Vector2 lastMousePosition;
-        private float whistleIdleThreshold;
-        private float whistleIdleTorqueAmp;
-        private float whistleIdleTorqueFrequency;
-        private float tWhistleIdle = 0f;
-        private Ray lookRay;
-        private bool whistleIsIdle = false;
-
-
         private void Awake() {
 
-            ResetPrefs(); 
-            Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
-
-            float x = cursor.width / 2f;
-            float y = cursor.height / 2f;
-            Cursor.SetCursor(cursor, new Vector2(x, y), CursorMode.Auto);
-            Cursor.visible = false;
-            usingMouse = false;
 
             rtTopLevel.gameObject.SetActive(true);
             rtSettings.gameObject.SetActive(false);
             rtCredits.gameObject.SetActive(false);
-            rtControls.gameObject.SetActive(false);
             fadeOverlay.gameObject.SetActive(false);
+
 
             playButton.onClick.AddListener(PlayGame);
             settingsButton.onClick.AddListener(OpenSettings);
@@ -123,7 +95,30 @@ namespace RedCard {
             // because we want to just reuse this same settings menu in-game, duh!
             // this isn't Flock of Dogs!!!
 
-            controlsButton.onClick.AddListener(OpenControls);
+            rtGeneralSettings.gameObject.SetActive(true);
+            rtControlsSettings.gameObject.SetActive(false);
+
+            generalSettingsButton.onClick.AddListener(SelectedGeneralSettings);
+            generalSettingsButton.onClick.AddListener(() => AudioManager.PlaySFXOneShot(selectedSound));
+            controlsSettingsButton.onClick.AddListener(SelectedControlsSettings);
+            controlsSettingsButton.onClick.AddListener(() => AudioManager.PlaySFXOneShot(selectedSound));
+            SelectedGeneralSettings();
+
+            languageDropdown.onValueChanged.AddListener((_value) => AudioManager.PlaySFXOneShot(selectedSound));
+            PointerHandler phLanguage = languageDropdown.gameObject.AddComponent<PointerHandler>();
+            phLanguage.onClick += (_data) => AudioManager.PlaySFXOneShot(selectedSound);
+            phLanguage.onEnter += (_data) => {
+                if (languageDropdown.IsInteractable()) { 
+                    languageDropdown.captionText.color = Colors.blackish_green;
+                    languageDropdownArrow.color = Colors.blackish_green;
+                }
+            };
+            phLanguage.onExit += (_data) => {
+                if (languageDropdown.IsInteractable()) {
+                    languageDropdown.captionText.color = Colors.white;
+                    languageDropdownArrow.color = Colors.white;
+                }
+            };
 
             sfxVolSlider.onValueChanged.AddListener(SlidSFX);
             voicesSlider.onValueChanged.AddListener(SlidVoices);
@@ -179,9 +174,6 @@ namespace RedCard {
             ph.onEnter += (data) => VulgarityHighlighted(Vulgarity.MomIsWatching);
             ph.onExit += (data) => VulgarityDehighlighted(Vulgarity.MomIsWatching);
             
-            explicitLanguage.colors = vulgarityNotSelectedColors;
-            mincedOaths.colors = vulgarityNotSelectedColors;
-            momIsWatching.colors = vulgarityNotSelectedColors;
             explicitLanguage.onClick.AddListener(ClickedExplicitLanguage);
             mincedOaths.onClick.AddListener(ClickedMincedOaths);
             momIsWatching.onClick.AddListener(ClickedMomIsWatching);
@@ -190,6 +182,7 @@ namespace RedCard {
                 v = (Vulgarity)PlayerPrefs.GetInt(Prefs_Vulgarity);
             }
             SelectVulgarity(v);
+            vulgarityHighlight.gameObject.SetActive(false);
 
 
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
@@ -203,101 +196,40 @@ namespace RedCard {
             if (action != null) {
                 action.started += ClickedOnWhistleMaybe;
             }
-
-            KnockWhistle(.5f * Vector3.right);
-            rbWhistle.AddTorque(Vector3.up * initialTorque * (Random.value > .5f ? 1f : -1f), ForceMode.Impulse);
-        }
-
-        private void Update() {
-
-            if (usingMouse) {
-                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
-                // check for gamepad input?
-            }
-            else {
-                if (Mouse.current != null) {
-                    Vector2 mousePosition = Mouse.current.position.ReadValue();
-                    if (mousePosition != lastMousePosition) {
-                        usingMouse = true;
-                        Cursor.visible = true;
-                    }
-                    lastMousePosition = mousePosition;
-                }
-            }
-
-            if (!whistleIsIdle && rbWhistle.angularVelocity.sqrMagnitude < whistleStillThreshold) {
-                tWhistleIdle += Time.deltaTime;
-                if (tWhistleIdle > whistleIdleThreshold) {
-                    whistleIsIdle = true;
-                    whistleIdleThreshold = Random.Range(1f, 5f);
-                    // one out of 5, triple the stillness!
-                    if (Random.value > .8f) whistleIdleThreshold *= 3f;
-                    whistleIdleTorqueAmp = Random.Range(5, 30) * 0.0001f;
-                    whistleIdleTorqueFrequency = Random.Range(.25f, .67f);
-                }
-            }
-            else tWhistleIdle = 0f;
-
-            if (whistleIsIdle) {
-                rbWhistle.AddTorque(Vector3.up * whistleIdleTorqueAmp * Mathf.Cos(Time.time * whistleIdleTorqueFrequency), ForceMode.Force);
-            }
-
-            if (startPlaying) {
-                countdownToStart -= Time.deltaTime;
-                fadeOverlay.color = new Color(0f, 0f, 0f, Mathf.Lerp(1f, 0f, countdownToStart / fadeOutDuration));
-                if (countdownToStart <= 0f) {
-                    // hoping scene 1 is always the tunnels
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(1);
-                }
-            }
-        }
-
-        float countdownToStart = 0f;
-
-        private void KnockWhistle(Vector3 direction) {
-            if (rbWhistle) {
-                whistleIsIdle = false;
-                rbWhistle.AddForce(bumpPower * direction, ForceMode.Impulse);
-            }
-            else Debug.LogWarning("clicking on a menuwhistle with no rb");
         }
 
         private void ClickedOnWhistleMaybe(InputAction.CallbackContext ctx) {
-            lookRay = mainCam.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if (Physics.Raycast(lookRay, out RaycastHit hit, 99f)) {
-                if (hit.collider.TryGetComponent(out MenuWhistle whistle)) {
-                    Vector3 randomDir = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-                    randomDir += lookRay.direction;
-                    randomDir.Normalize();
-                    KnockWhistle(randomDir);
-                    if (bumpedWhistles.Length > 0) AudioManager.PlaySFXOneShot(bumpedWhistles[Random.Range(0, bumpedWhistles.Length)]);
-                }
-            }
+            if (title) title.ClickedOnWhistleMaybe();
         }
 
-
         private void PlayGame() {
-            AudioManager.PlaySFXOneShot(selectedSound);
-            countdownToStart = fadeOutDuration;
-            startPlaying = true;
-            fadeOverlay.gameObject.SetActive(true);
-            fadeOverlay.color = Color.clear;
+            if (title) {
+                AudioManager.PlaySFXOneShot(selectedSound);
+                title.PlayGame();
+            }
+            else {
+                Debug.LogError("clicking on Play but we're not at title screen!");
+            }
         }
 
         private void OpenSettings() {
             AudioManager.PlaySFXOneShot(selectedSound);
             rtTopLevel.gameObject.SetActive(false);
             rtSettings.gameObject.SetActive(true);
-            rtControls.gameObject.SetActive(false);
             rtCredits.gameObject.SetActive(false);
         }
 
-        private void OpenControls() {
-            AudioManager.PlaySFXOneShot(selectedSound);
-            rtTopLevel.gameObject.SetActive(false);
-            rtSettings.gameObject.SetActive(false);
-            rtControls.gameObject.SetActive(true);
-            rtCredits.gameObject.SetActive(false);
+
+        private void SelectedGeneralSettings() {
+            subcategoryHighlight.anchoredPosition = new Vector2(-Mathf.Abs(subcategoryHighlight.anchoredPosition.x), subcategoryHighlight.anchoredPosition.y);
+            rtGeneralSettings.gameObject.SetActive(true);
+            rtControlsSettings.gameObject.SetActive(false);
+        }
+
+        private void SelectedControlsSettings() {
+            subcategoryHighlight.anchoredPosition = new Vector2(Mathf.Abs(subcategoryHighlight.anchoredPosition.x), subcategoryHighlight.anchoredPosition.y);
+            rtGeneralSettings.gameObject.SetActive(false);
+            rtControlsSettings.gameObject.SetActive(true);
         }
 
         private void OpenWishlist() {
@@ -314,7 +246,6 @@ namespace RedCard {
             AudioManager.PlaySFXOneShot(selectedSound);
             rtTopLevel.gameObject.SetActive(true);
             rtSettings.gameObject.SetActive(false);
-            rtControls.gameObject.SetActive(false);
             rtCredits.gameObject.SetActive(false);
         }
 
@@ -470,11 +401,11 @@ namespace RedCard {
                 else txt.color = Colors.blackish_green;
             }
         }
+
         public void SelectVulgarity(Vulgarity v) {
             Button b = explicitLanguage;
             TMP_Text txt = explicitLangaugeTxt;
             if (vulgaritySelected) {
-                vulgaritySelected.colors = vulgarityNotSelectedColors;
                 vulgaritySelectedTxt.color = Colors.blackish_green;
             }
 
@@ -496,7 +427,6 @@ namespace RedCard {
                     break;
             }
 
-            vulgaritySelected.colors = vulgaritySelectedColors;
             if (vulgaritySelected != vulgarityHighlighted) vulgaritySelectedTxt.color = Color.white;
             else vulgaritySelectedTxt.color = Colors.lime; // in case we clicked on highlighted text
             if (vulgaritySelected.TryGetComponent(out RectTransform rt)) {
