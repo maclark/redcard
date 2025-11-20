@@ -5,7 +5,7 @@ using UnityEngine;
 namespace RedCard {
     public static class FSInterpreter {
 
-        private static RedMatch Match => RedMatch.Match;
+        private static RedMatch Match => RedMatch.match;
 
         //public static RedTeam GetTeam(PlayerBase player) {
         //    RedTeam team = null;
@@ -24,7 +24,7 @@ namespace RedCard {
         //    return GetRedPlayer(playerBase.PlayerController.UnityObject.GetComponentInChildren<RefTarget>());
         //}
         public static RedPlayer GetRedPlayer(RefTarget target) {
-            return RedMatch.Match.allPlayers[target];
+            return RedMatch.match.allPlayers[target];
         }
 
         //public static void HandleKickOff(MatchManager mm) {

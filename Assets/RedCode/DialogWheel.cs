@@ -123,7 +123,7 @@ namespace RedCard {
             gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
-            RedMatch.Match.arbitro.crossHairs.gameObject.SetActive(false);
+            RedMatch.match.arbitro.crossHairs.gameObject.SetActive(false);
         }
 
         public void StartClosing() {
@@ -138,7 +138,7 @@ namespace RedCard {
             if (highlighted) {
                 highlighted.background.color = Colors.lime;
                 Debug.Log("referee said " + highlighted.datum.semantics);
-                RedMatch.Match.arbitro.NormalWhistlePosition();
+                RedMatch.match.arbitro.NormalWhistlePosition();
                 RedMatch.OnRefSpoke?.Invoke(highlighted.datum.semantics, null);
             }
         }
@@ -205,7 +205,7 @@ namespace RedCard {
                         enabled = false;
                         gameObject.SetActive(false);
                         backgroundCircle.enabled = true;
-                        RedMatch.Match.arbitro.crossHairs.gameObject.SetActive(true);
+                        RedMatch.match.arbitro.crossHairs.gameObject.SetActive(true);
                         if (preppedDialog) {
                             preppedDialog = false;
                             if (currentData != null) PopulateBoxes(currentData);

@@ -92,6 +92,7 @@ namespace RedCard {
         public CustomizationOptions customizationOptions;
         public State state = State.Unset;
         public bool frozenWaitingForCall = false;
+        public MainMenu menu;
 
         public float throwInDotThreshold = .33f;
         public Transform botLeftBox0;
@@ -115,26 +116,34 @@ namespace RedCard {
 
         private bool initialized = false;
         private Vector3 centerSpot;
-        private static RedMatch _Match;
+        private static RedMatch _match;
         private static Vector3 East = Vector3.right;
         private static Vector3 West = -Vector3.right;
 
 
         public static Action<Semantics, RefTarget> OnRefSpoke;
 
-        public static RedMatch Match => _Match;
         public const string REFEREEING_ACTION_MAP = "Refereeing";
+
+        public static RedMatch match {
+            get {
+                if (!_match)  _match = FindAnyObjectByType<RedMatch>();
+                if (!_match) Debug.LogError("can't find redmatch anywhere!");
+                return _match;
+            }
+        }
+
 
 
         private void Awake() {
-
-            Unity.Collections.NativeLeakDetection.Mode = Unity.Collections.NativeLeakDetectionMode.EnabledWithStackTrace;
-
-            if (_Match) {
+            if (_match) {
                 Debug.LogError("a meatch already exists!");
+                Destroy(gameObject);
             }
-            _Match = this;
-            Init();
+            else {
+                _match = this;
+                Init();
+            }
         }
 
         public void Init() {
@@ -169,10 +178,10 @@ namespace RedCard {
             //Debug.Assert(current.GameTeam2);
             //Debug.Assert(current.GameTeam1 != current.GameTeam2);
 
-            if (Match) {
+            if (match) {
                 float x1 = RedSim.Goal1Pos.x;
                 float x2 = RedSim.Goal2Pos.x;
-                Match.centerSpot = new Vector3((x2 - x1) / 2f, 0f, 0f); 
+                match.centerSpot = new Vector3((x2 - x1) / 2f, 0f, 0f); 
                 // team1 is defined as attacking East
                 // if team1's goal is farther in +x-axis,
                 // then it is attacking -x-axis
@@ -184,23 +193,23 @@ namespace RedCard {
 
                 //Match.mm = current;
                 //Match.teamA.fsTeam = current.GameTeam1;
-                Match.teamA.id = RedSim.Team1Id;
-                Match.teamA.squadName = RedSim.SquadName(Match.teamA.id) + "_A";
+                match.teamA.id = RedSim.Team1Id;
+                match.teamA.squadName = RedSim.SquadName(match.teamA.id) + "_A";
                 //Match.teamB.fsTeam = current.GameTeam2;
-                Match.teamB.id = RedSim.Team2Id;
-                Match.teamB.squadName = RedSim.SquadName(Match.teamB.id) + "_B";
+                match.teamB.id = RedSim.Team2Id;
+                match.teamB.squadName = RedSim.SquadName(match.teamB.id) + "_B";
 
-                if (Match.teamA.squadName == Match.teamB.squadName) {
+                if (match.teamA.squadName == match.teamB.squadName) {
                     Debug.LogWarning("c'mon, same team is playing each other...");
                 }
 
-                print(Match.teamA.squadName + " is TeamA_" + Match.teamA.id + " is GameTeam1, attacking " + Match.teamA.attackingEnd + ", " + EndDir(Match.teamA.attackingEnd));
-                print(Match.teamB.squadName + " is TeamB_" + Match.teamB.id + " is GameTeam2, attacking " + Match.teamB.attackingEnd + ", " + EndDir(Match.teamB.attackingEnd));
+                print(match.teamA.squadName + " is TeamA_" + match.teamA.id + " is GameTeam1, attacking " + match.teamA.attackingEnd + ", " + EndDir(match.teamA.attackingEnd));
+                print(match.teamB.squadName + " is TeamB_" + match.teamB.id + " is GameTeam2, attacking " + match.teamB.attackingEnd + ", " + EndDir(match.teamB.attackingEnd));
 
                 //Match.currentMatchBall = current.MatchBall.gameObject;
 
-                RedSim.MakeRedPlayers(Match.teamA);
-                RedSim.MakeRedPlayers(Match.teamB);
+                RedSim.MakeRedPlayers(match.teamA);
+                RedSim.MakeRedPlayers(match.teamB);
                 
                 // #LINESMEN
                 // #COACH
@@ -209,27 +218,27 @@ namespace RedCard {
                 // #INVADER
                 // need to register these other RedPlayers
 
-                foreach (var target in Match.targets) {
+                foreach (var target in match.targets) {
                     switch (target.targetType) {
                         case TargetType.CornerFlag:
                             target.attackingEnd = NearestEnd(target.transform.position);
-                            Match.cornerFlags.Add(target);
+                            match.cornerFlags.Add(target);
                             break;
                         case TargetType.SixYardBox:
                             if (target.attackingEnd == FieldEnd.Unassigned) {
                                 Debug.LogWarning("unassigned attacking end on six yard box");
                             }
 
-                            Match.sixYardBoxes.Add(target);
-                            if (target.attackingEnd == Match.teamA.attackingEnd) Match.teamA.goal = target;
-                            else if (target.attackingEnd == Match.teamB.attackingEnd) Match.teamB.goal = target;
+                            match.sixYardBoxes.Add(target);
+                            if (target.attackingEnd == match.teamA.attackingEnd) match.teamA.goal = target;
+                            else if (target.attackingEnd == match.teamB.attackingEnd) match.teamB.goal = target;
 
                             EighteenYardBox box = target.GetComponentInChildren<EighteenYardBox>();
                             Debug.Assert(box && box.botLeft && box.topRight);
                             box.botLeft.gameObject.SetActive(false);
                             box.topRight.gameObject.SetActive(false);
 
-                            Bounds b = NearestEnd(target.transform.position) == FieldEnd.East ? Match.eastBox : Match.westBox;
+                            Bounds b = NearestEnd(target.transform.position) == FieldEnd.East ? match.eastBox : match.westBox;
                             Vector3 boxCenter = (box.topRight.position - box.botLeft.position) / 2f;
                             Vector3 boxSize = new Vector3(box.topRight.position.x - box.botLeft.position.x,
                                 5f,
@@ -239,7 +248,7 @@ namespace RedCard {
 
                         case TargetType.PenaltySpot:
                             float x = target.transform.position.x;
-                            if (x > Match.centerSpot.x) {
+                            if (x > match.centerSpot.x) {
                                 if (East.x > 0f) target.attackingEnd = FieldEnd.East;
                                 else target.attackingEnd = FieldEnd.West;
                             }
@@ -251,8 +260,8 @@ namespace RedCard {
                     }
                 }
 
-                Debug.Assert(Match.teamA.goal);
-                Debug.Assert(Match.teamB.goal);
+                Debug.Assert(match.teamA.goal);
+                Debug.Assert(match.teamB.goal);
 
 
 
@@ -279,7 +288,7 @@ namespace RedCard {
             Angered(player.team, teamAmount);
             float total = amount / player.team.respect;
             player.anger += total;
-            player.angerBar.SetFill(player.anger / Match.settings.maxAnger);
+            player.angerBar.SetFill(player.anger / match.settings.maxAnger);
             if (amount < 0f) print($"{player.surname} soothed to {player.anger}({total}={amount}/{player.team.respect})");
             else print($"{player.surname} angered to {player.anger}({total}={amount}/{player.team.respect})");
         }
@@ -288,10 +297,10 @@ namespace RedCard {
             float total = amount / team.respect;
             if (amount < 0) print($"{team.squadName} soothed {amount}");
             else print($"{team.squadName} angered {amount}");
-            foreach(var item in Match.allPlayers) {
+            foreach(var item in match.allPlayers) {
                 if (item.Value.team == team) {
                     item.Value.anger += amount;
-                    item.Value.angerBar.SetFill(item.Value.anger / Match.settings.maxAnger);
+                    item.Value.angerBar.SetFill(item.Value.anger / match.settings.maxAnger);
                     ProcessEmotions(item.Value);
                 }
             }
@@ -310,29 +319,29 @@ namespace RedCard {
 
 
         internal static void CallHalftime() {
-            var cachedGoal = Match.teamA.goal;
-            var cachedEnd = Match.teamA.attackingEnd;
-            Match.teamA.goal = Match.teamB.goal;
-            Match.teamA.attackingEnd = Match.teamB.attackingEnd;
-            Match.teamB.goal = cachedGoal;
-            Match.teamB.attackingEnd = cachedEnd;
+            var cachedGoal = match.teamA.goal;
+            var cachedEnd = match.teamA.attackingEnd;
+            match.teamA.goal = match.teamB.goal;
+            match.teamA.attackingEnd = match.teamB.attackingEnd;
+            match.teamB.goal = cachedGoal;
+            match.teamB.attackingEnd = cachedEnd;
 
             print("made call: halftime");
         }
 
         public static void TrackCorrectCall(CallData data) {
             data.occurredAt = Time.time;
-            Match.correctCalls.Add(data);
+            match.correctCalls.Add(data);
         }
 
         public static bool InTheBox(Vector3 pos, out FieldEnd end) {
             bool inABox = false;
             end = FieldEnd.Unassigned;
-            if (Match.eastBox.Contains(pos)) {
+            if (match.eastBox.Contains(pos)) {
                 inABox = true;
                 end = NearestEnd(pos);
             }
-            else if (Match.westBox.Contains(pos)) {
+            else if (match.westBox.Contains(pos)) {
                 inABox = true;
                 end = NearestEnd(pos);
             }
@@ -343,11 +352,11 @@ namespace RedCard {
         internal static FieldEnd NearestEnd(Vector3 pos) {
             FieldEnd end;
             if (East.x > 0) {
-                if (pos.x > Match.centerSpot.x) end = FieldEnd.East;
+                if (pos.x > match.centerSpot.x) end = FieldEnd.East;
                 else end = FieldEnd.West;
             }
             else {
-                if (pos.x > Match.centerSpot.x) end = FieldEnd.West;
+                if (pos.x > match.centerSpot.x) end = FieldEnd.West;
                 else end = FieldEnd.East;
             }
 
@@ -356,8 +365,8 @@ namespace RedCard {
         }
 
         internal static RedTeam WhoseAttackingEnd(Vector3 pos) {
-            if (Match.teamA.attackingEnd == NearestEnd(pos)) return Match.teamA;
-            else return Match.teamB;
+            if (match.teamA.attackingEnd == NearestEnd(pos)) return match.teamA;
+            else return match.teamB;
         }
 
         internal static RedTeam WhoseDefensiveEnd(Vector3 pos) {
@@ -365,13 +374,13 @@ namespace RedCard {
         }
 
         internal static RedTeam OtherTeam(RedTeam team0) {
-            if (Match.teamA == team0) return Match.teamB;
-            else return Match.teamA;
+            if (match.teamA == team0) return match.teamB;
+            else return match.teamA;
         }
 
         internal static RedTeam WhoseAttackingEnd(FieldEnd end) {
-            if (Match.teamA.attackingEnd == end) return Match.teamA;
-            else return Match.teamB;
+            if (match.teamA.attackingEnd == end) return match.teamA;
+            else return match.teamB;
         }
 
         public static void WhistleBlown(float duration) {
@@ -379,7 +388,7 @@ namespace RedCard {
             // track whistle duration to have an effect emotionally on players?
             // or maybe baby whistles for half time are respect lossy
 
-            if (Match.frozenWaitingForCall) { 
+            if (match.frozenWaitingForCall) { 
                 // #TODO confusion, loss of respect, unless breaking up a fight
             }
             else {
@@ -427,16 +436,16 @@ namespace RedCard {
             }
             else if (target == null) {
 
-                if (Match.frozenWaitingForCall) {
+                if (match.frozenWaitingForCall) {
                     print("footballers no longer frozenWaitingForCall");
                 }
-                Match.frozenWaitingForCall = false;
+                match.frozenWaitingForCall = false;
 
                 // do we check if expecting throw in?
                 float eastward = Vector3.Dot(East, indicateDir);
                 float westward = Vector3.Dot(West, indicateDir);
-                if (eastward > Match.throwInDotThreshold) IndicateThrowIn(FieldEnd.East);
-                else if (westward > Match.throwInDotThreshold) IndicateThrowIn(FieldEnd.West);
+                if (eastward > match.throwInDotThreshold) IndicateThrowIn(FieldEnd.East);
+                else if (westward > match.throwInDotThreshold) IndicateThrowIn(FieldEnd.West);
                 else {
                     // confusion?
                     print("bad aim for calling throw in? eastward: " + eastward + ", westward: " + westward);
@@ -461,8 +470,8 @@ namespace RedCard {
                     case TargetType.CenterCircle:
                         FieldEnd scoredAt = (RedSim.CurrentBallPos.x > target.transform.position.x) ? FieldEnd.East : FieldEnd.West;
                         print("scoredAt: " + scoredAt);
-                        if (Match.teamA.attackingEnd == scoredAt) IndicateGoalScoredBy(Match.teamA);
-                        else IndicateGoalScoredBy(Match.teamB);
+                        if (match.teamA.attackingEnd == scoredAt) IndicateGoalScoredBy(match.teamA);
+                        else IndicateGoalScoredBy(match.teamB);
                         break;
                     default:
                         Debug.LogWarning("unhandled targettype: " + target.targetType);
@@ -492,7 +501,7 @@ namespace RedCard {
         }
 
         internal static void IndicateNormalFoul(RefTarget target, Vector3 fieldPos) {
-            RedPlayer p = Match.allPlayers[target];
+            RedPlayer p = match.allPlayers[target];
             RedTeam awardedTeam = OtherTeam(p.team);
             FSInterpreter.Foul(awardedTeam, fieldPos);
 
@@ -521,7 +530,7 @@ namespace RedCard {
         private static void AssessCall(CallData madeCall) {
 
             // if pre-game, assessment must be done differently
-            switch (Match.state) {
+            switch (match.state) {
                 case State.FirstHalf:
                 case State.SecondHalf:
                     AssessCallDuringMatch(madeCall);
@@ -549,8 +558,8 @@ namespace RedCard {
 
             bool madeCorrectCall = false;
             CallData correctCall = new CallData();
-            for (int i = Match.correctCalls.Count - 1; i >= 0; --i) {
-                CallData call = Match.correctCalls[i];
+            for (int i = match.correctCalls.Count - 1; i >= 0; --i) {
+                CallData call = match.correctCalls[i];
 
                 if (call.made) {
                     print("skipping made call " + correctCall.call); 
@@ -559,7 +568,7 @@ namespace RedCard {
 
 
                 float lateness = madeCall.occurredAt - correctCall.occurredAt;
-                bool callWasLate = lateness > Match.settings.maxCallLateness;
+                bool callWasLate = lateness > match.settings.maxCallLateness;
                 /*
                 if (correctCall.timedOut) break;
 
@@ -600,7 +609,7 @@ namespace RedCard {
             }
 
             // ok, now we know if correct call was made or not
-            var sets = Match.settings;
+            var sets = match.settings;
             CallData closestCorrectCall = new CallData();
             switch (madeCall.call) {
                 case Call.Foul:
@@ -640,12 +649,12 @@ namespace RedCard {
 
             if (madeCorrectCall) {
                 Debug.Log("yay! correct call!");
-                Match.hud.ShowCorrectCall();
+                match.hud.ShowCorrectCall();
             }
             else {
                 // uh oh, bad call
                 Debug.Log("uh oh! bad call!");
-                Match.hud.ShowBadCall();
+                match.hud.ShowBadCall();
                 switch (madeCall.call) {
 
                     case Call.Foul:
@@ -663,11 +672,11 @@ namespace RedCard {
                             Angered(madeCall.perpetrator, sets.angerWronglyCalledForFoul, sets.teamAngerWronglyCalledForFoul);
                         }
                         else {
-                            Angered(Match.teamA, sets.teamAngerWronglyCalledForFoul);
-                            Angered(Match.teamB, sets.teamAngerWronglyCalledForFoul);
+                            Angered(match.teamA, sets.teamAngerWronglyCalledForFoul);
+                            Angered(match.teamB, sets.teamAngerWronglyCalledForFoul);
                         }
-                        LoseRespect(Match.teamA, sets.respectLostWrongFoul);
-                        LoseRespect(Match.teamB, sets.respectLostWrongFoul);
+                        LoseRespect(match.teamA, sets.respectLostWrongFoul);
+                        LoseRespect(match.teamB, sets.respectLostWrongFoul);
                         break;
 
                 }
@@ -716,7 +725,7 @@ namespace RedCard {
             if (sprayLine.Count < 2) return;
 
             List<Vector3> smoothedLine = FoamBlob.SmoothLine(sprayLine, segments);
-            LineRenderer lr = Instantiate(Match.uiSprayLinePrefab, smoothedLine[0], Quaternion.identity).GetComponent<LineRenderer>();
+            LineRenderer lr = Instantiate(match.uiSprayLinePrefab, smoothedLine[0], Quaternion.identity).GetComponent<LineRenderer>();
 
             lr.positionCount = smoothedLine.Count;
             lr.SetPositions(smoothedLine.ToArray());

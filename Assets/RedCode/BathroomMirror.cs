@@ -301,14 +301,14 @@ namespace RedCard {
 
         public void SelectedColor(Category cat, int index) {
 
-            CustomizationOptions cops = RedMatch.Match.customizationOptions;
+            CustomizationOptions cops = RedMatch.match.customizationOptions;
 
             switch (cat) {
                 case Category.Skin:
                     arbitro.leftArm.SetSkinColor(index);
                     arbitro.rightArm.SetSkinColor(index);
                     for (int i = 0; i < customCan.fingers.Length; i++) {
-                        customCan.fingers[i].color = RedMatch.Match.customizationOptions.skinSwatchColors[index];
+                        customCan.fingers[i].color = RedMatch.match.customizationOptions.skinSwatchColors[index];
                     }
                     break;
 
@@ -319,7 +319,7 @@ namespace RedCard {
 
                 case Category.Nails:
                     nailColorIndex = index;
-                    Color c = RedMatch.Match.customizationOptions.nailSwatchColors[index];
+                    Color c = RedMatch.match.customizationOptions.nailSwatchColors[index];
                     customCan.nailColorSelectedIndex = index;
                     customCan.nailPolishJar.liquid.color = c;
                     customCan.nailPolishBrush.bristles.color = c;
@@ -583,7 +583,7 @@ namespace RedCard {
             customCan.nailLengthSlider.SetValueWithoutNotify(currentArm.data.nailLength);
             OrientFingers();
             NailLengthSlid(currentArm.data.nailLength);
-            CustomizationOptions cops = RedMatch.Match.customizationOptions;
+            CustomizationOptions cops = RedMatch.match.customizationOptions;
             Color skinColor = cops.skinSwatchColors[currentArm.data.skinColorIndex];
             for (int i = 0; i < customCan.fingers.Length; i++) {
                 customCan.fingers[i].color = skinColor;

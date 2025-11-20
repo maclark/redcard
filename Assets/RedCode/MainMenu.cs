@@ -12,11 +12,13 @@ namespace RedCard {
         public Image fadeOverlay;
 
         [Header("TOP LEVEL")]
-        public RectTransform rtTopLevel;
+        public RectTransform rtTitle;
+        public RectTransform rtPaused;
         public RectTransform rtSettings;
         public RectTransform rtCredits;
         public RectTransform rtGeneralSettings;
         public RectTransform rtControlsSettings;
+        public RectTransform pauseUnderlay;
         public AudioClip selectedSound;
         public Button playButton;
         public Button settingsButton;
@@ -72,8 +74,8 @@ namespace RedCard {
 
         private void Awake() {
 
-
-            rtTopLevel.gameObject.SetActive(true);
+            rtTitle.gameObject.SetActive(false);
+            rtPaused.gameObject.SetActive(false);
             rtSettings.gameObject.SetActive(false);
             rtCredits.gameObject.SetActive(false);
             fadeOverlay.gameObject.SetActive(false);
@@ -87,7 +89,7 @@ namespace RedCard {
                 AudioManager.PlaySFXOneShot(selectedSound);
                 Application.Quit();
             });
-            foreach (Button b in backs) b.onClick.AddListener(BackToMainMenu);
+            foreach (Button b in backs) b.onClick.AddListener(OpenTopLevelMenu);
 
 
             // SETTINGS MENU
@@ -185,17 +187,6 @@ namespace RedCard {
             vulgarityHighlight.gameObject.SetActive(false);
 
 
-            ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
-            string mapName = BathroomMirror.MIRROR_ACTION_MAP;
-            foreach (PlayerInput input in allInput) {
-                InputActionMap map = input.actions.FindActionMap(mapName);
-                if (map != null) input.SwitchCurrentActionMap(mapName);
-                else Debug.LogError("can't find map: " + mapName);
-            }
-            var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
-            if (action != null) {
-                action.started += ClickedOnWhistleMaybe;
-            }
         }
 
         private void ClickedOnWhistleMaybe(InputAction.CallbackContext ctx) {
@@ -214,7 +205,8 @@ namespace RedCard {
 
         private void OpenSettings() {
             AudioManager.PlaySFXOneShot(selectedSound);
-            rtTopLevel.gameObject.SetActive(false);
+            rtTitle.gameObject.SetActive(false);
+            rtPaused.gameObject.SetActive(false);
             rtSettings.gameObject.SetActive(true);
             rtCredits.gameObject.SetActive(false);
         }
@@ -242,22 +234,22 @@ namespace RedCard {
             AudioManager.PlaySFXOneShot(selectedSound);
         }
 
-        private void BackToMainMenu() {
+        public void OpenTopLevelMenu() {
             AudioManager.PlaySFXOneShot(selectedSound);
-            rtTopLevel.gameObject.SetActive(true);
             rtSettings.gameObject.SetActive(false);
             rtCredits.gameObject.SetActive(false);
-        }
-
-        private void OnDestroy() {
-            string mapName = BathroomMirror.MIRROR_ACTION_MAP;
-            if (PlayerInput.all.Count > 0) {
-                var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
-                if (action != null) {
-                    action.started -= ClickedOnWhistleMaybe;
-                }
+            if (title) {
+                rtTitle.gameObject.SetActive(true);
+                rtPaused.gameObject.SetActive(false);
+                pauseUnderlay.gameObject.SetActive(false);
+            }
+            else {
+                rtTitle.gameObject.SetActive(false);
+                rtPaused.gameObject.SetActive(true);
+                pauseUnderlay.gameObject.SetActive(true);
             }
         }
+
 
 
         public static float DecibelsFrom01(float value) {
@@ -451,5 +443,29 @@ namespace RedCard {
             SelectVulgarity(Vulgarity.MomIsWatching);
         }
 
+        private void OnEnable() {
+
+            ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
+            string mapName = BathroomMirror.MIRROR_ACTION_MAP;
+            foreach (PlayerInput input in allInput) {
+                InputActionMap map = input.actions.FindActionMap(mapName);
+                if (map != null) input.SwitchCurrentActionMap(mapName);
+                else Debug.LogError("can't find map: " + mapName);
+            }
+            var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
+            if (action != null) {
+                action.started += ClickedOnWhistleMaybe;
+            }
+        }
+        
+        private void OnDisable() {
+            string mapName = BathroomMirror.MIRROR_ACTION_MAP;
+            if (PlayerInput.all.Count > 0) {
+                var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
+                if (action != null) {
+                    action.started -= ClickedOnWhistleMaybe;
+                }
+            }
+        }
     }
 }

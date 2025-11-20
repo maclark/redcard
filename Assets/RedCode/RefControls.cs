@@ -262,10 +262,10 @@ namespace RedCard {
 
         void Start() {
 
-            if (RedMatch.Match.arbitro) {
+            if (RedMatch.match.arbitro) {
                 Debug.LogError("uh oh double arbitros");
             }
-            RedMatch.Match.arbitro = this;
+            RedMatch.match.arbitro = this;
 
             if (System.IO.Directory.Exists("C:\\Users\\maxac")) {
                 lookingWithArrows = true;
@@ -282,6 +282,8 @@ namespace RedCard {
 
 
             if (Application.isEditor) debugStartWithEquipment = true;
+
+            RedMatch.match.menu.gameObject.SetActive(false);
 
             // #OPTIMIZE
             crossHairs = FindAnyObjectByType<CrossHairs>();
@@ -380,7 +382,13 @@ namespace RedCard {
                 else Debug.LogError("can't find action map for " + mapName);
             }
 
-            var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("MoveWASD");
+            var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Pause");
+            if (action != null) {
+                action.started += PauseGame;
+                RegisterInput(action, PauseGame);
+            }
+
+            action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("MoveWASD");
             if (action != null) {
                 action.started += MoveInput;
                 action.performed += MoveInput;
@@ -461,6 +469,18 @@ namespace RedCard {
                 else Debug.LogWarning("couldn't find Slot" + slotIndex + " action");
             }
 
+        }
+
+        private void PauseGame(InputAction.CallbackContext ctx) {
+            if (RedMatch.match.menu.gameObject.activeSelf) {
+                Time.timeScale = 1f;
+                RedMatch.match.menu.gameObject.SetActive(false);
+            }
+            else {
+                Time.timeScale = 0f;
+                RedMatch.match.menu.gameObject.SetActive(true);
+                RedMatch.match.menu.OpenTopLevelMenu();
+            }
         }
 
         private void MoveInput(InputAction.CallbackContext ctx) {
@@ -1096,7 +1116,7 @@ namespace RedCard {
         Vector2 lookDelta;
         void Update() {
 
-            if (RedMatch.Match.DebugInput()) return; ///////////////earlyreturn///////////////
+            if (RedMatch.match.DebugInput()) return; ///////////////earlyreturn///////////////
 
             dt = Time.deltaTime;
 

@@ -35,7 +35,7 @@ namespace RedCard {
         public void SetSkinColor(int index) {
             print("setting skin color " + index);
             data.skinColorIndex = index;
-            Color c = RedMatch.Match.customizationOptions.GetSkinMeshColor(index);
+            Color c = RedMatch.match.customizationOptions.GetSkinMeshColor(index);
             for (int i = 0; i < colorer.skin.Length; i++) {
                 colorer.skin[i].materials[0].color = c;
                 colorer.skin[i].materials[0].color = c;
@@ -92,7 +92,7 @@ namespace RedCard {
 
         public void SetHairColor(int index) {
             data.hairColorIndex = index;
-            Color c = RedMatch.Match.customizationOptions.GetHairMeshColor(index);
+            Color c = RedMatch.match.customizationOptions.GetHairMeshColor(index);
             for (int i = 0; i < folicles.Length; i++) {
                 folicles[i].materials[0].color = c;
             }

@@ -82,7 +82,7 @@ namespace RedCard {
                 else if (!rightHanded && side == Chirality.Left) newArms.isDominant = true;
                 else newArms.isDominant = false;
 
-                CustomizationOptions cops = RedMatch.Match.customizationOptions;
+                CustomizationOptions cops = RedMatch.match.customizationOptions;
                 newArms.skinColorIndex = 1;// Random.Range(0, cops.skinMeshColors.Length);
                 newArms.hairThickness = 1500; // idk
                 newArms.hairLength = .015f; // idk

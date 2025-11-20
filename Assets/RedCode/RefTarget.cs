@@ -33,7 +33,7 @@ namespace RedCard {
                 outline.name = "FallbackOutlineObject";
             }
 
-            RedMatch.Match.targets.Add(this);
+            RedMatch.match.targets.Add(this);
         }
     }
 }

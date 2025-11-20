@@ -42,6 +42,9 @@ namespace RedCard {
             
             KnockWhistle(.5f * Vector3.right);
             rbWhistle.AddTorque(Vector3.up * initialTorque * (Random.value > .5f ? 1f : -1f), ForceMode.Impulse);
+
+            menu.title = this;
+            menu.OpenTopLevelMenu();
         }
 
         private void Update() {

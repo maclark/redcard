@@ -329,7 +329,7 @@ namespace RedCard {
                         }
                         else {
                             // #TODO lost respect
-                            RedMatch.Match.hud.ShowBadCall();
+                            RedMatch.match.hud.ShowBadCall();
                         }
                     }
                     else if (semantics == Semantics.ThisIsTails) {
@@ -339,7 +339,7 @@ namespace RedCard {
                         }
                         else {
                             // #TODO lost respect
-                            RedMatch.Match.hud.ShowBadCall();
+                            RedMatch.match.hud.ShowBadCall();
                         }
                     }
                     else Debug.LogWarning("what semantics while showing side? " + semantics);
@@ -354,7 +354,7 @@ namespace RedCard {
                         }
                         else {
                             // #TODO lost respect
-                            RedMatch.Match.hud.ShowBadCall();
+                            RedMatch.match.hud.ShowBadCall();
                         }
                     }
                     else if (semantics == Semantics.CoinLandedTails) {
@@ -364,7 +364,7 @@ namespace RedCard {
                         }
                         else {
                             // #TODO lost respect
-                            RedMatch.Match.hud.ShowBadCall();
+                            RedMatch.match.hud.ShowBadCall();
                         }
                     }
                     else Debug.LogWarning("what semantics while showing side? " + semantics);
@@ -386,7 +386,7 @@ namespace RedCard {
                             else Debug.Log("asked wrong winner " + hitInfo.collider);
                         }
 
-                        if (!winnerHasBeenAsked) RedMatch.Match.hud.ShowBadCall();
+                        if (!winnerHasBeenAsked) RedMatch.match.hud.ShowBadCall();
                     }
                     break;
 

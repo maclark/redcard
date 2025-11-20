@@ -115,7 +115,7 @@ namespace RedCard {
             initialized = true;
 
             bathMirror = motherMirror;
-            CustomizationOptions cops = RedMatch.Match.customizationOptions;
+            CustomizationOptions cops = RedMatch.match.customizationOptions;
 
             for (int i = 0; i < skinColorSwatches.Length; i++) {
                 Button b = skinColorSwatches[i];
