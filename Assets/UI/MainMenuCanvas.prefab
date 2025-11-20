@@ -1157,7 +1157,7 @@ MonoBehaviour:
   youTubeButton: {fileID: 0}
   backs:
   - {fileID: 3110570286245530002}
-  controlsButton: {fileID: 0}
+  controlsButton: {fileID: 8333105796844291017}
   sliderSoundGap: 0.05
   sfxVolSlider: {fileID: 1920584614767629315}
   voicesSlider: {fileID: 6501972432038734973}
@@ -6236,6 +6236,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2180761999455968368, guid: c7e6c486eb3d43b46b3325baddc47867, type: 3}
   m_PrefabInstance: {fileID: 5757019222788169629}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8333105796844291017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4341516123565808724, guid: c7e6c486eb3d43b46b3325baddc47867, type: 3}
+  m_PrefabInstance: {fileID: 5757019222788169629}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &6073574600497292033
 PrefabInstance:
   m_ObjectHideFlags: 0
