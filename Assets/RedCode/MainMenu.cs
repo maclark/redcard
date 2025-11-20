@@ -380,7 +380,7 @@ namespace RedCard {
                 PlayerPrefs.SetInt(Prefs_Vsync, 1);
             }
             else {
-                vsyncX.text = "x";
+                vsyncX.text = "";
                 QualitySettings.vSyncCount = 0;
                 PlayerPrefs.SetInt(Prefs_Vsync, 0);
             }
