@@ -31,8 +31,6 @@ namespace RedCard {
         public float fadeOutDuration = .2f;
 
         private bool startPlaying = false;
-        private bool usingMouse = false;
-        private Vector2 lastMousePosition;
         private float whistleIdleThreshold;
         private float whistleIdleTorqueAmp;
         private float whistleIdleTorqueFrequency;
@@ -45,8 +43,6 @@ namespace RedCard {
             Menu.ResetPrefs(); 
             Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
 
-            usingMouse = false;
-            
             KnockWhistle(.5f * Vector3.right);
             rbWhistle.AddTorque(Vector3.up * initialTorque * (Random.value > .5f ? 1f : -1f), ForceMode.Impulse);
 

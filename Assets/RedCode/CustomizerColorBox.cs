@@ -4,23 +4,15 @@ using UnityEngine.UI;
 namespace RedCard {
 
     public class ColorBox : MonoBehaviour {
+
         [Header("ASSIGNATIONS")]
-        public RectTransform rtParent;
-        public RectTransform rtParentShadow;
-        public RectTransform botLine;
-        public RectTransform rightLine;
-        public RectTransform leftLine;
+        public CustomizationCanvas customCan;
         public RectTransform swatchHoverHighlight;
         public RectTransform swatchSelectionHighlight;
 
         [Header("VARS")]
-        public CustomizationCanvas mirror;
-        public float parentHeightCache;
         public ColorRow[] rows = new ColorRow[0];
         public Button highlighted;
-
-        public const float horz_line_gap = 12f;
-        public const float line_width = 40f;
 
         void HighlightedSwatch(Button b) {
             highlighted = b;
@@ -34,8 +26,9 @@ namespace RedCard {
                 swatchHoverHighlight.gameObject.SetActive(false);
             }
         }
+
         public void SelectedSwatch(Button b, int index) {
-            if (mirror.transform.parent && mirror.transform.parent.TryGetComponent(out BathroomMirror bathMirror)) {
+            if (customCan.transform.parent && customCan.transform.parent.TryGetComponent(out RefereeeCustomizer bathMirror)) {
                 bathMirror.SelectedColor(Category.Nails, index);
             }
             swatchSelectionHighlight.gameObject.SetActive(true);
@@ -44,47 +37,12 @@ namespace RedCard {
             swatchSelectionHighlight.anchoredPosition = b.GetComponent<RectTransform>().anchoredPosition;
         }
 
-        public static ColorBox MakeColorBox(CustomizationCanvas mirror, RectTransform parent, RectTransform rt, RectTransform rtShadow, Color[] colors) {
-
-            ColorBox box = Instantiate(mirror.colorBoxPrefab, parent).GetComponent<ColorBox>();
-            mirror.nailPolishBrush.transform.SetAsLastSibling();
-            mirror.nailPolishRemoverSponge.transform.SetAsLastSibling();
-            parent.SetAsLastSibling();
-
-            box.parentHeightCache = rt.sizeDelta.y;
-            box.mirror = mirror;
-            box.rtParent = rt;
-            box.rtParentShadow = rtShadow;
-            box.swatchHoverHighlight.gameObject.SetActive(false);
-            box.swatchSelectionHighlight.gameObject.SetActive(false);
-
-            int rowsNeeded = Mathf.CeilToInt(colors.Length / 6f);
-            float extension = mirror.minColorBoxHeight + rowsNeeded * mirror.colorRowHeight;
-
-            // have to scale sizes of boxes
-            Vector2 newSize = new Vector2(rt.sizeDelta.x, rt.sizeDelta.y + 10f * extension);
-            box.rtParent.sizeDelta = newSize;
-            box.rtParentShadow.sizeDelta = newSize;
-
-            // but positions aren't scaled 
-            float yBotLine = -extension + horz_line_gap;
-            box.botLine.anchoredPosition = new Vector2(0f, yBotLine);
-            box.leftLine.sizeDelta = new Vector2(line_width, 10f * Mathf.Abs(yBotLine) + line_width);
-            box.rightLine.sizeDelta = new Vector2(line_width, 10f * Mathf.Abs(yBotLine)+ line_width);
-
-
+        public void FillColors(Color[] colors) {
             int colorIndex = 0;
-            box.rows = new ColorRow[rowsNeeded];
-            for(int i = 0; i < rowsNeeded; i++) {
-                ColorRow row = Instantiate(mirror.colorRowPrefab, box.transform).GetComponent<ColorRow>();
-                box.rows[i] = row;
-                if (row.TryGetComponent(out RectTransform rtRow)) {
-                    rtRow.anchoredPosition = new Vector2(0f, -i * mirror.colorRowHeight + 7f);
-                }
-                else Debug.LogWarning("no rt on color row");
+            for(int i = 0; i < rows.Length; i++) {
+                ColorRow row = rows[i];
 
                 for (int j = 0; j < row.swatches.Length; j++) {
-
                     Button b = row.swatches[j];
                     if (colorIndex >= colors.Length) {
                         b.image.color = Color.clear;
@@ -95,20 +53,18 @@ namespace RedCard {
                         b.image.color = c;
                         int index = colorIndex;
                         void ClickedSwatch() {
-                            box.SelectedSwatch(b, index);
+                            SelectedSwatch(b, index);
                         };
                         b.onClick.AddListener(ClickedSwatch);
 
                         PointerHandler ph = b.gameObject.AddComponent<PointerHandler>();
-                        ph.onEnter += (data) => box.HighlightedSwatch(b);
-                        ph.onExit += (data) => box.DehighlightedSwatch(b);
+                        ph.onEnter += (data) => HighlightedSwatch(b);
+                        ph.onExit += (data) => DehighlightedSwatch(b);
 
                         colorIndex++;
                     }
                 }
             }
-
-            return box;
         }
     }
 }

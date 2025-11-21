@@ -575,7 +575,7 @@ namespace RedCard {
         }
 
         private void OnEnable() {
-            string mapName = BathroomMirror.MIRROR_ACTION_MAP;
+            string mapName = RefereeeCustomizer.MIRROR_ACTION_MAP;
             RedMatch.AssignMap(mapName);
             var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
             if (action != null) {
@@ -599,7 +599,7 @@ namespace RedCard {
 
         
         private void OnDisable() {
-            string mapName = BathroomMirror.MIRROR_ACTION_MAP;
+            string mapName = RefereeeCustomizer.MIRROR_ACTION_MAP;
             if (PlayerInput.all.Count > 0) {
                 var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
                 if (action != null) {

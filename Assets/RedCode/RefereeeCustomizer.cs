@@ -39,13 +39,11 @@ namespace RedCard {
         Inactive,
         Approaching,
         GazingAtArm,
-        Manicure,
         SelectingTattoo,
         PlacingTattoo,
-        SelectingJewelry,
     }
 
-    public class BathroomMirror : MonoBehaviour {
+    public class RefereeeCustomizer : MonoBehaviour {
 
         [Header("ASSIGNATIONS")]
         public GameObject customizationCanvasPrefab;
@@ -100,8 +98,6 @@ namespace RedCard {
             customCan.nailPolishRemoverMiniSponge.gameObject.SetActive(false);
             customCan.nailColorSelectedIndex = 1;
             customCan.nailPolishJar.liquid.color = customCan.nailColors[customCan.nailColorSelectedIndex];
-            Debug.Assert(customCan.colorBoxPrefab);
-            Debug.Assert(customCan.colorRowPrefab);
 
             customCan.pickTattoo.onClick.AddListener(PickTattoo);
             
@@ -113,6 +109,7 @@ namespace RedCard {
                 customCan.nails[i].onClick.AddListener(PaintThisNail);
             }
 
+            // input
             string map = MIRROR_ACTION_MAP;
             var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("PrimaryAction");
             if (action != null) {
@@ -245,17 +242,6 @@ namespace RedCard {
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
 
-        void CloseColorBox() {
-            if (customCan.colorBox) {
-                customCan.nailPolishRemoverMiniSponge.SetParent(null);
-                customCan.nailPolishRemoverMiniSponge.gameObject.SetActive(false);
-                Vector2 ogSizeDelta = new Vector2(customCan.colorBox.rtParent.sizeDelta.x, customCan.colorBox.parentHeightCache);
-                customCan.colorBox.rtParent.sizeDelta = ogSizeDelta;
-                customCan.colorBox.rtParentShadow.sizeDelta = ogSizeDelta;
-                Destroy(customCan.colorBox.gameObject); //#HACK
-                customCan.colorBox = null;
-            }
-        }
         void ClickedOnNailPolishJar() {
             if (equippedNailPolishBrush) {
 
@@ -265,7 +251,12 @@ namespace RedCard {
                 customCan.nailPolishRemoverSponge.gameObject.SetActive(false);
                 customCan.nailPolishJar.openJar.gameObject.SetActive(false);
                 customCan.nailPolishJar.closedJar.gameObject.SetActive(true);
-                CloseColorBox();
+                Vector2 ogSizeDelta = new Vector2(customCan.nailsBackground.sizeDelta.x, 3000f);
+                customCan.nailsBackground.sizeDelta = ogSizeDelta;
+                customCan.nailsBackgroundShadow.sizeDelta = ogSizeDelta;
+                customCan.nailPolishRemoverMiniSponge.SetParent(null);
+                customCan.nailPolishRemoverMiniSponge.gameObject.SetActive(false);
+                customCan.colorBox.gameObject.SetActive(false);
 
                 Cursor.visible = true;
                 AudioManager.am.sfxAso.PlayOneShot(customCan.grabbedBrush);
@@ -278,9 +269,16 @@ namespace RedCard {
                 customCan.nailPolishBrush.gameObject.SetActive(!usingSponge);
                 customCan.nailPolishRemoverSponge.gameObject.SetActive(usingSponge);
 
-                if (customCan.colorBox) CloseColorBox();
+                customCan.nailPolishBrush.transform.SetAsLastSibling();
+                customCan.nailPolishRemoverSponge.transform.SetAsLastSibling();
+                customCan.nailsRect.SetAsLastSibling();
 
-                customCan.colorBox = ColorBox.MakeColorBox(customCan, customCan.nailsRect, customCan.nailsBackground, customCan.nailsBackgroundShadow, customCan.nailColors);
+                customCan.colorBox.gameObject.SetActive(true);
+                customCan.colorBox.swatchHoverHighlight.gameObject.SetActive(false);
+                customCan.colorBox.swatchSelectionHighlight.gameObject.SetActive(false);
+                customCan.nailsBackground.sizeDelta = new Vector2(customCan.nailsBackground.sizeDelta.x, 6310f);
+                customCan.nailsBackgroundShadow.sizeDelta = customCan.nailsBackground.sizeDelta;
+
                 RectTransform first = customCan.colorBox.rows[0].swatches[0].GetComponent<RectTransform>();
                 customCan.nailPolishRemoverMiniSponge.SetParent(first.transform.parent);
                 customCan.nailPolishRemoverMiniSponge.anchoredPosition = first.anchoredPosition;

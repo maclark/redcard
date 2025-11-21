@@ -58,17 +58,13 @@ namespace RedCard {
         public Color[] nailColors = new Color[0];
 
         [Header("COLOR BOXES")]
-        public GameObject colorBoxPrefab;
-        public GameObject colorRowPrefab;
-        public float minColorBoxHeight = 30f;
-        public float colorRowHeight = 60f;
         public ColorBox colorBox;
         public RectTransform swatchSkinSelectionHighlight;
         public RectTransform swatchHairSelectionHighlight;
         public RectTransform swatchHoverHighlight;
         public Button highlighted;
 
-        private BathroomMirror bathMirror;
+        private RefereeeCustomizer bathMirror;
         private bool initialized = false;
 
 
@@ -110,7 +106,7 @@ namespace RedCard {
         }
 
         // particular values will be set when el arbitro approaches the mirror
-        public void InitSkinAndHairColorButtons(BathroomMirror motherMirror) {
+        public void InitSkinAndHairColorButtons(RefereeeCustomizer motherMirror) {
             if (initialized) return;
             initialized = true;
 
@@ -144,6 +140,8 @@ namespace RedCard {
             }
 
             nailColors = (Color[])cops.nailSwatchColors.Clone();
+            colorBox.FillColors(nailColors);
+            colorBox.gameObject.SetActive(false);
         }
     }
 }

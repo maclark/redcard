@@ -147,7 +147,7 @@ namespace RedCard {
         [Header("INTERACTABLES MAYBE")]
         public Item itemHeld;
         public Item itemTouching;
-        public BathroomMirror mirror;
+        public RefereeeCustomizer mirror;
         public float itemTossStrength = 1f; // #GAMEPAD
         public Interactable interactableTouching;
         public float interactibility_range = 1.5f;
