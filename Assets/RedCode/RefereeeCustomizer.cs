@@ -490,7 +490,7 @@ namespace RedCard {
 
                 case MirrorMode.Inactive:
                     if (customCan.group.alpha > 0f) {
-                        float fadeOutSpeed = 1f / (1f - mirrorCanvasFadeDuration);
+                        float fadeOutSpeed = 1f / mirrorCanvasFadeDuration;
                         customCan.group.alpha -= fadeOutSpeed * Time.deltaTime;
                     }
                     else {

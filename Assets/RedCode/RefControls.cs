@@ -247,7 +247,8 @@ namespace RedCard {
         private bool scanning = false;
         private bool zooming = false;
         private bool pacingOneself = false;
-        
+
+        public bool debugLooking = false;
         public RefEquipment equipped;
 
         // can't do this at runtime: LayerMask.NameToLayer("RefBody");
@@ -656,6 +657,10 @@ namespace RedCard {
                 if (lookingWithArrows) {
                     toss = cam.transform.right * lookVelocity.x + cam.transform.up * lookVelocity.y;
                 }
+                else {
+                    print("look delta: " + lookDelta);
+                    print("cam.transform.up " + cam.transform.up);
+                }
 
                 rb.linearVelocity = itemTossStrength * toss;
 
@@ -665,6 +670,12 @@ namespace RedCard {
                     print("toss magnitude " + toss.magnitude);
                     print("toss torque " + xTorque);
                     rb.AddRelativeTorque(xTorque, 0f, 0f, ForceMode.Impulse);
+
+                    if (itemHeld.TryGetComponent(out Coin tossedCoin)) {
+                        tossedCoin.tossedFrom = tossedCoin.transform.position;
+                        tossedCoin.tossedDir = toss.normalized;
+                        tossedCoin.tossedMagnitude = toss.magnitude;
+                    }
                 }
             }
             itemHeld = null;
@@ -1262,7 +1273,7 @@ namespace RedCard {
                     pitch = Mathf.Clamp(pitch, -90f, 90f); // Prevent flipping
                     cameraTransform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
                 }
-                else cameraTransform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
+                else if (!debugLooking) cameraTransform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
             }
             else {
 

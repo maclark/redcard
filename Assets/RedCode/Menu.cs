@@ -605,6 +605,11 @@ namespace RedCard {
                 if (action != null) {
                     action.started -= ClickedOnWhistleMaybe;
                 }
+
+                action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Pause");
+                if (action != null) {
+                    action.started -= Unpaused;
+                }
             }
             RedMatch.AssignMap(RedMatch.REFEREEING_ACTION_MAP);
 

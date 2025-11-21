@@ -61,7 +61,7 @@ namespace RedCard {
                     if (interactable.TryGetComponent(out RefereeeCustomizer mirror)) {
                         mirror.ApproachMirror(RedMatch.match.arbitro);
                     }
-                    else Debug.LogError("mirror missingm mirror");
+                    else Debug.LogError("mirror missing mirror");
                     break;
 
 

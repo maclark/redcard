@@ -18,9 +18,23 @@ namespace RedCard {
             //    UnityEngine.SceneManagement.SceneManager.LoadScene("_StartingScene"); 
             //    return;
             //}
-
             DialogWheel w = arbitro.hud.wheel;
-            if (Keyboard.current.yKey.wasPressedThisFrame) {
+
+            if (Keyboard.current.tabKey.wasPressedThisFrame) {
+                if (!Cursor.visible) {
+                    print("debug looking on");
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                    arbitro.debugLooking = true;
+                }
+                else {
+                    print("debug looking off");
+                    arbitro.debugLooking = false;
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+            }
+            else if (Keyboard.current.yKey.wasPressedThisFrame) {
                 w.PopulateBoxes(w.coinFlipWinnerQuestion);
             }
             else if (Keyboard.current.uKey.wasPressedThisFrame) {

@@ -53,9 +53,9 @@ namespace RedCard {
         private float alpha = 1f;
 
 
-        public static readonly string F_To_Grab = "'F' grab";
-        public static readonly string F_To_Drop = "'F' drop";
-        public static readonly string F_To_Interact = "'F' interact";
+        public static readonly string F_To_Grab = "[F] grab";
+        public static readonly string F_To_Drop = "[F] drop";
+        public static readonly string F_To_Interact = "[F] interact";
         private static readonly Color semi_transparent = new Color(0f, 0f, 0f, .333f);
 
         private void Awake() {

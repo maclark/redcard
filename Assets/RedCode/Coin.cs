@@ -21,6 +21,9 @@ namespace RedCard {
         public State state = State.Flipping;
         public int flipCount = 0;
 
+        public Vector3 tossedFrom;
+        public Vector3 tossedDir;
+        public float tossedMagnitude;
         public float previousAngle;
         public float accumulatedRotation;
         public bool justFlipped = false;
@@ -31,6 +34,9 @@ namespace RedCard {
         }
 
         private void Update() {
+
+
+            Debug.DrawLine(tossedFrom, tossedFrom + tossedDir * tossedMagnitude, Color.green);
 
             switch (state) {
                 case State.Flipping:
@@ -100,16 +106,16 @@ namespace RedCard {
                     transform.localRotation = Quaternion.Euler(angle1, 0f, 0f);
                     break;
                 case State.HeadsUp:
-                    print("coin is heads up");
                     turnOverAngle = 360f;
                     transform.localRotation = Quaternion.Euler(turnOverAngle, 0f, 0f);
-                    enabled = false;
+                    //#nocommit
+                    //enabled = false;
                     break;
                 case State.TailsUp:
-                    print("coin is tails up");
                     turnOverAngle = 180f;
                     transform.localRotation = Quaternion.Euler(turnOverAngle, 0f, 0f);
-                    enabled = false;
+                    //#nocommit
+                    //enabled = false;
                     break;
                 default:
                     Debug.LogError("unhandled coin state " + state);
