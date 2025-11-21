@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 
 namespace RedCard {
@@ -10,7 +11,18 @@ namespace RedCard {
         public Camera mainCamera;
         public Rigidbody rbWhistle;
         public Texture2D cursor;
-        public MainMenu menu;
+        public Menu menu;
+
+        [Header("WISHLIST GLOW")]
+        public float wishlistSpeed = 10f;
+        public Color[] wishlistColors = new Color[0];
+        public Color colorA;
+        public Color colorB;
+        public Color colorC;
+        public Color colorFrom = Color.red;
+        public Color colorTo = Color.yellow;
+        public float colorPeriod = 1f;
+        float tColor;
 
         [Header("WHISTLE")]
         public AudioClip[] bumpedWhistles = new AudioClip[0];
@@ -31,7 +43,7 @@ namespace RedCard {
         private float countdownToStart = 0f;
 
         private void Awake() {
-            MainMenu.ResetPrefs(); 
+            Menu.ResetPrefs(); 
             Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
 
             float x = cursor.width / 2f;
@@ -45,6 +57,16 @@ namespace RedCard {
 
             menu.title = this;
             menu.OpenTopLevelMenu();
+
+            PointerHandler phWishlist = menu.wishlistButton.gameObject.AddComponent<PointerHandler>();
+            phWishlist.onEnter += (_data) => {
+                colorPeriod = 1f;
+                wishlistSpeed = 20f;
+            };
+            phWishlist.onExit += (_data) => {
+                colorPeriod = 5f;
+                wishlistSpeed = 2.5f;
+            };
         }
 
         private void Update() {
@@ -89,6 +111,42 @@ namespace RedCard {
                     UnityEngine.SceneManagement.SceneManager.LoadScene(1);
                 }
             }
+
+            TMP_Text text = menu.wishlistTxt;
+            text.ForceMeshUpdate();
+            TMP_TextInfo textInfo = text.textInfo;
+
+            for (int i = 0; i < textInfo.characterCount; i++) {
+                if (!textInfo.characterInfo[i].isVisible) continue;
+
+                var vertexIndex = textInfo.characterInfo[i].vertexIndex;
+                var meshIndex = textInfo.characterInfo[i].materialReferenceIndex;
+
+                var colors = textInfo.meshInfo[meshIndex].colors32;
+
+                Color32 c = Color.Lerp(colorFrom, colorTo,
+                    Mathf.Sin(-Time.time * wishlistSpeed + i));
+
+                colors[vertexIndex + 0] = c;
+                colors[vertexIndex + 1] = c;
+                colors[vertexIndex + 2] = c;
+                colors[vertexIndex + 3] = c;
+            }
+
+            text.UpdateVertexData(TMP_VertexDataUpdateFlags.All);
+
+            tColor += Time.deltaTime;
+            if (tColor > colorPeriod) {
+                tColor -= colorPeriod;
+                colorC = colorB;
+                colorB = colorA;
+                colorA = wishlistColors.GetRandom(); 
+            }
+
+            colorTo = Color.Lerp(colorB, colorA, tColor / colorPeriod);
+            colorFrom = Color.Lerp(colorC, colorB, tColor / colorPeriod);
+            Color cwl = Color.Lerp(colorFrom, colorTo, .5f);
+            menu.wishlistGlow.color = new Color(cwl.r, cwl.g, cwl.b, 1f);
         }
 
 

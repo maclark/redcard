@@ -744,6 +744,8 @@ namespace RedCard {
         // left-click, right trigger, screen tap
         private void PrimaryAction(InputAction.CallbackContext ctx) {
 
+            Debug.LogWarning("primary happening?"); 
+
             if (hud.wheel.on) {
                 hud.wheel.PrimaryAction(ctx, target);
                 return; ////////earlyreturn///////////

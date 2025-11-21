@@ -6,10 +6,11 @@ using TMPro;
 
 namespace RedCard {
 
-    public class MainMenu : MonoBehaviour {
+    public class Menu : MonoBehaviour {
 
         [Header("ASSIGNATIONS")]
         public Image fadeOverlay;
+        public AudioClip selectedSound;
 
         [Header("TOP LEVEL")]
         public RectTransform rtTitle;
@@ -19,17 +20,26 @@ namespace RedCard {
         public RectTransform rtGeneralSettings;
         public RectTransform rtControlsSettings;
         public RectTransform pauseUnderlay;
-        public AudioClip selectedSound;
-        public Button playButton;
         public Button settingsButton;
         public Button creditsButton;
         public Button quitButton;
         public Button wishlistButton; // to leave review or something
+        public TMP_Text wishlistTxt;
+        public Image wishlistGlow;
         public Button discordButton;
-        public Button twitchButton;
-        public Button tikTokButton;
-        public Button youTubeButton;
         public Button[] backs = new Button[0];
+
+        [Header("PLAY, CONTINUE, NEW GAME")]
+        public Button playButton;
+        public Button yesContinueGame;
+        public Button newGame;
+        public TMP_Text playButtonTxt;
+
+        [Header("SAVE & QUIT")]
+        public RectTransform rtConfirmAndQuit;
+        public Button saveAndQuit;
+        public Button yesSaveAndQuit;
+        public Button doNotSaveAndQuit;
 
         [Header("SETTINGS MENU")]
         public RectTransform subcategoryHighlight;
@@ -61,6 +71,7 @@ namespace RedCard {
         TMP_Text vulgaritySelectedTxt;
         Button vulgarityHighlighted;
 
+
         [Header("VARS")]
         public TitleScreen title;
 
@@ -71,17 +82,14 @@ namespace RedCard {
         public const string Prefs_Vsync = "Vsync";
         public const string Prefs_Vulgarity = "Vulgarity";
 
+        // quitting
+        bool quittingToMain;
+        float tQuitting = 0f;
+        float quitFadeDuration = 1f;
 
         private void Awake() {
 
-            rtTitle.gameObject.SetActive(false);
-            rtPaused.gameObject.SetActive(false);
-            rtSettings.gameObject.SetActive(false);
-            rtCredits.gameObject.SetActive(false);
-            fadeOverlay.gameObject.SetActive(false);
-
-
-            playButton.onClick.AddListener(PlayGame);
+            // TITLE stuff
             settingsButton.onClick.AddListener(OpenSettings);
             wishlistButton.onClick.AddListener(OpenWishlist);
             creditsButton.onClick.AddListener(ShowCredits);
@@ -89,7 +97,34 @@ namespace RedCard {
                 AudioManager.PlaySFXOneShot(selectedSound);
                 Application.Quit();
             });
-            foreach (Button b in backs) b.onClick.AddListener(OpenTopLevelMenu);
+            foreach (Button b in backs) {
+                b.onClick.AddListener(() => AudioManager.PlaySFXOneShot(selectedSound));
+                b.onClick.AddListener(OpenTopLevelMenu);
+            }
+            discordButton.onClick.AddListener(OpenDiscord);
+
+            bool hasSaveGame = false;
+            if (hasSaveGame) {
+                playButtonTxt.text = "CONTINUE OR NEW GAME...";
+            }
+            else playButtonTxt.text = "PLAY";
+            playButton.onClick.AddListener(CheckForSaveOrPlay);
+            yesContinueGame.onClick.AddListener(ContinueGame);
+            yesContinueGame.gameObject.SetActive(false);
+            newGame.onClick.AddListener(PlayNewGame);
+            newGame.gameObject.SetActive(false);
+
+            // PAUSE menu
+            saveAndQuit.onClick.AddListener(() => {
+                AudioManager.PlaySFXOneShot(selectedSound);
+                rtConfirmAndQuit.gameObject.SetActive(true);
+            });
+            yesSaveAndQuit.onClick.AddListener(SaveAndQuitToMain);
+            doNotSaveAndQuit.onClick.AddListener(() => {
+                AudioManager.PlaySFXOneShot(selectedSound);
+                rtConfirmAndQuit.gameObject.SetActive(false);
+            });
+
 
 
             // SETTINGS MENU
@@ -185,22 +220,68 @@ namespace RedCard {
             }
             SelectVulgarity(v);
             vulgarityHighlight.gameObject.SetActive(false);
+        }
 
 
+        private void Update() {
+            if (quittingToMain) {
+                tQuitting += Time.unscaledDeltaTime;
+                fadeOverlay.color = Color.Lerp(Color.clear, Color.black, tQuitting / quitFadeDuration);
+            }
         }
 
         private void ClickedOnWhistleMaybe(InputAction.CallbackContext ctx) {
             if (title) title.ClickedOnWhistleMaybe();
         }
 
-        private void PlayGame() {
+        private void CheckForSaveOrPlay() {
             if (title) {
                 AudioManager.PlaySFXOneShot(selectedSound);
-                title.PlayGame();
+                bool hasSaveGame = false;
+                if (hasSaveGame) {
+                    playButton.gameObject.SetActive(false);
+                    yesContinueGame.gameObject.SetActive(true);
+                    newGame.gameObject.SetActive(true);
+                }
+                else title.PlayGame();
             }
             else {
                 Debug.LogError("clicking on Play but we're not at title screen!");
             }
+        }
+
+        private void PlayNewGame() {
+            if (title) {
+                AudioManager.PlaySFXOneShot(selectedSound);
+                bool hasSaveGame = false;
+                if (hasSaveGame) {
+                    // delete it!
+                    // #TODO
+                    Debug.LogWarning("delete save game");
+                }
+
+                title.PlayGame();
+            }
+            else Debug.LogError("clicking on Play but we're not at title screen!");
+        }
+
+        private void ContinueGame() {
+            if (title) {
+                AudioManager.PlaySFXOneShot(selectedSound);
+                Debug.LogWarning("continue save game");
+                title.PlayGame();
+            }
+            else Debug.LogError("clicking on Play but we're not at title screen!");
+        }
+
+        private void SaveAndQuitToMain() {
+            Debug.LogWarning("fade out and load title scene");
+            AudioManager.PlaySFXOneShot(selectedSound);
+            RedMatch.match.Save();
+            quittingToMain = true;
+            tQuitting = 0f;
+            fadeOverlay.color = Color.clear;
+            fadeOverlay.gameObject.SetActive(true);
         }
 
         private void OpenSettings() {
@@ -225,7 +306,6 @@ namespace RedCard {
         }
 
         private void OpenWishlist() {
-            //TBD
             AudioManager.PlaySFXOneShot(selectedSound);
             Application.OpenURL("https://almostinfinite.substack.com");
         }
@@ -234,18 +314,26 @@ namespace RedCard {
             AudioManager.PlaySFXOneShot(selectedSound);
         }
 
-        public void OpenTopLevelMenu() {
+        private void OpenDiscord() {
             AudioManager.PlaySFXOneShot(selectedSound);
-            rtSettings.gameObject.SetActive(false);
-            rtCredits.gameObject.SetActive(false);
+            Application.OpenURL("https://discord.gg/YFJNMnVXMN");
+        }
+
+        public void OpenTopLevelMenu() {
             if (title) {
                 rtTitle.gameObject.SetActive(true);
                 rtPaused.gameObject.SetActive(false);
+                rtSettings.gameObject.SetActive(false);
+                rtCredits.gameObject.SetActive(false);
+                fadeOverlay.gameObject.SetActive(false);
                 pauseUnderlay.gameObject.SetActive(false);
             }
             else {
                 rtTitle.gameObject.SetActive(false);
                 rtPaused.gameObject.SetActive(true);
+                rtSettings.gameObject.SetActive(false);
+                rtCredits.gameObject.SetActive(false);
+                fadeOverlay.gameObject.SetActive(false);
                 pauseUnderlay.gameObject.SetActive(true);
             }
         }
@@ -444,7 +532,7 @@ namespace RedCard {
         }
 
         private void OnEnable() {
-
+            Debug.LogWarning("on enable menu");
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             string mapName = BathroomMirror.MIRROR_ACTION_MAP;
             foreach (PlayerInput input in allInput) {
@@ -456,9 +544,12 @@ namespace RedCard {
             if (action != null) {
                 action.started += ClickedOnWhistleMaybe;
             }
+
+            Cursor.visible = true;
         }
         
         private void OnDisable() {
+            Debug.LogWarning("on DISABLE menu");
             string mapName = BathroomMirror.MIRROR_ACTION_MAP;
             if (PlayerInput.all.Count > 0) {
                 var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");

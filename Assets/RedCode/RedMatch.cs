@@ -92,7 +92,7 @@ namespace RedCard {
         public CustomizationOptions customizationOptions;
         public State state = State.Unset;
         public bool frozenWaitingForCall = false;
-        public MainMenu menu;
+        public Menu menu;
 
         public float throwInDotThreshold = .33f;
         public Transform botLeftBox0;
@@ -731,6 +731,10 @@ namespace RedCard {
             lr.SetPositions(smoothedLine.ToArray());
         }
 
+
+        public void Save() {
+            Debug.LogWarning("implement saving game!");
+        }
 
     }
 }

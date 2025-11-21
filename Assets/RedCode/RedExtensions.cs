@@ -26,4 +26,14 @@ public static class RedExtensions
 
         return closest;
     }
+
+    public static T GetRandom<T>(this IList<T> list) {
+
+        if (list == null || list.Count == 0) {
+            Debug.LogError("empty list");
+            return default(T);
+        }
+
+        return list[Random.Range(0, list.Count)];
+    }
 }
