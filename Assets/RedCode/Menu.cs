@@ -11,23 +11,24 @@ namespace RedCard {
         [Header("ASSIGNATIONS")]
         public Image fadeOverlay;
         public AudioClip selectedSound;
+        public Texture2D cursor;
 
-        [Header("TOP LEVEL")]
+        [Header("TITLE MENU")]
         public RectTransform rtTitle;
-        public RectTransform rtPaused;
-        public RectTransform rtSettings;
         public RectTransform rtCredits;
-        public RectTransform rtGeneralSettings;
-        public RectTransform rtControlsSettings;
-        public RectTransform pauseUnderlay;
-        public Button settingsButton;
+        public Button settingsFromTitleButton;
         public Button creditsButton;
         public Button quitButton;
         public Button wishlistButton; // to leave review or something
         public TMP_Text wishlistTxt;
         public Image wishlistGlow;
         public Button discordButton;
-        public Button[] backs = new Button[0];
+
+        [Header("PAUSE MENU")]
+        public RectTransform pauseUnderlay;
+        public RectTransform rtPaused;
+        public Button resume;
+        public Button settingsFromPauseButton;
 
         [Header("PLAY, CONTINUE, NEW GAME")]
         public Button playButton;
@@ -42,6 +43,10 @@ namespace RedCard {
         public Button doNotSaveAndQuit;
 
         [Header("SETTINGS MENU")]
+        public RectTransform rtSettings;
+        public RectTransform rtGeneralSettings;
+        public RectTransform rtControlsSettings;
+        public Button[] backs = new Button[0];
         public RectTransform subcategoryHighlight;
         public Button generalSettingsButton;
         public TMP_Text generalSettingsTxt;
@@ -82,15 +87,20 @@ namespace RedCard {
         public const string Prefs_Vsync = "Vsync";
         public const string Prefs_Vulgarity = "Vulgarity";
 
-        // quitting
+
+        // private variable declarations
         bool quittingToMain;
         float tQuitting = 0f;
         float quitFadeDuration = 1f;
+        bool usingMouse = false;
+        Vector2 lastMousePosition;
+        bool cachedVisibleCursor;
+        CursorLockMode cachedCursorLockMode;
 
         private void Awake() {
 
             // TITLE stuff
-            settingsButton.onClick.AddListener(OpenSettings);
+            settingsFromTitleButton.onClick.AddListener(OpenSettings);
             wishlistButton.onClick.AddListener(OpenWishlist);
             creditsButton.onClick.AddListener(ShowCredits);
             quitButton.onClick.AddListener(() => {
@@ -113,8 +123,12 @@ namespace RedCard {
             yesContinueGame.gameObject.SetActive(false);
             newGame.onClick.AddListener(PlayNewGame);
             newGame.gameObject.SetActive(false);
+            rtConfirmAndQuit.gameObject.SetActive(false);
 
             // PAUSE menu
+            resume.onClick.AddListener(ResumeGame);
+            resume.onClick.AddListener(() => AudioManager.PlaySFXOneShot(selectedSound));
+            settingsFromPauseButton.onClick.AddListener(OpenSettings);
             saveAndQuit.onClick.AddListener(() => {
                 AudioManager.PlaySFXOneShot(selectedSound);
                 rtConfirmAndQuit.gameObject.SetActive(true);
@@ -224,14 +238,36 @@ namespace RedCard {
 
 
         private void Update() {
+            if (usingMouse) {
+                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+                // check for gamepad input?
+            }
+            else {
+                if (Mouse.current != null) {
+                    Vector2 mousePosition = Mouse.current.position.ReadValue();
+                    if (mousePosition != lastMousePosition) {
+                        usingMouse = true;
+                        Cursor.visible = true;
+                    }
+                    lastMousePosition = mousePosition;
+                }
+            }
             if (quittingToMain) {
                 tQuitting += Time.unscaledDeltaTime;
                 fadeOverlay.color = Color.Lerp(Color.clear, Color.black, tQuitting / quitFadeDuration);
+                if (tQuitting >= quitFadeDuration) {
+                    Time.timeScale = 1f;
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+                }
             }
         }
 
         private void ClickedOnWhistleMaybe(InputAction.CallbackContext ctx) {
             if (title) title.ClickedOnWhistleMaybe();
+        }
+
+        private void Unpaused(InputAction.CallbackContext ctx) {
+            if (!title) ResumeGame(); // silently?
         }
 
         private void CheckForSaveOrPlay() {
@@ -284,6 +320,11 @@ namespace RedCard {
             fadeOverlay.gameObject.SetActive(true);
         }
 
+        private void ResumeGame() {
+            Time.timeScale = 1f;
+            gameObject.SetActive(false);
+        }
+
         private void OpenSettings() {
             AudioManager.PlaySFXOneShot(selectedSound);
             rtTitle.gameObject.SetActive(false);
@@ -327,6 +368,8 @@ namespace RedCard {
                 rtCredits.gameObject.SetActive(false);
                 fadeOverlay.gameObject.SetActive(false);
                 pauseUnderlay.gameObject.SetActive(false);
+                discordButton.transform.SetParent(transform);
+                discordButton.transform.SetAsFirstSibling();
             }
             else {
                 rtTitle.gameObject.SetActive(false);
@@ -532,24 +575,30 @@ namespace RedCard {
         }
 
         private void OnEnable() {
-            Debug.LogWarning("on enable menu");
-            ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             string mapName = BathroomMirror.MIRROR_ACTION_MAP;
-            foreach (PlayerInput input in allInput) {
-                InputActionMap map = input.actions.FindActionMap(mapName);
-                if (map != null) input.SwitchCurrentActionMap(mapName);
-                else Debug.LogError("can't find map: " + mapName);
-            }
+            RedMatch.AssignMap(mapName);
             var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
             if (action != null) {
                 action.started += ClickedOnWhistleMaybe;
             }
 
+            action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Pause");
+            if (action != null) {
+                action.started += Unpaused;
+            }
+
+            float x = cursor.width / 2f;
+            float y = cursor.height / 2f;
+            Cursor.SetCursor(cursor, new Vector2(x, y), CursorMode.Auto);
+
+            cachedVisibleCursor = Cursor.visible;
+            cachedCursorLockMode = Cursor.lockState;
             Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
+
         
         private void OnDisable() {
-            Debug.LogWarning("on DISABLE menu");
             string mapName = BathroomMirror.MIRROR_ACTION_MAP;
             if (PlayerInput.all.Count > 0) {
                 var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
@@ -557,6 +606,10 @@ namespace RedCard {
                     action.started -= ClickedOnWhistleMaybe;
                 }
             }
+            RedMatch.AssignMap(RedMatch.REFEREEING_ACTION_MAP);
+
+            Cursor.visible = cachedVisibleCursor;
+            Cursor.lockState = cachedCursorLockMode;
         }
     }
 }

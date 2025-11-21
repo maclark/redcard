@@ -2496,7 +2496,7 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e5fa8011-9c67-4bf7-9493-cb4d99761be5"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/p"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

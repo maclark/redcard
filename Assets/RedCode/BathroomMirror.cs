@@ -626,10 +626,12 @@ namespace RedCard {
 
         private void OnDestroy() {
             string map = MIRROR_ACTION_MAP;
+            if (PlayerInput.all.Count > 0) { 
             var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("PrimaryAction");
-            if (action != null) {
-                action.started -= PrimaryAction;
-                action.canceled -= PrimaryAction;
+                if (action != null) {
+                    action.started -= PrimaryAction;
+                    action.canceled -= PrimaryAction;
+                }
             }
         }
 

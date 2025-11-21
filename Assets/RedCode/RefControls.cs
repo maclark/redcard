@@ -375,12 +375,7 @@ namespace RedCard {
             // find folder Assets/FootballSimulator/Input/engine.inputactions
             // voila
             string mapName = RedMatch.REFEREEING_ACTION_MAP;
-            var allInput = PlayerInput.all;
-            foreach (var input in allInput) {
-                InputActionMap map = input.actions.FindActionMap(mapName);
-                if (map != null) input.SwitchCurrentActionMap(mapName);
-                else Debug.LogError("can't find action map for " + mapName);
-            }
+            RedMatch.AssignMap(mapName);
 
             var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Pause");
             if (action != null) {
@@ -743,8 +738,6 @@ namespace RedCard {
 
         // left-click, right trigger, screen tap
         private void PrimaryAction(InputAction.CallbackContext ctx) {
-
-            Debug.LogWarning("primary happening?"); 
 
             if (hud.wheel.on) {
                 hud.wheel.PrimaryAction(ctx, target);

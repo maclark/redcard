@@ -1,5 +1,7 @@
-using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
+using System;
 using System.Collections.Generic;
 
 namespace RedCard {
@@ -731,6 +733,15 @@ namespace RedCard {
             lr.SetPositions(smoothedLine.ToArray());
         }
 
+
+        public static void AssignMap(string mapName) {
+            ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
+            foreach (PlayerInput input in allInput) {
+                InputActionMap map = input.actions.FindActionMap(mapName);
+                if (map != null) input.SwitchCurrentActionMap(mapName);
+                else Debug.LogError("can't find map: " + mapName);
+            }
+        }
 
         public void Save() {
             Debug.LogWarning("implement saving game!");

@@ -10,7 +10,6 @@ namespace RedCard {
         [Header("ASSIGNATIONS")]
         public Camera mainCamera;
         public Rigidbody rbWhistle;
-        public Texture2D cursor;
         public Menu menu;
 
         [Header("WISHLIST GLOW")]
@@ -46,10 +45,6 @@ namespace RedCard {
             Menu.ResetPrefs(); 
             Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
 
-            float x = cursor.width / 2f;
-            float y = cursor.height / 2f;
-            Cursor.SetCursor(cursor, new Vector2(x, y), CursorMode.Auto);
-            Cursor.visible = false;
             usingMouse = false;
             
             KnockWhistle(.5f * Vector3.right);
@@ -70,22 +65,6 @@ namespace RedCard {
         }
 
         private void Update() {
-
-            if (usingMouse) {
-                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
-                // check for gamepad input?
-            }
-            else {
-                if (Mouse.current != null) {
-                    Vector2 mousePosition = Mouse.current.position.ReadValue();
-                    if (mousePosition != lastMousePosition) {
-                        usingMouse = true;
-                        Cursor.visible = true;
-                    }
-                    lastMousePosition = mousePosition;
-                }
-            }
-
             if (!whistleIsIdle && rbWhistle.angularVelocity.sqrMagnitude < whistleStillThreshold) {
                 tWhistleIdle += Time.deltaTime;
                 if (tWhistleIdle > whistleIdleThreshold) {
