@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
 
@@ -6,6 +7,8 @@ using TMPro;
 namespace RedCard {
 
     public class TitleScreen : MonoBehaviour {
+
+        public bool makingTrailer = false;
 
         [Header("ASSIGNATIONS")]
         public Camera mainCamera;
@@ -48,6 +51,10 @@ namespace RedCard {
 
             menu.title = this;
             menu.OpenTopLevelMenu();
+            if (makingTrailer) {
+                menu.rtTitle.gameObject.SetActive(false);
+                menu.discordButton.gameObject.SetActive(false);
+            }
 
             PointerHandler phWishlist = menu.wishlistButton.gameObject.AddComponent<PointerHandler>();
             phWishlist.onEnter += (_data) => {
@@ -61,6 +68,11 @@ namespace RedCard {
         }
 
         private void Update() {
+
+            if (makingTrailer && Keyboard.current.spaceKey.wasPressedThisFrame) {
+                KnockWhistle(new Vector3(Random.value - .5f, Random.value - .5f, Random.value - .5f));
+            }
+
             if (!whistleIsIdle && rbWhistle.angularVelocity.sqrMagnitude < whistleStillThreshold) {
                 tWhistleIdle += Time.deltaTime;
                 if (tWhistleIdle > whistleIdleThreshold) {
@@ -115,7 +127,13 @@ namespace RedCard {
                 tColor -= colorPeriod;
                 colorC = colorB;
                 colorB = colorA;
-                colorA = wishlistColors.GetRandom(); 
+                colorA = wishlistColors.GetRandom();
+                int tries = 0;
+                while (colorA == colorB || colorA == colorC) {
+                    colorA = wishlistColors.GetRandom();
+                    tries++;
+                    if (tries > 99) break;
+                }
             }
 
             colorTo = Color.Lerp(colorB, colorA, tColor / colorPeriod);

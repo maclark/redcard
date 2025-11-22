@@ -238,6 +238,7 @@ namespace RedCard {
 
 
         private void Update() {
+
             if (usingMouse) {
                 UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
                 // check for gamepad input?

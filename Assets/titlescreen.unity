@@ -1745,7 +1745,6 @@ MonoBehaviour:
   - {r: 0, g: 0.6967912, b: 1, a: 1}
   - {r: 0.9003372, g: 0, b: 1, a: 1}
   - {r: 0.73851275, g: 0.5613208, b: 1, a: 1}
-  - {r: 0.9520531, g: 1, b: 0.4669811, a: 1}
   - {r: 0, g: 1, b: 1, a: 1}
   - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   - {r: 1, g: 0.3066038, b: 0.3066038, a: 1}
@@ -5001,6 +5000,18 @@ PrefabInstance:
     - target: {fileID: 345583205022336263, guid: 75885e7ce1c0bfc4eb719a4c8f7a2fed, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 705574864917886063, guid: 75885e7ce1c0bfc4eb719a4c8f7a2fed, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 705574864917886063, guid: 75885e7ce1c0bfc4eb719a4c8f7a2fed, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 705574864917886063, guid: 75885e7ce1c0bfc4eb719a4c8f7a2fed, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 920667354307808868, guid: 75885e7ce1c0bfc4eb719a4c8f7a2fed, type: 3}
       propertyPath: m_AnchorMax.x

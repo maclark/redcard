@@ -12,13 +12,12 @@ if ball waay out of bounds, and no call, players should behave appropriately (ge
 if ball slightly out of bounds, linesman should start waving flag
 
 in ref's gym bag:
-- men's fitness;w
-
-- crossword puzzle(s)
-- henry george
-- the nature of refereeing and ruling
-- note from daughter
+- men's fitness
 - IFAB laws of the game
+- progress & poverty
+- note from daughter
+- other jokes? bengay? 
+- crossword puzzle(s)
 
 difficulty:
 kids, no cussing, parents get angry?
@@ -31,7 +30,6 @@ sounds:
 - customization: maybe some grunts and and hrms and ahs ?
 - customization: switch arms, dominant, leave  
 
-
 customization:
 - from locker?
 - make camera bob around some?
@@ -39,3 +37,29 @@ customization:
 - some of the skin colors are a little too albino...but maybe need a mapping from skin color to mesh color
 - rings, bracelets?
 - amputation
+
+business:
+- gifs/video
+- steam page
+- website
+- discord
+- socials: tiktok
+
+
+trailer:
+IN A TIME BEFORE V.A.R.
+tying his laces
+ONE MAN
+checking his watch
+BLEW THE WHISTLE...
+*whistle blows* open arms gesture, kick off
+smash cut to dribbling and panting
+smash cut to dribbling and hard foul
+*whistle blows*
+"are you fucking blind?"
+smash cut to REDCARD being shown
+player charges ref and knocks him out
+title screen: REDCARD
+card: blow the whistle 
+by World Cup '26 
+...if it kills me (or Kurt)
