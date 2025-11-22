@@ -12,6 +12,8 @@ public class TypeItOut : MonoBehaviour
     float t;
     int index;
 
+
+
     void Start()
     {
         Debug.Assert(goal.Length == delays.Length);

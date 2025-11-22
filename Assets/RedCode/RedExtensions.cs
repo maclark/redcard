@@ -36,4 +36,8 @@ public static class RedExtensions
 
         return list[Random.Range(0, list.Count)];
     }
+
+    public static Color SetAlpha(this Color c, float alpha) {
+        return new Color(c.r, c.g, c.b, Mathf.Clamp01(alpha));
+    }
 }
