@@ -23,6 +23,8 @@ namespace RedCard {
         public ArmData data;
 
         public void Init() {
+            Debug.Assert(nails.Length == 5, "not 5 nails nails!");
+
             SetSkinColor(data.skinColorIndex);
             SetHairColor(data.hairColorIndex);
             UpdateMuscle(); // must be done before hair density so radius is correctly calculated 
@@ -43,7 +45,16 @@ namespace RedCard {
         }
 
         public void UpdateNails() {
-            //
+            if (nails.Length != data.nailColorIndices.Length) {
+                Debug.LogError("mismatch nails to nail color indices");
+            }
+            else {
+                for (int i = 0; i < nails.Length; i++) {
+                    Color c = RedMatch.match.customizationOptions.GetNailMeshColor(data.nailColorIndices[i]);
+                    if (nails[i].materials.Length > 0) nails[i].materials[0].color = c;
+                    else Debug.LogError("missing material on nail_" + i);
+                }
+            }
         }
 
         public void UpdateHairLength() {

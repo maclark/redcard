@@ -28,7 +28,7 @@ namespace RedCard {
         }
 
         public void SelectedSwatch(Button b, int index) {
-            if (customCan.transform.parent && customCan.transform.parent.TryGetComponent(out RefereeeCustomizer bathMirror)) {
+            if (customCan.transform.parent && customCan.transform.parent.TryGetComponent(out RefereeCustomizer bathMirror)) {
                 bathMirror.SelectedColor(Category.Nails, index);
             }
             swatchSelectionHighlight.gameObject.SetActive(true);

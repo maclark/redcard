@@ -64,7 +64,7 @@ namespace RedCard {
         public RectTransform swatchHoverHighlight;
         public Button highlighted;
 
-        private RefereeeCustomizer bathMirror;
+        private RefereeCustomizer bathMirror;
         private bool initialized = false;
 
 
@@ -106,7 +106,7 @@ namespace RedCard {
         }
 
         // particular values will be set when el arbitro approaches the mirror
-        public void InitSkinAndHairColorButtons(RefereeeCustomizer motherMirror) {
+        public void InitSkinAndHairColorButtons(RefereeCustomizer motherMirror) {
             if (initialized) return;
             initialized = true;
 

@@ -58,7 +58,7 @@ namespace RedCard {
                     break;
 
                 case Name.BathroomMirror:
-                    if (interactable.TryGetComponent(out RefereeeCustomizer mirror)) {
+                    if (interactable.TryGetComponent(out RefereeCustomizer mirror)) {
                         mirror.ApproachMirror(RedMatch.match.arbitro);
                     }
                     else Debug.LogError("mirror missing mirror");

@@ -1,11 +1,5 @@
 using #GAMEPAD to note things that need to be tested with...the gamepad!
 
-Does Left click take things out of the bag? Do we need to teach throwing items? Or is E to grab?
-grabbing insta drops or something, then it falls thru floor lel
-
-do we split up RedMatch.Period prematch into LockerRoom, Tunnel, CoinToss, PreGame?
-counterstrike controls or QERF abilities or wheel
-
 inferred position of foul + gesture to correct
 turn off simulator audiolistener once embodied within redref with audiolistener
 if ball waay out of bounds, and no call, players should behave appropriately (gesture for call?)
@@ -31,7 +25,6 @@ sounds:
 - customization: switch arms, dominant, leave  
 
 customization:
-- from locker?
 - make camera bob around some?
 - nail painting doesn't change world
 - some of the skin colors are a little too albino...but maybe need a mapping from skin color to mesh color
@@ -45,16 +38,17 @@ business:
 - discord
 - socials: tiktok
 
-
 trailer:
-IN A TIME BEFORE V.A.R.
+BEFORE THERE WAS V.A.R.
 tying his laces
-ONE MAN
+ONE MAN STOOD ALONE
 checking his watch
-BLEW THE WHISTLE...
+SAFEGUARDING THE BEAUTIFUL GAME
 *whistle blows* open arms gesture, kick off
-smash cut to dribbling and panting
-smash cut to dribbling and hard foul
+FROM THE DEPRAVITY OF MEN
+two footed tackle
+elbow foul
+headbutt
 *whistle blows*
 "are you fucking blind?"
 smash cut to REDCARD being shown

@@ -515,6 +515,7 @@ MonoBehaviour:
   raisingCardThreshold: 0.33
   pitch: 0
   yaw: 0
+  debugLooking: 0
   equipped: 0
   lastLook: {x: 0, y: 0}
 --- !u!1 &3017808563782368073
@@ -7048,6 +7049,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1988220886940770544}
     m_Modifications:
+    - target: {fileID: 186056175552043009, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.04000008
+      objectReference: {fileID: 0}
     - target: {fileID: 1215166924281345713, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
       propertyPath: m_Name
       value: LeftShoulder
@@ -7116,6 +7121,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6094067531757092094, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.04000008
+      objectReference: {fileID: 0}
+    - target: {fileID: 6600053246283184719, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.04000008
+      objectReference: {fileID: 0}
+    - target: {fileID: 7237733370180039171, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.04000008
+      objectReference: {fileID: 0}
     - target: {fileID: 7499822874170183826, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
@@ -7123,6 +7140,10 @@ PrefabInstance:
     - target: {fileID: 7499822874170183826, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794224402836591466, guid: d43caef2f9fd9cb4c89b95ffae36dbbf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.04000008
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

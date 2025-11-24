@@ -147,7 +147,7 @@ namespace RedCard {
         [Header("INTERACTABLES MAYBE")]
         public Item itemHeld;
         public Item itemTouching;
-        public RefereeeCustomizer mirror;
+        public RefereeCustomizer mirror;
         public float itemTossStrength = 1f; // #GAMEPAD
         public Interactable interactableTouching;
         public float interactibility_range = 1.5f;
@@ -251,11 +251,12 @@ namespace RedCard {
         public bool debugLooking = false;
         public RefEquipment equipped;
 
-        // can't do this at runtime: LayerMask.NameToLayer("RefBody");
+        // can't do this at runtime: LayerMask.NameToLayer(...);
         public static readonly int Default_Layer = 0;
-        public static readonly int RefArms_Layer = 12;
-        public static readonly int Item_Layer = 13; 
-        public static readonly int RefBody_Layer = 14;
+        public static readonly int RefArms_Layer = 6;
+        public static readonly int RefBody_Layer = 7;
+        public static readonly int BookkUI_Layer = 8;
+        public static readonly int Item_Layer = 9; 
 
         private bool debugStartWithEquipment = false;
         private Dictionary<InputAction, List<Action<InputAction.CallbackContext>>> actionRegistry = new Dictionary<InputAction, List<Action<InputAction.CallbackContext>>>();
@@ -548,7 +549,7 @@ namespace RedCard {
             switch (itemHeld.iName) {
 
                 case ItemName.RuleBook:
-                    if (itemHeld.TryGetComponent(out RulesOfSoccer ruleBook)) {
+                    if (itemHeld.TryGetComponent(out Book ruleBook)) {
                         ruleBook.rb.isKinematic = true;
                         ruleBook.transform.localRotation = Quaternion.Euler(-5f, 180f, 0f);
                     }
@@ -602,21 +603,18 @@ namespace RedCard {
             }
 
         }
+
         private void DropItem() {
             if (!itemHeld) {
                 Debug.LogWarning("DropItem, but no item held");
                 return;
             }
 
+            InputAction.CallbackContext _ctx = new InputAction.CallbackContext();
+            if (itemHeld.onDropped != null && itemHeld.onDropped(_ctx, this)) return; //// early return///
+
             print("dropping item held " + itemHeld.iName);
             switch (itemHeld.iName) {
-                case ItemName.RuleBook:
-                    if (itemHeld.TryGetComponent(out RulesOfSoccer ruleBook)) {
-                        ruleBook.openBook.gameObject.SetActive(false);
-                        ruleBook.closedBook.gameObject.SetActive(true);
-                    }
-                    else Debug.LogError("no RulesOfSoccer component on item");
-                    break;
 
                 case ItemName.Coin:
                     if (coin) { 
@@ -726,27 +724,6 @@ namespace RedCard {
             }
         }
 
-        private void ItemHeldPrimaryAction(InputAction.CallbackContext ctx) {
-
-            if (!itemHeld) {
-                Debug.LogError("can't do primary  action for itemheld if no item held!");
-                return; /////early return//////////
-            }
-
-
-            switch (itemHeld.iName) {
-                case ItemName.RuleBook:
-                    if (itemHeld.TryGetComponent(out RulesOfSoccer ruleBook)) {
-                        ruleBook.openBook.gameObject.SetActive(!ruleBook.openBook.gameObject.activeSelf);
-                        ruleBook.closedBook.gameObject.SetActive(!ruleBook.closedBook.gameObject.activeSelf);
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
         // left-click, right trigger, screen tap
         private void PrimaryAction(InputAction.CallbackContext ctx) {
 
@@ -755,9 +732,8 @@ namespace RedCard {
                 return; ////////earlyreturn///////////
             }
 
-            if (itemHeld) {
-                ItemHeldPrimaryAction(ctx);
-                return; /////////////////earlyreturn//////////////////
+            if (itemHeld && itemHeld.onPrimary != null) {
+                if (itemHeld.onPrimary(ctx, this)) return; /////////////////earlyreturn//////////////////
             }
 
             switch (equipped) {
@@ -933,6 +909,10 @@ namespace RedCard {
             if (hud.wheel.on) {
                 hud.wheel.SecondaryAction(ctx);
                 return; ///////////earlyreturn///////////
+            }
+
+            if (itemHeld && itemHeld.onSecondary != null) {
+                if (itemHeld.onSecondary(ctx, this)) return; ////////earlyreturn//////////
             }
 
             switch (equipped) {

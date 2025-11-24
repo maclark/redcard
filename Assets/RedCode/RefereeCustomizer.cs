@@ -43,7 +43,7 @@ namespace RedCard {
         PlacingTattoo,
     }
 
-    public class RefereeeCustomizer : MonoBehaviour {
+    public class RefereeCustomizer : MonoBehaviour {
 
         [Header("ASSIGNATIONS")]
         public GameObject customizationCanvasPrefab;
@@ -63,7 +63,7 @@ namespace RedCard {
 
 
         public const int MAX_TATTOOS = 3;
-        public const string MIRROR_ACTION_MAP = "GazingInMirror";
+        public const string UI_MAP = "GazingInMirror";
 
         Vector3 approachStartPos;
         Quaternion approachStartGaze;
@@ -110,7 +110,7 @@ namespace RedCard {
             }
 
             // input
-            string map = MIRROR_ACTION_MAP;
+            string map = UI_MAP;
             var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("PrimaryAction");
             if (action != null) {
                 action.started += PrimaryAction;
@@ -232,7 +232,7 @@ namespace RedCard {
                 }
                 customCan.nails[nailIndex].image.color = customCan.nailPolishBrush.bristles.color;
                 currentArm.data.nailColorIndices[nailIndex] = nailColorIndex;
-                // #TODO actually pain the referee's 3d nails
+                currentArm.UpdateNails();
             }
             ArmData.SaveArms(arbitro.leftArm.data, arbitro.rightArm.data);
         }
@@ -510,9 +510,9 @@ namespace RedCard {
             
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             foreach (PlayerInput input in allInput) {
-                InputActionMap map = input.actions.FindActionMap(MIRROR_ACTION_MAP);
-                if (map != null) input.SwitchCurrentActionMap(MIRROR_ACTION_MAP);
-                else Debug.LogError("can't find map: " + MIRROR_ACTION_MAP);
+                InputActionMap map = input.actions.FindActionMap(UI_MAP);
+                if (map != null) input.SwitchCurrentActionMap(UI_MAP);
+                else Debug.LogError("can't find map: " + UI_MAP);
             }
 
             arbitro = approacher;
@@ -623,7 +623,7 @@ namespace RedCard {
         }
 
         private void OnDestroy() {
-            string map = MIRROR_ACTION_MAP;
+            string map = UI_MAP;
             if (PlayerInput.all.Count > 0) { 
             var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("PrimaryAction");
                 if (action != null) {

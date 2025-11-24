@@ -87,6 +87,9 @@ namespace RedCard {
         public const string Prefs_Vsync = "Vsync";
         public const string Prefs_Vulgarity = "Vulgarity";
 
+        // #TODO
+        public const string Prefs_UnconfineCursor = "UnconfineCursor";
+
 
         // private variable declarations
         bool quittingToMain;
@@ -576,7 +579,7 @@ namespace RedCard {
         }
 
         private void OnEnable() {
-            string mapName = RefereeeCustomizer.MIRROR_ACTION_MAP;
+            string mapName = RefereeCustomizer.UI_MAP;
             RedMatch.AssignMap(mapName);
             var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
             if (action != null) {
@@ -600,7 +603,7 @@ namespace RedCard {
 
         
         private void OnDisable() {
-            string mapName = RefereeeCustomizer.MIRROR_ACTION_MAP;
+            string mapName = RefereeCustomizer.UI_MAP;
             if (PlayerInput.all.Count > 0) {
                 var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
                 if (action != null) {
