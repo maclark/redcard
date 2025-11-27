@@ -1165,90 +1165,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8249420877937893655, guid: 592715beeb3def94bb61f4f83e36ac72, type: 3}
+      propertyPath: m_Size.z
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8249420877937893655, guid: 592715beeb3def94bb61f4f83e36ac72, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1687204644937415368, guid: 592715beeb3def94bb61f4f83e36ac72, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1579394756}
-    - targetCorrespondingSourceObject: {fileID: 1687204644937415368, guid: 592715beeb3def94bb61f4f83e36ac72, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1579394755}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 592715beeb3def94bb61f4f83e36ac72, type: 3}
 --- !u!4 &1579394753 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2027172903548772466, guid: 592715beeb3def94bb61f4f83e36ac72, type: 3}
   m_PrefabInstance: {fileID: 1579394752}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1579394754 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1687204644937415368, guid: 592715beeb3def94bb61f4f83e36ac72, type: 3}
-  m_PrefabInstance: {fileID: 1579394752}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1579394755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579394754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d1307e370a7ed44799b7a47e36987f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RedCard.RefereeeCustomizer
-  customizationCanvasPrefab: {fileID: 4414233266155591460, guid: d56c0365c3c439148b139784838d64ab, type: 3}
-  approachSpeed: 1
-  inFrontOfMirrorOffset: 1
-  arm_fov: 50
-  mirrorCanvasFadeDuration: 0.25
-  approachCurve:
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  customCan: {fileID: 0}
-  mode: 0
-  currentArm: {fileID: 0}
-  otherArm: {fileID: 0}
-  approachStartPos: {x: 0, y: 0, z: 0}
-  approachStartGaze: {x: 0, y: 0, z: 0, w: 0}
-  t: 0
-  arbitro: {fileID: 0}
-  equippedNailPolishBrush: 0
-  usingSponge: 0
-  nailColorIndex: 0
---- !u!114 &1579394756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579394754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b71b4de8fe9952f469f21bbcf2ac70bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RedCard.Interactable
-  intName: 3
-  isInteractable: 1
 --- !u!1001 &1651524808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1443,7 +1377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1513414844287196041, guid: 75885e7ce1c0bfc4eb719a4c8f7a2fed, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000047683716
+      value: -0.000017166138
       objectReference: {fileID: 0}
     - target: {fileID: 1657171806123178645, guid: 75885e7ce1c0bfc4eb719a4c8f7a2fed, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1693,6 +1627,7 @@ Transform:
   - {fileID: 812236405}
   - {fileID: 630176904}
   - {fileID: 1579394753}
+  - {fileID: 824061311797531324}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2057975655
@@ -1975,6 +1910,40 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
+--- !u!1 &10264805279909894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 824061311797531324}
+  - component: {fileID: 7292881348739077081}
+  - component: {fileID: 7292881348739077083}
+  - component: {fileID: 7292881348739077082}
+  m_Layer: 0
+  m_Name: customizer access
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &824061311797531324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10264805279909894}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1969834659}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2532310763534137742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2032,6 +2001,86 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69c677a74e9a50a4da418c13c3f02b4f, type: 3}
+--- !u!65 &7292881348739077081
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10264805279909894}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.7070255, y: 1.991257, z: 0.4122224}
+  m_Center: {x: -0.042634785, y: 0.0012664795, z: 0.035078198}
+--- !u!114 &7292881348739077082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10264805279909894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f741d7ca220dbd24bb426c64ef3ba983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RedCard.RefereeeCustomizer
+  customizationCanvasPrefab: {fileID: 4414233266155591460, guid: d56c0365c3c439148b139784838d64ab, type: 3}
+  approachSpeed: 1
+  inFrontOfMirrorOffset: 0.5
+  arm_fov: 50
+  mirrorCanvasFadeDuration: 0.25
+  approachCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  customCan: {fileID: 0}
+  mode: 0
+  currentArm: {fileID: 0}
+  otherArm: {fileID: 0}
+--- !u!114 &7292881348739077083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10264805279909894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b71b4de8fe9952f469f21bbcf2ac70bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RedCard.Interactable
+  intName: 3
+  isInteractable: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

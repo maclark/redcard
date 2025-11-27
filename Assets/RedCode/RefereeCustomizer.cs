@@ -342,6 +342,12 @@ namespace RedCard {
             Arm cachedArm = currentArm;
             currentArm = otherArm;
             otherArm = cachedArm;
+
+            print("currentArm.isdominant " + currentArm.data.isDominant);
+            print("currentArm.side " + currentArm.side);
+            print("otherArm.isdominant " + otherArm.data.isDominant);
+            print("otherArm.side " + otherArm.side);
+            // Escape should still open pause menu I guess
             
             if (currentArm.data.isDominant) {
                 customCan.makeDominantText.text = Language.current[Words.IsDominantChecked];
@@ -355,6 +361,9 @@ namespace RedCard {
             currentArm.transform.localPosition = currentArm.localLoweredPos;
 
             OrientFingers();
+            for (int i = 0; i < customCan.fingers.Length; i++) {
+                customCan.nails[i].image.color = RedMatch.match.customizationOptions.nailSwatchColors[currentArm.data.nailColorIndices[i]];
+            }
 
             arbitro.SlotEquipped((int)RefEquipment.Barehand);
         }
@@ -544,6 +553,9 @@ namespace RedCard {
                 otherArm = arbitro.leftArm;
             }
 
+            print("currentArm.isdominant " + currentArm.data.isDominant);
+            print("otherArm.isdominant " + otherArm.data.isDominant);
+
             // now let's match all the bells and whistles to our current arm!
             ////////////////////////// 
             ////////////////////////// 
@@ -602,7 +614,16 @@ namespace RedCard {
                 return; //////earlyreturn///
             }
 
-            if (!currentArm.data.isDominant) SwitchArms();
+            if (!currentArm.data.isDominant) {
+                // not calling SwitchArms to avoid the ui changing
+                Arm cachedArm = currentArm;
+                currentArm = otherArm;
+                otherArm = cachedArm;
+                otherArm.gameObject.SetActive(false);
+                currentArm.gameObject.SetActive(false);
+                currentArm.transform.localPosition = currentArm.localLoweredPos;
+                arbitro.SlotEquipped((int)RefEquipment.Barehand);
+            }
 
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             foreach (PlayerInput input in allInput) {
