@@ -537,15 +537,15 @@ namespace RedCard {
             itemHeld.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             itemHeld.transform.localPosition = new Vector3(0f, 0f, .5f);
             crossHairs.gameObject.SetActive(false);
-            switch (itemHeld.iName) {
 
-                case ItemName.RuleBook:
-                    if (itemHeld.TryGetComponent(out Book ruleBook)) {
-                        ruleBook.rb.isKinematic = true;
-                        ruleBook.transform.localRotation = Quaternion.Euler(-5f, 180f, 0f);
-                    }
-                    else Debug.LogWarning("item is rulebook but no RuleBook component!");
-                        break;
+            if (itemHeld.onGrabbed != null) {
+                if (itemHeld.onGrabbed(new InputAction.CallbackContext(), this)) {
+                    Debug.LogWarning($"{itemHeld.iName} blocking rest of Grabbed");
+                    return; ////// early exit //////
+                }
+            }
+
+            switch (itemHeld.iName) {
 
                 case ItemName.Coin:
 

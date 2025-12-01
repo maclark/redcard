@@ -429,6 +429,7 @@ MonoBehaviour:
   glycogenStores: 0
   lactateConcentration: 0
   heartRate: 0
+  freeLook: 0
   dashHeartRateCost: 2
   dashBurst: 15
   dashDuration: 0.1

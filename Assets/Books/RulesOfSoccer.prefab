@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7738167951601672971}
   - component: {fileID: 9173235591806437281}
   - component: {fileID: 5364397718683731699}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FrontCover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 5462795446598627190}
   - component: {fileID: 864753889858609317}
   - component: {fileID: 8155293677082867560}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: contents chapter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4674694695941949775}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: OpenBook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 7304979742569957700}
   - component: {fileID: 139308245406681957}
   - component: {fileID: 1206014125954248847}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pages
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 3874344217195917418}
   - component: {fileID: 1115457024900728404}
   - component: {fileID: 415065191726118181}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: Bookmark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +479,7 @@ GameObject:
   - component: {fileID: 2858124741794424639}
   - component: {fileID: 8093496393295438695}
   - component: {fileID: 6832162263362532123}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BackCover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -570,7 +570,7 @@ GameObject:
   - component: {fileID: 5364549354267104488}
   - component: {fileID: 6615394311999694674}
   - component: {fileID: 7507754554833196600}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: RulesOfSoccer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -701,7 +701,7 @@ GameObject:
   - component: {fileID: 8267615456145063499}
   - component: {fileID: 23617134916626862}
   - component: {fileID: 6217180942395675295}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: RightSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -827,7 +827,7 @@ GameObject:
   - component: {fileID: 584703492426681959}
   - component: {fileID: 9170906187328618279}
   - component: {fileID: 2206113464030077891}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: ContentsShortcut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -949,7 +949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3605693085191345792}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ClosedBook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -986,7 +986,7 @@ GameObject:
   - component: {fileID: 7828305183267329116}
   - component: {fileID: 3553431596785848936}
   - component: {fileID: 3248134330500484220}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Binding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1075,7 +1075,7 @@ GameObject:
   - component: {fileID: 3501124046629440991}
   - component: {fileID: 1913651751519136537}
   - component: {fileID: 747887440580276428}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Binding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1164,7 +1164,7 @@ GameObject:
   - component: {fileID: 5774118555274879438}
   - component: {fileID: 1222203481526343003}
   - component: {fileID: 1851541855342036392}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pages
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1255,7 +1255,7 @@ GameObject:
   - component: {fileID: 4143593679996003750}
   - component: {fileID: 737832100356785388}
   - component: {fileID: 2724474532389023251}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: LeffSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1377,7 +1377,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2187330221272302828}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Contents
   m_TagString: Untagged
   m_Icon: {fileID: 0}

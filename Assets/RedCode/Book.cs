@@ -50,6 +50,7 @@ namespace RedCard {
             if (TryGetComponent(out Item it)) {
                 it.onPrimary += ClickedWithBook;
                 it.onSecondary += CloseBook;
+                it.onGrabbed += Grabbed;
                 it.onDropped += Dropped;
             }
             else Debug.LogError("book has no item attached?");
@@ -147,8 +148,19 @@ namespace RedCard {
             return true;
         }
 
+        private bool Grabbed(InputAction.CallbackContext ctx, RefControls arbitro) {
+            rb.isKinematic = true;
+            transform.localRotation = Quaternion.Euler(-5f, 180f, 0f);
+            foreach (Transform t in closedBook.transform) {
+                t.gameObject.layer = RefControls.RefArms_Layer;
+            }
+            return false; // allowing GrabItem in RefControl to continue execution
+        }
+
         private bool Dropped(InputAction.CallbackContext ctx, RefControls arbitro) {
-            print("dropping book");
+            foreach (Transform t in closedBook.transform) {
+                t.gameObject.layer = RefControls.Item_Layer;
+            }
             CloseBook(ctx, arbitro);
             return false; // returning true would block further execution in RefControls
         }
