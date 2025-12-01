@@ -118,7 +118,7 @@ namespace RedCard {
         public float heartRate;
 
         [Header("MOVEMENT")]
-        public bool freeLook = false;
+        public bool canLookAround; // set false in initialization
         public float dashHeartRateCost = 2f;
         public float dashBurst = 15f;
         public float dashDuration = .1f;
@@ -300,7 +300,7 @@ namespace RedCard {
             Cursor.SetCursor(hud.cursor, new Vector2(x, y), CursorMode.Auto);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            freeLook = true;
+            canLookAround = true;
 
             acquiredEquipment.Clear();
             acquiredEquipment.Add(RefEquipment.Barehand);
@@ -398,8 +398,8 @@ namespace RedCard {
 
             action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Look");
             if (action != null) {
-                action.performed += LookInput;
-                RegisterInput(action, LookInput);
+                action.performed += MouseLook;
+                RegisterInput(action, MouseLook);
             }
             else Debug.LogWarning("couldn't find Look action");
 
@@ -447,8 +447,8 @@ namespace RedCard {
 
             action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Arrows");
             if (action != null) {
-                action.performed += ArrowInput;
-                RegisterInput(action, ArrowInput);
+                action.performed += ArrowLook;
+                RegisterInput(action, ArrowLook);
             }
             else Debug.LogWarning("couldn't find Arrows action");
 
@@ -485,8 +485,9 @@ namespace RedCard {
             }
         }
 
-        private void LookInput(InputAction.CallbackContext ctx) {
-            if (lookingWithArrows) return; 
+        private void MouseLook(InputAction.CallbackContext ctx) {
+            if (lookingWithArrows) return;
+            if (!canLookAround) return;
             ///////////////////////earlyreturn///////////////////
 
             var look = ctx.ReadValue<Vector2>();
@@ -503,8 +504,10 @@ namespace RedCard {
             lastLook = look;
         }
 
-        private void ArrowInput(InputAction.CallbackContext ctx) {
-            if (!lookingWithArrows) return; //////////////earlyreturn//////////////
+        private void ArrowLook(InputAction.CallbackContext ctx) {
+            if (!lookingWithArrows) return; 
+            if (!canLookAround) return;
+            //////////////earlyreturn//////////////
 
             arrowsInput = ctx.ReadValue<Vector2>();
             if (hud.wheel.on && !hud.wheel.preppedDialog) {
@@ -1229,24 +1232,22 @@ namespace RedCard {
             }
 
             if (!indicatedTarget) {
-                if (freeLook) {
-                    if (lookingWithArrows) {
+                if (lookingWithArrows) {
 
-                        // Smoothly accelerate lookVelocity toward arrowsInput
-                        lookVelocity = Vector2.MoveTowards(lookVelocity, arrowsInput, acceleration * dt);
+                    // Smoothly accelerate lookVelocity toward arrowsInput
+                    lookVelocity = Vector2.MoveTowards(lookVelocity, arrowsInput, acceleration * dt);
 
-                        // Apply drag when input is near zero, to reduce velocity smoothly
-                        if (arrowsInput.magnitude < 0.01f) {
-                            lookVelocity = Vector2.MoveTowards(lookVelocity, Vector2.zero, arrowsDrag * dt);
-                        }
-
-                        yaw += lookVelocity.x * arrowLookSensitivity * dt;
-                        pitch -= lookVelocity.y * arrowLookSensitivity * dt;
-                        pitch = Mathf.Clamp(pitch, -90f, 90f); // Prevent flipping
-                        cameraTransform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
+                    // Apply drag when input is near zero, to reduce velocity smoothly
+                    if (arrowsInput.magnitude < 0.01f) {
+                        lookVelocity = Vector2.MoveTowards(lookVelocity, Vector2.zero, arrowsDrag * dt);
                     }
-                    else if (!debugLooking) cameraTransform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
+
+                    yaw += lookVelocity.x * arrowLookSensitivity * dt;
+                    pitch -= lookVelocity.y * arrowLookSensitivity * dt;
+                    pitch = Mathf.Clamp(pitch, -90f, 90f); // Prevent flipping
+                    cameraTransform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
                 }
+                else if (!debugLooking) cameraTransform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
             }
             else {
 

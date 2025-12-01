@@ -18,6 +18,8 @@ namespace RedCard {
         public TMP_Text rightPage;
         public TMP_Text leftPageNo;
         public TMP_Text rightPageNo;
+        public Image leftBackground;
+        public Image rightBackground;
         public Image[] pageImages = new Image[0];
 
 
@@ -56,10 +58,10 @@ namespace RedCard {
                 else im.gameObject.SetActive(false);
             }
 
-            leftPage.text = leftWords;
-            rightPage.text = rightWords;
-            leftPageNo.text = Common.int_strings[pageNo];
-            rightPageNo.text = Common.int_strings[pageNo + 1];
+            //leftPage.text = leftWords;
+            //rightPage.text = rightWords;
+            leftPageNo.text = Common.int_strings[pageNo + 1];
+            rightPageNo.text = Common.int_strings[pageNo + 2];
         }
     }
 }

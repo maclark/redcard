@@ -58,7 +58,8 @@ namespace RedCard {
 
         public void ShowPage() {
             // expect some kind of book object with an array of pages and we have page index
-            if (pageIndex < 0 || pageIndex >= bookText.pages.Length) {
+            if (pageIndex < 0 || pageIndex >= bookText.pages.Length - 1) {
+                // remember, pageIndex is just for the left page shown
                 Debug.LogError("pageIndex oob " + pageIndex);
                 pageIndex = 0;
             }
@@ -126,7 +127,7 @@ namespace RedCard {
                 Cursor.lockState = (PlayerPrefs.GetInt(Menu.Prefs_UnconfineCursor) == 1) ? CursorLockMode.None : CursorLockMode.Confined;
 
                 reader = arbitro;
-                reader.freeLook = false;
+                reader.canLookAround = false; // can move CURSOR around heh
 
                 pageIndex = bookmarkIndex;
                 ShowPage();
@@ -141,7 +142,7 @@ namespace RedCard {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             if (reader) {
-                reader.freeLook = true;
+                reader.canLookAround = true;
                 reader = null;
             }
 
