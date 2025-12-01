@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
 using TMPro;
 
 namespace RedCard {
@@ -268,10 +267,6 @@ namespace RedCard {
 
         private void ClickedOnWhistleMaybe(InputAction.CallbackContext ctx) {
             if (title) title.ClickedOnWhistleMaybe();
-        }
-
-        private void Unpaused(InputAction.CallbackContext ctx) {
-            if (!title) ResumeGame(); // silently?
         }
 
         private void CheckForSaveOrPlay() {
@@ -579,16 +574,14 @@ namespace RedCard {
         }
 
         private void OnEnable() {
-            string mapName = RefereeCustomizer.UI_MAP;
+            // if we had book open, don't need to switch to UI_MAP
+            // if we had customizer open, don't need to switch to UI_MAP
+
+            string mapName = RedMatch.UI_MAP;
             RedMatch.AssignMap(mapName);
             var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
             if (action != null) {
                 action.started += ClickedOnWhistleMaybe;
-            }
-
-            action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Pause");
-            if (action != null) {
-                action.started += Unpaused;
             }
 
             float x = cursor.width / 2f;
@@ -603,16 +596,11 @@ namespace RedCard {
 
         
         private void OnDisable() {
-            string mapName = RefereeCustomizer.UI_MAP;
+            string mapName = RedMatch.UI_MAP;
             if (PlayerInput.all.Count > 0) {
                 var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
                 if (action != null) {
                     action.started -= ClickedOnWhistleMaybe;
-                }
-
-                action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Pause");
-                if (action != null) {
-                    action.started -= Unpaused;
                 }
             }
             RedMatch.AssignMap(RedMatch.REFEREEING_ACTION_MAP);

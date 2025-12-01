@@ -63,7 +63,6 @@ namespace RedCard {
 
 
         public const int MAX_TATTOOS = 3;
-        public const string UI_MAP = "GazingInMirror";
 
         Vector3 approachStartPos;
         Quaternion approachStartGaze;
@@ -110,14 +109,14 @@ namespace RedCard {
             }
 
             // input
-            string map = UI_MAP;
-            var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("PrimaryAction");
+            string mapName = RedMatch.UI_MAP;
+            var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
             if (action != null) {
                 action.started += PrimaryAction;
                 action.canceled += PrimaryAction;
             }
             else Debug.LogWarning("couldn't find PrimaryAction action");
-
+            
         }
 
         void HairThicknessSlid(float value) {
@@ -516,12 +515,13 @@ namespace RedCard {
             mode = MirrorMode.Approaching;
 
             customCan.InitSkinAndHairColorButtons(this);
-            
+
+            string mapName = RedMatch.UI_MAP;
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             foreach (PlayerInput input in allInput) {
-                InputActionMap map = input.actions.FindActionMap(UI_MAP);
-                if (map != null) input.SwitchCurrentActionMap(UI_MAP);
-                else Debug.LogError("can't find map: " + UI_MAP);
+                InputActionMap map = input.actions.FindActionMap(mapName);
+                if (map != null) input.SwitchCurrentActionMap(mapName);
+                else Debug.LogError("can't find map: " + mapName);
             }
 
             arbitro = approacher;
@@ -644,9 +644,9 @@ namespace RedCard {
         }
 
         private void OnDestroy() {
-            string map = UI_MAP;
-            if (PlayerInput.all.Count > 0) { 
-            var action = PlayerInput.all[0].actions.FindActionMap(map).FindAction("PrimaryAction");
+            string mapName = RedMatch.UI_MAP;
+            if (PlayerInput.all.Count > 0) {
+                var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
                 if (action != null) {
                     action.started -= PrimaryAction;
                     action.canceled -= PrimaryAction;

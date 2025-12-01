@@ -13,6 +13,10 @@ in ref's gym bag:
 - other jokes? bengay? 
 - crossword puzzle(s)
 
+books:
+- figure out mapping of canvas onto render texture onto mesh
+- render BookUI layer on ArmsCam to avoid clipping issue
+
 difficulty:
 kids, no cussing, parents get angry?
 

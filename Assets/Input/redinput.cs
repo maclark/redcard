@@ -89,7 +89,7 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
     ""name"": ""redinput"",
     ""maps"": [
         {
-            ""name"": ""MatchEngine"",
+            ""name"": ""FS_MatchEngine"",
             ""id"": ""f0bbc5f5-0461-48d3-a12a-2ca887e96dc7"",
             ""actions"": [
                 {
@@ -1227,7 +1227,7 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""UI"",
+            ""name"": ""FS_UI"",
             ""id"": ""cf7a4328-ffff-4d6e-be34-698081385e4b"",
             ""actions"": [
                 {
@@ -2815,7 +2815,7 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""GazingInMirror"",
+            ""name"": ""UI"",
             ""id"": ""7c12df25-c266-4961-8ac2-bdb4375c6e9f"",
             ""actions"": [
                 {
@@ -3344,6 +3344,537 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""FlippingBook"",
+            ""id"": ""ef02a0a8-afca-4e33-ae42-78dac2d3fd6f"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""0f037572-dcfd-46d0-b274-c6da06cfcb1a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveWASD"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""f99057f1-0c8f-4daf-b811-07e1d7c9d2e8"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""5b113471-875b-4cdf-9215-8437719dd436"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""29ad3733-ba20-4adb-884a-ff901e07ef0d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PrimaryAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd0437c4-73dc-4e96-ac7c-7c52bbeeaf71"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""406bf522-5c27-4689-b1e5-8108bf7f936c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""2a40e805-f3ba-4661-9fc3-115d1e760822"",
+                    ""expectedControlType"": ""Delta"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""477ac6b5-0b6d-46a6-bdf0-e64780c41290"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e96b557b-2628-44d7-9f61-5e2dfc47bfea"",
+                    ""path"": ""<XInputController>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XBoxController;Touch"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""49fb3734-9e1a-4bed-967b-abfabbe7eb73"",
+                    ""path"": ""Dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""fc21ea69-02a6-4a02-9d07-4fff5729704e"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""89e637f6-5137-4d47-a825-b7a0809b245e"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""7bfe5ba2-8b85-4c3a-828e-86d4f3022a97"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""565e226f-462c-4a6f-a63c-f48995263216"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""e0fc8934-8dfd-4f4d-87ea-b682cb5856d2"",
+                    ""path"": ""Dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""aa4a8558-8a3e-4b52-811c-a8446f317bfd"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""8a2b5a8f-4675-4120-b61d-018e31b2acb4"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""58b13add-1f9b-469a-8c51-f35a5be3ae06"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""dd903fac-5f27-43f8-9415-bb15db027fe6"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7b62b30-6080-4468-ab6a-872bbdb8be6d"",
+                    ""path"": ""<XRController>/{Primary2DAxis}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XR"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""847db2c2-de63-4529-b778-fb313728c8d1"",
+                    ""path"": ""<Joystick>/stick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d2c62d8-921c-4824-bae8-acda8ce91b65"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fc76182b-98f4-4db2-b471-c9f8ce4605df"",
+                    ""path"": ""<XInputController>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XBoxController;Touch"",
+                    ""action"": ""MoveWASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""8b53aa28-c20e-4a7a-bb14-d85e59ac1f82"",
+                    ""path"": ""Dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveWASD"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""4236cae2-fc46-4000-a458-3c6fc2b3ec99"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""MoveWASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""7354bc50-9835-474c-afe2-4001096809b7"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""MoveWASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""e33c740d-73cc-48d9-a3b6-80a1d5d0a94c"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""MoveWASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""33ca8522-c6af-4a5e-9b06-f6632fa838c6"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""MoveWASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a770d6b2-38f8-4766-86bb-7df1d273b1bc"",
+                    ""path"": ""<XRController>/{Primary2DAxis}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XR"",
+                    ""action"": ""MoveWASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db6e3823-3c14-4ce3-bee6-ea23113ce5fa"",
+                    ""path"": ""<Joystick>/stick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""MoveWASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""85753f87-d0e9-43cc-bdc2-ff1d12ed560d"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""MoveWASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d43a9118-4034-4a5c-a881-e453b6d15cc9"",
+                    ""path"": ""<XInputController>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XBoxController"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""12c166e6-7b7d-4d29-889d-a3e85cf4d870"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d471f8d-4ab8-4c82-bcf1-aa5c85aadfd2"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse;Touch"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2b3a275-1f46-49bd-ae70-25f99774eaf1"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PrimaryAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81625bf6-32e8-4d6e-933b-2fc2339860ff"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PrimaryAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ed67b3f7-0c65-4240-a42e-1cd906142bee"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PrimaryAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ecddf11-9a97-48e3-9927-044fc16fd9da"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SecondaryAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""deda8874-4fb8-42d5-a437-d2bc5a40921f"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SecondaryAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""afbc7af4-513c-4389-b919-6cc204385af9"",
+                    ""path"": ""<Keyboard>/rightShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SecondaryAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f3654229-5a16-45ea-989f-07c4134d9688"",
+                    ""path"": ""<Keyboard>/pageDown"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SecondaryAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f73bf584-3d74-43f3-bdc7-cf378c85c03a"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""bb51e269-2bba-4dc7-9fb6-7701d60e3f6a"",
+                    ""path"": ""Dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Arrows"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""4e7fa573-84d1-4244-b50c-49707f28e580"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Arrows"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""e8d0b4b3-69bf-41ea-8d56-a35f0b015bbb"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Arrows"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""5d59cb3a-93d1-4c81-a902-c5bee952931b"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Arrows"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""8f20d23d-39a2-4ff1-84bc-0c84bbece1fe"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Arrows"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""545effca-29b8-422d-adf6-8e50b0d6077e"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse;Gamepad"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3bbb8359-7738-4404-a7f4-f8fd28d451a0"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -3420,56 +3951,56 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // MatchEngine
-        m_MatchEngine = asset.FindActionMap("MatchEngine", throwIfNotFound: true);
-        m_MatchEngine_Move = m_MatchEngine.FindAction("Move", throwIfNotFound: true);
-        m_MatchEngine_MoveWASD = m_MatchEngine.FindAction("MoveWASD", throwIfNotFound: true);
-        m_MatchEngine_Interact = m_MatchEngine.FindAction("Interact", throwIfNotFound: true);
-        m_MatchEngine_ChangePlayer = m_MatchEngine.FindAction("ChangePlayer", throwIfNotFound: true);
-        m_MatchEngine_Pass = m_MatchEngine.FindAction("Pass", throwIfNotFound: true);
-        m_MatchEngine_Tackle = m_MatchEngine.FindAction("Tackle", throwIfNotFound: true);
-        m_MatchEngine_Shoot = m_MatchEngine.FindAction("Shoot", throwIfNotFound: true);
-        m_MatchEngine_Cross = m_MatchEngine.FindAction("Cross", throwIfNotFound: true);
-        m_MatchEngine_Pause = m_MatchEngine.FindAction("Pause", throwIfNotFound: true);
-        m_MatchEngine_DialogWheel = m_MatchEngine.FindAction("DialogWheel", throwIfNotFound: true);
-        m_MatchEngine_ChangeTacticHigh = m_MatchEngine.FindAction("ChangeTacticHigh", throwIfNotFound: true);
-        m_MatchEngine_ChangeTacticLow = m_MatchEngine.FindAction("ChangeTacticLow", throwIfNotFound: true);
-        m_MatchEngine_ThroughtPass = m_MatchEngine.FindAction("ThroughtPass", throwIfNotFound: true);
-        m_MatchEngine_PrimaryAction = m_MatchEngine.FindAction("PrimaryAction", throwIfNotFound: true);
-        m_MatchEngine_SecondaryAction = m_MatchEngine.FindAction("SecondaryAction", throwIfNotFound: true);
-        m_MatchEngine_DashJump = m_MatchEngine.FindAction("DashJump", throwIfNotFound: true);
-        m_MatchEngine_Look = m_MatchEngine.FindAction("Look", throwIfNotFound: true);
-        m_MatchEngine_Sprint = m_MatchEngine.FindAction("Sprint", throwIfNotFound: true);
-        m_MatchEngine_Arrows = m_MatchEngine.FindAction("Arrows", throwIfNotFound: true);
-        m_MatchEngine_Slot1 = m_MatchEngine.FindAction("Slot1", throwIfNotFound: true);
-        m_MatchEngine_Slot2 = m_MatchEngine.FindAction("Slot2", throwIfNotFound: true);
-        m_MatchEngine_Slot3 = m_MatchEngine.FindAction("Slot3", throwIfNotFound: true);
-        m_MatchEngine_Slot4 = m_MatchEngine.FindAction("Slot4", throwIfNotFound: true);
-        m_MatchEngine_Slot5 = m_MatchEngine.FindAction("Slot5", throwIfNotFound: true);
-        m_MatchEngine_Slot6 = m_MatchEngine.FindAction("Slot6", throwIfNotFound: true);
-        m_MatchEngine_Slot7 = m_MatchEngine.FindAction("Slot7", throwIfNotFound: true);
-        m_MatchEngine_Slot8 = m_MatchEngine.FindAction("Slot8", throwIfNotFound: true);
-        m_MatchEngine_Slot9 = m_MatchEngine.FindAction("Slot9", throwIfNotFound: true);
-        m_MatchEngine_Slot0 = m_MatchEngine.FindAction("Slot0", throwIfNotFound: true);
-        // UI
-        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
-        m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
-        m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
-        m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
-        m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
-        m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
-        m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
-        m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
-        m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
-        m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
-        m_UI_Scroll = m_UI.FindAction("Scroll", throwIfNotFound: true);
-        m_UI_Left = m_UI.FindAction("Left", throwIfNotFound: true);
-        m_UI_Right = m_UI.FindAction("Right", throwIfNotFound: true);
-        m_UI_Approve = m_UI.FindAction("Approve", throwIfNotFound: true);
-        m_UI_ShowHideUI = m_UI.FindAction("ShowHideUI", throwIfNotFound: true);
-        m_UI_SuperSlow = m_UI.FindAction("SuperSlow", throwIfNotFound: true);
-        m_UI_ForceShoot = m_UI.FindAction("ForceShoot", throwIfNotFound: true);
+        // FS_MatchEngine
+        m_FS_MatchEngine = asset.FindActionMap("FS_MatchEngine", throwIfNotFound: true);
+        m_FS_MatchEngine_Move = m_FS_MatchEngine.FindAction("Move", throwIfNotFound: true);
+        m_FS_MatchEngine_MoveWASD = m_FS_MatchEngine.FindAction("MoveWASD", throwIfNotFound: true);
+        m_FS_MatchEngine_Interact = m_FS_MatchEngine.FindAction("Interact", throwIfNotFound: true);
+        m_FS_MatchEngine_ChangePlayer = m_FS_MatchEngine.FindAction("ChangePlayer", throwIfNotFound: true);
+        m_FS_MatchEngine_Pass = m_FS_MatchEngine.FindAction("Pass", throwIfNotFound: true);
+        m_FS_MatchEngine_Tackle = m_FS_MatchEngine.FindAction("Tackle", throwIfNotFound: true);
+        m_FS_MatchEngine_Shoot = m_FS_MatchEngine.FindAction("Shoot", throwIfNotFound: true);
+        m_FS_MatchEngine_Cross = m_FS_MatchEngine.FindAction("Cross", throwIfNotFound: true);
+        m_FS_MatchEngine_Pause = m_FS_MatchEngine.FindAction("Pause", throwIfNotFound: true);
+        m_FS_MatchEngine_DialogWheel = m_FS_MatchEngine.FindAction("DialogWheel", throwIfNotFound: true);
+        m_FS_MatchEngine_ChangeTacticHigh = m_FS_MatchEngine.FindAction("ChangeTacticHigh", throwIfNotFound: true);
+        m_FS_MatchEngine_ChangeTacticLow = m_FS_MatchEngine.FindAction("ChangeTacticLow", throwIfNotFound: true);
+        m_FS_MatchEngine_ThroughtPass = m_FS_MatchEngine.FindAction("ThroughtPass", throwIfNotFound: true);
+        m_FS_MatchEngine_PrimaryAction = m_FS_MatchEngine.FindAction("PrimaryAction", throwIfNotFound: true);
+        m_FS_MatchEngine_SecondaryAction = m_FS_MatchEngine.FindAction("SecondaryAction", throwIfNotFound: true);
+        m_FS_MatchEngine_DashJump = m_FS_MatchEngine.FindAction("DashJump", throwIfNotFound: true);
+        m_FS_MatchEngine_Look = m_FS_MatchEngine.FindAction("Look", throwIfNotFound: true);
+        m_FS_MatchEngine_Sprint = m_FS_MatchEngine.FindAction("Sprint", throwIfNotFound: true);
+        m_FS_MatchEngine_Arrows = m_FS_MatchEngine.FindAction("Arrows", throwIfNotFound: true);
+        m_FS_MatchEngine_Slot1 = m_FS_MatchEngine.FindAction("Slot1", throwIfNotFound: true);
+        m_FS_MatchEngine_Slot2 = m_FS_MatchEngine.FindAction("Slot2", throwIfNotFound: true);
+        m_FS_MatchEngine_Slot3 = m_FS_MatchEngine.FindAction("Slot3", throwIfNotFound: true);
+        m_FS_MatchEngine_Slot4 = m_FS_MatchEngine.FindAction("Slot4", throwIfNotFound: true);
+        m_FS_MatchEngine_Slot5 = m_FS_MatchEngine.FindAction("Slot5", throwIfNotFound: true);
+        m_FS_MatchEngine_Slot6 = m_FS_MatchEngine.FindAction("Slot6", throwIfNotFound: true);
+        m_FS_MatchEngine_Slot7 = m_FS_MatchEngine.FindAction("Slot7", throwIfNotFound: true);
+        m_FS_MatchEngine_Slot8 = m_FS_MatchEngine.FindAction("Slot8", throwIfNotFound: true);
+        m_FS_MatchEngine_Slot9 = m_FS_MatchEngine.FindAction("Slot9", throwIfNotFound: true);
+        m_FS_MatchEngine_Slot0 = m_FS_MatchEngine.FindAction("Slot0", throwIfNotFound: true);
+        // FS_UI
+        m_FS_UI = asset.FindActionMap("FS_UI", throwIfNotFound: true);
+        m_FS_UI_Navigate = m_FS_UI.FindAction("Navigate", throwIfNotFound: true);
+        m_FS_UI_Submit = m_FS_UI.FindAction("Submit", throwIfNotFound: true);
+        m_FS_UI_Cancel = m_FS_UI.FindAction("Cancel", throwIfNotFound: true);
+        m_FS_UI_Point = m_FS_UI.FindAction("Point", throwIfNotFound: true);
+        m_FS_UI_Click = m_FS_UI.FindAction("Click", throwIfNotFound: true);
+        m_FS_UI_ScrollWheel = m_FS_UI.FindAction("ScrollWheel", throwIfNotFound: true);
+        m_FS_UI_MiddleClick = m_FS_UI.FindAction("MiddleClick", throwIfNotFound: true);
+        m_FS_UI_RightClick = m_FS_UI.FindAction("RightClick", throwIfNotFound: true);
+        m_FS_UI_TrackedDevicePosition = m_FS_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
+        m_FS_UI_TrackedDeviceOrientation = m_FS_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        m_FS_UI_Scroll = m_FS_UI.FindAction("Scroll", throwIfNotFound: true);
+        m_FS_UI_Left = m_FS_UI.FindAction("Left", throwIfNotFound: true);
+        m_FS_UI_Right = m_FS_UI.FindAction("Right", throwIfNotFound: true);
+        m_FS_UI_Approve = m_FS_UI.FindAction("Approve", throwIfNotFound: true);
+        m_FS_UI_ShowHideUI = m_FS_UI.FindAction("ShowHideUI", throwIfNotFound: true);
+        m_FS_UI_SuperSlow = m_FS_UI.FindAction("SuperSlow", throwIfNotFound: true);
+        m_FS_UI_ForceShoot = m_FS_UI.FindAction("ForceShoot", throwIfNotFound: true);
         // Refereeing
         m_Refereeing = asset.FindActionMap("Refereeing", throwIfNotFound: true);
         m_Refereeing_Move = m_Refereeing.FindAction("Move", throwIfNotFound: true);
@@ -3494,24 +4025,35 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         m_Refereeing_Slot8 = m_Refereeing.FindAction("Slot8", throwIfNotFound: true);
         m_Refereeing_Slot9 = m_Refereeing.FindAction("Slot9", throwIfNotFound: true);
         m_Refereeing_Slot0 = m_Refereeing.FindAction("Slot0", throwIfNotFound: true);
-        // GazingInMirror
-        m_GazingInMirror = asset.FindActionMap("GazingInMirror", throwIfNotFound: true);
-        m_GazingInMirror_Move = m_GazingInMirror.FindAction("Move", throwIfNotFound: true);
-        m_GazingInMirror_MoveWASD = m_GazingInMirror.FindAction("MoveWASD", throwIfNotFound: true);
-        m_GazingInMirror_Interact = m_GazingInMirror.FindAction("Interact", throwIfNotFound: true);
-        m_GazingInMirror_Pause = m_GazingInMirror.FindAction("Pause", throwIfNotFound: true);
-        m_GazingInMirror_PrimaryAction = m_GazingInMirror.FindAction("PrimaryAction", throwIfNotFound: true);
-        m_GazingInMirror_SecondaryAction = m_GazingInMirror.FindAction("SecondaryAction", throwIfNotFound: true);
-        m_GazingInMirror_Look = m_GazingInMirror.FindAction("Look", throwIfNotFound: true);
-        m_GazingInMirror_Arrows = m_GazingInMirror.FindAction("Arrows", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_Move = m_UI.FindAction("Move", throwIfNotFound: true);
+        m_UI_MoveWASD = m_UI.FindAction("MoveWASD", throwIfNotFound: true);
+        m_UI_Interact = m_UI.FindAction("Interact", throwIfNotFound: true);
+        m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
+        m_UI_PrimaryAction = m_UI.FindAction("PrimaryAction", throwIfNotFound: true);
+        m_UI_SecondaryAction = m_UI.FindAction("SecondaryAction", throwIfNotFound: true);
+        m_UI_Look = m_UI.FindAction("Look", throwIfNotFound: true);
+        m_UI_Arrows = m_UI.FindAction("Arrows", throwIfNotFound: true);
+        // FlippingBook
+        m_FlippingBook = asset.FindActionMap("FlippingBook", throwIfNotFound: true);
+        m_FlippingBook_Move = m_FlippingBook.FindAction("Move", throwIfNotFound: true);
+        m_FlippingBook_MoveWASD = m_FlippingBook.FindAction("MoveWASD", throwIfNotFound: true);
+        m_FlippingBook_Interact = m_FlippingBook.FindAction("Interact", throwIfNotFound: true);
+        m_FlippingBook_Pause = m_FlippingBook.FindAction("Pause", throwIfNotFound: true);
+        m_FlippingBook_PrimaryAction = m_FlippingBook.FindAction("PrimaryAction", throwIfNotFound: true);
+        m_FlippingBook_SecondaryAction = m_FlippingBook.FindAction("SecondaryAction", throwIfNotFound: true);
+        m_FlippingBook_Look = m_FlippingBook.FindAction("Look", throwIfNotFound: true);
+        m_FlippingBook_Arrows = m_FlippingBook.FindAction("Arrows", throwIfNotFound: true);
     }
 
     ~@Redinput()
     {
-        UnityEngine.Debug.Assert(!m_MatchEngine.enabled, "This will cause a leak and performance issues, Redinput.MatchEngine.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, Redinput.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_FS_MatchEngine.enabled, "This will cause a leak and performance issues, Redinput.FS_MatchEngine.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_FS_UI.enabled, "This will cause a leak and performance issues, Redinput.FS_UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Refereeing.enabled, "This will cause a leak and performance issues, Redinput.Refereeing.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_GazingInMirror.enabled, "This will cause a leak and performance issues, Redinput.GazingInMirror.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, Redinput.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_FlippingBook.enabled, "This will cause a leak and performance issues, Redinput.FlippingBook.Disable() has not been called.");
     }
 
     /// <summary>
@@ -3584,169 +4126,169 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // MatchEngine
-    private readonly InputActionMap m_MatchEngine;
-    private List<IMatchEngineActions> m_MatchEngineActionsCallbackInterfaces = new List<IMatchEngineActions>();
-    private readonly InputAction m_MatchEngine_Move;
-    private readonly InputAction m_MatchEngine_MoveWASD;
-    private readonly InputAction m_MatchEngine_Interact;
-    private readonly InputAction m_MatchEngine_ChangePlayer;
-    private readonly InputAction m_MatchEngine_Pass;
-    private readonly InputAction m_MatchEngine_Tackle;
-    private readonly InputAction m_MatchEngine_Shoot;
-    private readonly InputAction m_MatchEngine_Cross;
-    private readonly InputAction m_MatchEngine_Pause;
-    private readonly InputAction m_MatchEngine_DialogWheel;
-    private readonly InputAction m_MatchEngine_ChangeTacticHigh;
-    private readonly InputAction m_MatchEngine_ChangeTacticLow;
-    private readonly InputAction m_MatchEngine_ThroughtPass;
-    private readonly InputAction m_MatchEngine_PrimaryAction;
-    private readonly InputAction m_MatchEngine_SecondaryAction;
-    private readonly InputAction m_MatchEngine_DashJump;
-    private readonly InputAction m_MatchEngine_Look;
-    private readonly InputAction m_MatchEngine_Sprint;
-    private readonly InputAction m_MatchEngine_Arrows;
-    private readonly InputAction m_MatchEngine_Slot1;
-    private readonly InputAction m_MatchEngine_Slot2;
-    private readonly InputAction m_MatchEngine_Slot3;
-    private readonly InputAction m_MatchEngine_Slot4;
-    private readonly InputAction m_MatchEngine_Slot5;
-    private readonly InputAction m_MatchEngine_Slot6;
-    private readonly InputAction m_MatchEngine_Slot7;
-    private readonly InputAction m_MatchEngine_Slot8;
-    private readonly InputAction m_MatchEngine_Slot9;
-    private readonly InputAction m_MatchEngine_Slot0;
+    // FS_MatchEngine
+    private readonly InputActionMap m_FS_MatchEngine;
+    private List<IFS_MatchEngineActions> m_FS_MatchEngineActionsCallbackInterfaces = new List<IFS_MatchEngineActions>();
+    private readonly InputAction m_FS_MatchEngine_Move;
+    private readonly InputAction m_FS_MatchEngine_MoveWASD;
+    private readonly InputAction m_FS_MatchEngine_Interact;
+    private readonly InputAction m_FS_MatchEngine_ChangePlayer;
+    private readonly InputAction m_FS_MatchEngine_Pass;
+    private readonly InputAction m_FS_MatchEngine_Tackle;
+    private readonly InputAction m_FS_MatchEngine_Shoot;
+    private readonly InputAction m_FS_MatchEngine_Cross;
+    private readonly InputAction m_FS_MatchEngine_Pause;
+    private readonly InputAction m_FS_MatchEngine_DialogWheel;
+    private readonly InputAction m_FS_MatchEngine_ChangeTacticHigh;
+    private readonly InputAction m_FS_MatchEngine_ChangeTacticLow;
+    private readonly InputAction m_FS_MatchEngine_ThroughtPass;
+    private readonly InputAction m_FS_MatchEngine_PrimaryAction;
+    private readonly InputAction m_FS_MatchEngine_SecondaryAction;
+    private readonly InputAction m_FS_MatchEngine_DashJump;
+    private readonly InputAction m_FS_MatchEngine_Look;
+    private readonly InputAction m_FS_MatchEngine_Sprint;
+    private readonly InputAction m_FS_MatchEngine_Arrows;
+    private readonly InputAction m_FS_MatchEngine_Slot1;
+    private readonly InputAction m_FS_MatchEngine_Slot2;
+    private readonly InputAction m_FS_MatchEngine_Slot3;
+    private readonly InputAction m_FS_MatchEngine_Slot4;
+    private readonly InputAction m_FS_MatchEngine_Slot5;
+    private readonly InputAction m_FS_MatchEngine_Slot6;
+    private readonly InputAction m_FS_MatchEngine_Slot7;
+    private readonly InputAction m_FS_MatchEngine_Slot8;
+    private readonly InputAction m_FS_MatchEngine_Slot9;
+    private readonly InputAction m_FS_MatchEngine_Slot0;
     /// <summary>
-    /// Provides access to input actions defined in input action map "MatchEngine".
+    /// Provides access to input actions defined in input action map "FS_MatchEngine".
     /// </summary>
-    public struct MatchEngineActions
+    public struct FS_MatchEngineActions
     {
         private @Redinput m_Wrapper;
 
         /// <summary>
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
-        public MatchEngineActions(@Redinput wrapper) { m_Wrapper = wrapper; }
+        public FS_MatchEngineActions(@Redinput wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Move".
+        /// Provides access to the underlying input action "FS_MatchEngine/Move".
         /// </summary>
-        public InputAction @Move => m_Wrapper.m_MatchEngine_Move;
+        public InputAction @Move => m_Wrapper.m_FS_MatchEngine_Move;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/MoveWASD".
+        /// Provides access to the underlying input action "FS_MatchEngine/MoveWASD".
         /// </summary>
-        public InputAction @MoveWASD => m_Wrapper.m_MatchEngine_MoveWASD;
+        public InputAction @MoveWASD => m_Wrapper.m_FS_MatchEngine_MoveWASD;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Interact".
+        /// Provides access to the underlying input action "FS_MatchEngine/Interact".
         /// </summary>
-        public InputAction @Interact => m_Wrapper.m_MatchEngine_Interact;
+        public InputAction @Interact => m_Wrapper.m_FS_MatchEngine_Interact;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/ChangePlayer".
+        /// Provides access to the underlying input action "FS_MatchEngine/ChangePlayer".
         /// </summary>
-        public InputAction @ChangePlayer => m_Wrapper.m_MatchEngine_ChangePlayer;
+        public InputAction @ChangePlayer => m_Wrapper.m_FS_MatchEngine_ChangePlayer;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Pass".
+        /// Provides access to the underlying input action "FS_MatchEngine/Pass".
         /// </summary>
-        public InputAction @Pass => m_Wrapper.m_MatchEngine_Pass;
+        public InputAction @Pass => m_Wrapper.m_FS_MatchEngine_Pass;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Tackle".
+        /// Provides access to the underlying input action "FS_MatchEngine/Tackle".
         /// </summary>
-        public InputAction @Tackle => m_Wrapper.m_MatchEngine_Tackle;
+        public InputAction @Tackle => m_Wrapper.m_FS_MatchEngine_Tackle;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Shoot".
+        /// Provides access to the underlying input action "FS_MatchEngine/Shoot".
         /// </summary>
-        public InputAction @Shoot => m_Wrapper.m_MatchEngine_Shoot;
+        public InputAction @Shoot => m_Wrapper.m_FS_MatchEngine_Shoot;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Cross".
+        /// Provides access to the underlying input action "FS_MatchEngine/Cross".
         /// </summary>
-        public InputAction @Cross => m_Wrapper.m_MatchEngine_Cross;
+        public InputAction @Cross => m_Wrapper.m_FS_MatchEngine_Cross;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Pause".
+        /// Provides access to the underlying input action "FS_MatchEngine/Pause".
         /// </summary>
-        public InputAction @Pause => m_Wrapper.m_MatchEngine_Pause;
+        public InputAction @Pause => m_Wrapper.m_FS_MatchEngine_Pause;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/DialogWheel".
+        /// Provides access to the underlying input action "FS_MatchEngine/DialogWheel".
         /// </summary>
-        public InputAction @DialogWheel => m_Wrapper.m_MatchEngine_DialogWheel;
+        public InputAction @DialogWheel => m_Wrapper.m_FS_MatchEngine_DialogWheel;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/ChangeTacticHigh".
+        /// Provides access to the underlying input action "FS_MatchEngine/ChangeTacticHigh".
         /// </summary>
-        public InputAction @ChangeTacticHigh => m_Wrapper.m_MatchEngine_ChangeTacticHigh;
+        public InputAction @ChangeTacticHigh => m_Wrapper.m_FS_MatchEngine_ChangeTacticHigh;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/ChangeTacticLow".
+        /// Provides access to the underlying input action "FS_MatchEngine/ChangeTacticLow".
         /// </summary>
-        public InputAction @ChangeTacticLow => m_Wrapper.m_MatchEngine_ChangeTacticLow;
+        public InputAction @ChangeTacticLow => m_Wrapper.m_FS_MatchEngine_ChangeTacticLow;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/ThroughtPass".
+        /// Provides access to the underlying input action "FS_MatchEngine/ThroughtPass".
         /// </summary>
-        public InputAction @ThroughtPass => m_Wrapper.m_MatchEngine_ThroughtPass;
+        public InputAction @ThroughtPass => m_Wrapper.m_FS_MatchEngine_ThroughtPass;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/PrimaryAction".
+        /// Provides access to the underlying input action "FS_MatchEngine/PrimaryAction".
         /// </summary>
-        public InputAction @PrimaryAction => m_Wrapper.m_MatchEngine_PrimaryAction;
+        public InputAction @PrimaryAction => m_Wrapper.m_FS_MatchEngine_PrimaryAction;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/SecondaryAction".
+        /// Provides access to the underlying input action "FS_MatchEngine/SecondaryAction".
         /// </summary>
-        public InputAction @SecondaryAction => m_Wrapper.m_MatchEngine_SecondaryAction;
+        public InputAction @SecondaryAction => m_Wrapper.m_FS_MatchEngine_SecondaryAction;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/DashJump".
+        /// Provides access to the underlying input action "FS_MatchEngine/DashJump".
         /// </summary>
-        public InputAction @DashJump => m_Wrapper.m_MatchEngine_DashJump;
+        public InputAction @DashJump => m_Wrapper.m_FS_MatchEngine_DashJump;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Look".
+        /// Provides access to the underlying input action "FS_MatchEngine/Look".
         /// </summary>
-        public InputAction @Look => m_Wrapper.m_MatchEngine_Look;
+        public InputAction @Look => m_Wrapper.m_FS_MatchEngine_Look;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Sprint".
+        /// Provides access to the underlying input action "FS_MatchEngine/Sprint".
         /// </summary>
-        public InputAction @Sprint => m_Wrapper.m_MatchEngine_Sprint;
+        public InputAction @Sprint => m_Wrapper.m_FS_MatchEngine_Sprint;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Arrows".
+        /// Provides access to the underlying input action "FS_MatchEngine/Arrows".
         /// </summary>
-        public InputAction @Arrows => m_Wrapper.m_MatchEngine_Arrows;
+        public InputAction @Arrows => m_Wrapper.m_FS_MatchEngine_Arrows;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Slot1".
+        /// Provides access to the underlying input action "FS_MatchEngine/Slot1".
         /// </summary>
-        public InputAction @Slot1 => m_Wrapper.m_MatchEngine_Slot1;
+        public InputAction @Slot1 => m_Wrapper.m_FS_MatchEngine_Slot1;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Slot2".
+        /// Provides access to the underlying input action "FS_MatchEngine/Slot2".
         /// </summary>
-        public InputAction @Slot2 => m_Wrapper.m_MatchEngine_Slot2;
+        public InputAction @Slot2 => m_Wrapper.m_FS_MatchEngine_Slot2;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Slot3".
+        /// Provides access to the underlying input action "FS_MatchEngine/Slot3".
         /// </summary>
-        public InputAction @Slot3 => m_Wrapper.m_MatchEngine_Slot3;
+        public InputAction @Slot3 => m_Wrapper.m_FS_MatchEngine_Slot3;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Slot4".
+        /// Provides access to the underlying input action "FS_MatchEngine/Slot4".
         /// </summary>
-        public InputAction @Slot4 => m_Wrapper.m_MatchEngine_Slot4;
+        public InputAction @Slot4 => m_Wrapper.m_FS_MatchEngine_Slot4;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Slot5".
+        /// Provides access to the underlying input action "FS_MatchEngine/Slot5".
         /// </summary>
-        public InputAction @Slot5 => m_Wrapper.m_MatchEngine_Slot5;
+        public InputAction @Slot5 => m_Wrapper.m_FS_MatchEngine_Slot5;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Slot6".
+        /// Provides access to the underlying input action "FS_MatchEngine/Slot6".
         /// </summary>
-        public InputAction @Slot6 => m_Wrapper.m_MatchEngine_Slot6;
+        public InputAction @Slot6 => m_Wrapper.m_FS_MatchEngine_Slot6;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Slot7".
+        /// Provides access to the underlying input action "FS_MatchEngine/Slot7".
         /// </summary>
-        public InputAction @Slot7 => m_Wrapper.m_MatchEngine_Slot7;
+        public InputAction @Slot7 => m_Wrapper.m_FS_MatchEngine_Slot7;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Slot8".
+        /// Provides access to the underlying input action "FS_MatchEngine/Slot8".
         /// </summary>
-        public InputAction @Slot8 => m_Wrapper.m_MatchEngine_Slot8;
+        public InputAction @Slot8 => m_Wrapper.m_FS_MatchEngine_Slot8;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Slot9".
+        /// Provides access to the underlying input action "FS_MatchEngine/Slot9".
         /// </summary>
-        public InputAction @Slot9 => m_Wrapper.m_MatchEngine_Slot9;
+        public InputAction @Slot9 => m_Wrapper.m_FS_MatchEngine_Slot9;
         /// <summary>
-        /// Provides access to the underlying input action "MatchEngine/Slot0".
+        /// Provides access to the underlying input action "FS_MatchEngine/Slot0".
         /// </summary>
-        public InputAction @Slot0 => m_Wrapper.m_MatchEngine_Slot0;
+        public InputAction @Slot0 => m_Wrapper.m_FS_MatchEngine_Slot0;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
-        public InputActionMap Get() { return m_Wrapper.m_MatchEngine; }
+        public InputActionMap Get() { return m_Wrapper.m_FS_MatchEngine; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
         public void Enable() { Get().Enable(); }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
@@ -3754,9 +4296,9 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
         public bool enabled => Get().enabled;
         /// <summary>
-        /// Implicitly converts an <see ref="MatchEngineActions" /> to an <see ref="InputActionMap" /> instance.
+        /// Implicitly converts an <see ref="FS_MatchEngineActions" /> to an <see ref="InputActionMap" /> instance.
         /// </summary>
-        public static implicit operator InputActionMap(MatchEngineActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(FS_MatchEngineActions set) { return set.Get(); }
         /// <summary>
         /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
         /// </summary>
@@ -3764,11 +4306,11 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
         /// </remarks>
-        /// <seealso cref="MatchEngineActions" />
-        public void AddCallbacks(IMatchEngineActions instance)
+        /// <seealso cref="FS_MatchEngineActions" />
+        public void AddCallbacks(IFS_MatchEngineActions instance)
         {
-            if (instance == null || m_Wrapper.m_MatchEngineActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_MatchEngineActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_FS_MatchEngineActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_FS_MatchEngineActionsCallbackInterfaces.Add(instance);
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -3864,8 +4406,8 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <remarks>
         /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
         /// </remarks>
-        /// <seealso cref="MatchEngineActions" />
-        private void UnregisterCallbacks(IMatchEngineActions instance)
+        /// <seealso cref="FS_MatchEngineActions" />
+        private void UnregisterCallbacks(IFS_MatchEngineActions instance)
         {
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
@@ -3957,12 +4499,12 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="MatchEngineActions.UnregisterCallbacks(IMatchEngineActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="FS_MatchEngineActions.UnregisterCallbacks(IFS_MatchEngineActions)" />.
         /// </summary>
-        /// <seealso cref="MatchEngineActions.UnregisterCallbacks(IMatchEngineActions)" />
-        public void RemoveCallbacks(IMatchEngineActions instance)
+        /// <seealso cref="FS_MatchEngineActions.UnregisterCallbacks(IFS_MatchEngineActions)" />
+        public void RemoveCallbacks(IFS_MatchEngineActions instance)
         {
-            if (m_Wrapper.m_MatchEngineActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_FS_MatchEngineActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
@@ -3972,125 +4514,125 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
         /// </remarks>
-        /// <seealso cref="MatchEngineActions.AddCallbacks(IMatchEngineActions)" />
-        /// <seealso cref="MatchEngineActions.RemoveCallbacks(IMatchEngineActions)" />
-        /// <seealso cref="MatchEngineActions.UnregisterCallbacks(IMatchEngineActions)" />
-        public void SetCallbacks(IMatchEngineActions instance)
+        /// <seealso cref="FS_MatchEngineActions.AddCallbacks(IFS_MatchEngineActions)" />
+        /// <seealso cref="FS_MatchEngineActions.RemoveCallbacks(IFS_MatchEngineActions)" />
+        /// <seealso cref="FS_MatchEngineActions.UnregisterCallbacks(IFS_MatchEngineActions)" />
+        public void SetCallbacks(IFS_MatchEngineActions instance)
         {
-            foreach (var item in m_Wrapper.m_MatchEngineActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_FS_MatchEngineActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_MatchEngineActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_FS_MatchEngineActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
     /// <summary>
-    /// Provides a new <see cref="MatchEngineActions" /> instance referencing this action map.
+    /// Provides a new <see cref="FS_MatchEngineActions" /> instance referencing this action map.
     /// </summary>
-    public MatchEngineActions @MatchEngine => new MatchEngineActions(this);
+    public FS_MatchEngineActions @FS_MatchEngine => new FS_MatchEngineActions(this);
 
-    // UI
-    private readonly InputActionMap m_UI;
-    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-    private readonly InputAction m_UI_Navigate;
-    private readonly InputAction m_UI_Submit;
-    private readonly InputAction m_UI_Cancel;
-    private readonly InputAction m_UI_Point;
-    private readonly InputAction m_UI_Click;
-    private readonly InputAction m_UI_ScrollWheel;
-    private readonly InputAction m_UI_MiddleClick;
-    private readonly InputAction m_UI_RightClick;
-    private readonly InputAction m_UI_TrackedDevicePosition;
-    private readonly InputAction m_UI_TrackedDeviceOrientation;
-    private readonly InputAction m_UI_Scroll;
-    private readonly InputAction m_UI_Left;
-    private readonly InputAction m_UI_Right;
-    private readonly InputAction m_UI_Approve;
-    private readonly InputAction m_UI_ShowHideUI;
-    private readonly InputAction m_UI_SuperSlow;
-    private readonly InputAction m_UI_ForceShoot;
+    // FS_UI
+    private readonly InputActionMap m_FS_UI;
+    private List<IFS_UIActions> m_FS_UIActionsCallbackInterfaces = new List<IFS_UIActions>();
+    private readonly InputAction m_FS_UI_Navigate;
+    private readonly InputAction m_FS_UI_Submit;
+    private readonly InputAction m_FS_UI_Cancel;
+    private readonly InputAction m_FS_UI_Point;
+    private readonly InputAction m_FS_UI_Click;
+    private readonly InputAction m_FS_UI_ScrollWheel;
+    private readonly InputAction m_FS_UI_MiddleClick;
+    private readonly InputAction m_FS_UI_RightClick;
+    private readonly InputAction m_FS_UI_TrackedDevicePosition;
+    private readonly InputAction m_FS_UI_TrackedDeviceOrientation;
+    private readonly InputAction m_FS_UI_Scroll;
+    private readonly InputAction m_FS_UI_Left;
+    private readonly InputAction m_FS_UI_Right;
+    private readonly InputAction m_FS_UI_Approve;
+    private readonly InputAction m_FS_UI_ShowHideUI;
+    private readonly InputAction m_FS_UI_SuperSlow;
+    private readonly InputAction m_FS_UI_ForceShoot;
     /// <summary>
-    /// Provides access to input actions defined in input action map "UI".
+    /// Provides access to input actions defined in input action map "FS_UI".
     /// </summary>
-    public struct UIActions
+    public struct FS_UIActions
     {
         private @Redinput m_Wrapper;
 
         /// <summary>
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
-        public UIActions(@Redinput wrapper) { m_Wrapper = wrapper; }
+        public FS_UIActions(@Redinput wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "UI/Navigate".
+        /// Provides access to the underlying input action "FS_UI/Navigate".
         /// </summary>
-        public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
+        public InputAction @Navigate => m_Wrapper.m_FS_UI_Navigate;
         /// <summary>
-        /// Provides access to the underlying input action "UI/Submit".
+        /// Provides access to the underlying input action "FS_UI/Submit".
         /// </summary>
-        public InputAction @Submit => m_Wrapper.m_UI_Submit;
+        public InputAction @Submit => m_Wrapper.m_FS_UI_Submit;
         /// <summary>
-        /// Provides access to the underlying input action "UI/Cancel".
+        /// Provides access to the underlying input action "FS_UI/Cancel".
         /// </summary>
-        public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
+        public InputAction @Cancel => m_Wrapper.m_FS_UI_Cancel;
         /// <summary>
-        /// Provides access to the underlying input action "UI/Point".
+        /// Provides access to the underlying input action "FS_UI/Point".
         /// </summary>
-        public InputAction @Point => m_Wrapper.m_UI_Point;
+        public InputAction @Point => m_Wrapper.m_FS_UI_Point;
         /// <summary>
-        /// Provides access to the underlying input action "UI/Click".
+        /// Provides access to the underlying input action "FS_UI/Click".
         /// </summary>
-        public InputAction @Click => m_Wrapper.m_UI_Click;
+        public InputAction @Click => m_Wrapper.m_FS_UI_Click;
         /// <summary>
-        /// Provides access to the underlying input action "UI/ScrollWheel".
+        /// Provides access to the underlying input action "FS_UI/ScrollWheel".
         /// </summary>
-        public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
+        public InputAction @ScrollWheel => m_Wrapper.m_FS_UI_ScrollWheel;
         /// <summary>
-        /// Provides access to the underlying input action "UI/MiddleClick".
+        /// Provides access to the underlying input action "FS_UI/MiddleClick".
         /// </summary>
-        public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
+        public InputAction @MiddleClick => m_Wrapper.m_FS_UI_MiddleClick;
         /// <summary>
-        /// Provides access to the underlying input action "UI/RightClick".
+        /// Provides access to the underlying input action "FS_UI/RightClick".
         /// </summary>
-        public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
+        public InputAction @RightClick => m_Wrapper.m_FS_UI_RightClick;
         /// <summary>
-        /// Provides access to the underlying input action "UI/TrackedDevicePosition".
+        /// Provides access to the underlying input action "FS_UI/TrackedDevicePosition".
         /// </summary>
-        public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
+        public InputAction @TrackedDevicePosition => m_Wrapper.m_FS_UI_TrackedDevicePosition;
         /// <summary>
-        /// Provides access to the underlying input action "UI/TrackedDeviceOrientation".
+        /// Provides access to the underlying input action "FS_UI/TrackedDeviceOrientation".
         /// </summary>
-        public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+        public InputAction @TrackedDeviceOrientation => m_Wrapper.m_FS_UI_TrackedDeviceOrientation;
         /// <summary>
-        /// Provides access to the underlying input action "UI/Scroll".
+        /// Provides access to the underlying input action "FS_UI/Scroll".
         /// </summary>
-        public InputAction @Scroll => m_Wrapper.m_UI_Scroll;
+        public InputAction @Scroll => m_Wrapper.m_FS_UI_Scroll;
         /// <summary>
-        /// Provides access to the underlying input action "UI/Left".
+        /// Provides access to the underlying input action "FS_UI/Left".
         /// </summary>
-        public InputAction @Left => m_Wrapper.m_UI_Left;
+        public InputAction @Left => m_Wrapper.m_FS_UI_Left;
         /// <summary>
-        /// Provides access to the underlying input action "UI/Right".
+        /// Provides access to the underlying input action "FS_UI/Right".
         /// </summary>
-        public InputAction @Right => m_Wrapper.m_UI_Right;
+        public InputAction @Right => m_Wrapper.m_FS_UI_Right;
         /// <summary>
-        /// Provides access to the underlying input action "UI/Approve".
+        /// Provides access to the underlying input action "FS_UI/Approve".
         /// </summary>
-        public InputAction @Approve => m_Wrapper.m_UI_Approve;
+        public InputAction @Approve => m_Wrapper.m_FS_UI_Approve;
         /// <summary>
-        /// Provides access to the underlying input action "UI/ShowHideUI".
+        /// Provides access to the underlying input action "FS_UI/ShowHideUI".
         /// </summary>
-        public InputAction @ShowHideUI => m_Wrapper.m_UI_ShowHideUI;
+        public InputAction @ShowHideUI => m_Wrapper.m_FS_UI_ShowHideUI;
         /// <summary>
-        /// Provides access to the underlying input action "UI/SuperSlow".
+        /// Provides access to the underlying input action "FS_UI/SuperSlow".
         /// </summary>
-        public InputAction @SuperSlow => m_Wrapper.m_UI_SuperSlow;
+        public InputAction @SuperSlow => m_Wrapper.m_FS_UI_SuperSlow;
         /// <summary>
-        /// Provides access to the underlying input action "UI/ForceShoot".
+        /// Provides access to the underlying input action "FS_UI/ForceShoot".
         /// </summary>
-        public InputAction @ForceShoot => m_Wrapper.m_UI_ForceShoot;
+        public InputAction @ForceShoot => m_Wrapper.m_FS_UI_ForceShoot;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
-        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public InputActionMap Get() { return m_Wrapper.m_FS_UI; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
         public void Enable() { Get().Enable(); }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
@@ -4098,9 +4640,9 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
         public bool enabled => Get().enabled;
         /// <summary>
-        /// Implicitly converts an <see ref="UIActions" /> to an <see ref="InputActionMap" /> instance.
+        /// Implicitly converts an <see ref="FS_UIActions" /> to an <see ref="InputActionMap" /> instance.
         /// </summary>
-        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(FS_UIActions set) { return set.Get(); }
         /// <summary>
         /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
         /// </summary>
@@ -4108,11 +4650,11 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
         /// </remarks>
-        /// <seealso cref="UIActions" />
-        public void AddCallbacks(IUIActions instance)
+        /// <seealso cref="FS_UIActions" />
+        public void AddCallbacks(IFS_UIActions instance)
         {
-            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_FS_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_FS_UIActionsCallbackInterfaces.Add(instance);
             @Navigate.started += instance.OnNavigate;
             @Navigate.performed += instance.OnNavigate;
             @Navigate.canceled += instance.OnNavigate;
@@ -4172,8 +4714,8 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <remarks>
         /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
         /// </remarks>
-        /// <seealso cref="UIActions" />
-        private void UnregisterCallbacks(IUIActions instance)
+        /// <seealso cref="FS_UIActions" />
+        private void UnregisterCallbacks(IFS_UIActions instance)
         {
             @Navigate.started -= instance.OnNavigate;
             @Navigate.performed -= instance.OnNavigate;
@@ -4229,12 +4771,12 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UIActions.UnregisterCallbacks(IUIActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="FS_UIActions.UnregisterCallbacks(IFS_UIActions)" />.
         /// </summary>
-        /// <seealso cref="UIActions.UnregisterCallbacks(IUIActions)" />
-        public void RemoveCallbacks(IUIActions instance)
+        /// <seealso cref="FS_UIActions.UnregisterCallbacks(IFS_UIActions)" />
+        public void RemoveCallbacks(IFS_UIActions instance)
         {
-            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_FS_UIActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
@@ -4244,21 +4786,21 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
         /// </remarks>
-        /// <seealso cref="UIActions.AddCallbacks(IUIActions)" />
-        /// <seealso cref="UIActions.RemoveCallbacks(IUIActions)" />
-        /// <seealso cref="UIActions.UnregisterCallbacks(IUIActions)" />
-        public void SetCallbacks(IUIActions instance)
+        /// <seealso cref="FS_UIActions.AddCallbacks(IFS_UIActions)" />
+        /// <seealso cref="FS_UIActions.RemoveCallbacks(IFS_UIActions)" />
+        /// <seealso cref="FS_UIActions.UnregisterCallbacks(IFS_UIActions)" />
+        public void SetCallbacks(IFS_UIActions instance)
         {
-            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_FS_UIActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_FS_UIActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
     /// <summary>
-    /// Provides a new <see cref="UIActions" /> instance referencing this action map.
+    /// Provides a new <see cref="FS_UIActions" /> instance referencing this action map.
     /// </summary>
-    public UIActions @UI => new UIActions(this);
+    public FS_UIActions @FS_UI => new FS_UIActions(this);
 
     // Refereeing
     private readonly InputActionMap m_Refereeing;
@@ -4587,64 +5129,64 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
     /// </summary>
     public RefereeingActions @Refereeing => new RefereeingActions(this);
 
-    // GazingInMirror
-    private readonly InputActionMap m_GazingInMirror;
-    private List<IGazingInMirrorActions> m_GazingInMirrorActionsCallbackInterfaces = new List<IGazingInMirrorActions>();
-    private readonly InputAction m_GazingInMirror_Move;
-    private readonly InputAction m_GazingInMirror_MoveWASD;
-    private readonly InputAction m_GazingInMirror_Interact;
-    private readonly InputAction m_GazingInMirror_Pause;
-    private readonly InputAction m_GazingInMirror_PrimaryAction;
-    private readonly InputAction m_GazingInMirror_SecondaryAction;
-    private readonly InputAction m_GazingInMirror_Look;
-    private readonly InputAction m_GazingInMirror_Arrows;
+    // UI
+    private readonly InputActionMap m_UI;
+    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_Move;
+    private readonly InputAction m_UI_MoveWASD;
+    private readonly InputAction m_UI_Interact;
+    private readonly InputAction m_UI_Pause;
+    private readonly InputAction m_UI_PrimaryAction;
+    private readonly InputAction m_UI_SecondaryAction;
+    private readonly InputAction m_UI_Look;
+    private readonly InputAction m_UI_Arrows;
     /// <summary>
-    /// Provides access to input actions defined in input action map "GazingInMirror".
+    /// Provides access to input actions defined in input action map "UI".
     /// </summary>
-    public struct GazingInMirrorActions
+    public struct UIActions
     {
         private @Redinput m_Wrapper;
 
         /// <summary>
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
-        public GazingInMirrorActions(@Redinput wrapper) { m_Wrapper = wrapper; }
+        public UIActions(@Redinput wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "GazingInMirror/Move".
+        /// Provides access to the underlying input action "UI/Move".
         /// </summary>
-        public InputAction @Move => m_Wrapper.m_GazingInMirror_Move;
+        public InputAction @Move => m_Wrapper.m_UI_Move;
         /// <summary>
-        /// Provides access to the underlying input action "GazingInMirror/MoveWASD".
+        /// Provides access to the underlying input action "UI/MoveWASD".
         /// </summary>
-        public InputAction @MoveWASD => m_Wrapper.m_GazingInMirror_MoveWASD;
+        public InputAction @MoveWASD => m_Wrapper.m_UI_MoveWASD;
         /// <summary>
-        /// Provides access to the underlying input action "GazingInMirror/Interact".
+        /// Provides access to the underlying input action "UI/Interact".
         /// </summary>
-        public InputAction @Interact => m_Wrapper.m_GazingInMirror_Interact;
+        public InputAction @Interact => m_Wrapper.m_UI_Interact;
         /// <summary>
-        /// Provides access to the underlying input action "GazingInMirror/Pause".
+        /// Provides access to the underlying input action "UI/Pause".
         /// </summary>
-        public InputAction @Pause => m_Wrapper.m_GazingInMirror_Pause;
+        public InputAction @Pause => m_Wrapper.m_UI_Pause;
         /// <summary>
-        /// Provides access to the underlying input action "GazingInMirror/PrimaryAction".
+        /// Provides access to the underlying input action "UI/PrimaryAction".
         /// </summary>
-        public InputAction @PrimaryAction => m_Wrapper.m_GazingInMirror_PrimaryAction;
+        public InputAction @PrimaryAction => m_Wrapper.m_UI_PrimaryAction;
         /// <summary>
-        /// Provides access to the underlying input action "GazingInMirror/SecondaryAction".
+        /// Provides access to the underlying input action "UI/SecondaryAction".
         /// </summary>
-        public InputAction @SecondaryAction => m_Wrapper.m_GazingInMirror_SecondaryAction;
+        public InputAction @SecondaryAction => m_Wrapper.m_UI_SecondaryAction;
         /// <summary>
-        /// Provides access to the underlying input action "GazingInMirror/Look".
+        /// Provides access to the underlying input action "UI/Look".
         /// </summary>
-        public InputAction @Look => m_Wrapper.m_GazingInMirror_Look;
+        public InputAction @Look => m_Wrapper.m_UI_Look;
         /// <summary>
-        /// Provides access to the underlying input action "GazingInMirror/Arrows".
+        /// Provides access to the underlying input action "UI/Arrows".
         /// </summary>
-        public InputAction @Arrows => m_Wrapper.m_GazingInMirror_Arrows;
+        public InputAction @Arrows => m_Wrapper.m_UI_Arrows;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
-        public InputActionMap Get() { return m_Wrapper.m_GazingInMirror; }
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
         public void Enable() { Get().Enable(); }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
@@ -4652,9 +5194,9 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
         public bool enabled => Get().enabled;
         /// <summary>
-        /// Implicitly converts an <see ref="GazingInMirrorActions" /> to an <see ref="InputActionMap" /> instance.
+        /// Implicitly converts an <see ref="UIActions" /> to an <see ref="InputActionMap" /> instance.
         /// </summary>
-        public static implicit operator InputActionMap(GazingInMirrorActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
         /// <summary>
         /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
         /// </summary>
@@ -4662,11 +5204,11 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
         /// </remarks>
-        /// <seealso cref="GazingInMirrorActions" />
-        public void AddCallbacks(IGazingInMirrorActions instance)
+        /// <seealso cref="UIActions" />
+        public void AddCallbacks(IUIActions instance)
         {
-            if (instance == null || m_Wrapper.m_GazingInMirrorActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_GazingInMirrorActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -4699,8 +5241,8 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <remarks>
         /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
         /// </remarks>
-        /// <seealso cref="GazingInMirrorActions" />
-        private void UnregisterCallbacks(IGazingInMirrorActions instance)
+        /// <seealso cref="UIActions" />
+        private void UnregisterCallbacks(IUIActions instance)
         {
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
@@ -4729,12 +5271,12 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="GazingInMirrorActions.UnregisterCallbacks(IGazingInMirrorActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UIActions.UnregisterCallbacks(IUIActions)" />.
         /// </summary>
-        /// <seealso cref="GazingInMirrorActions.UnregisterCallbacks(IGazingInMirrorActions)" />
-        public void RemoveCallbacks(IGazingInMirrorActions instance)
+        /// <seealso cref="UIActions.UnregisterCallbacks(IUIActions)" />
+        public void RemoveCallbacks(IUIActions instance)
         {
-            if (m_Wrapper.m_GazingInMirrorActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
@@ -4744,21 +5286,194 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
         /// </remarks>
-        /// <seealso cref="GazingInMirrorActions.AddCallbacks(IGazingInMirrorActions)" />
-        /// <seealso cref="GazingInMirrorActions.RemoveCallbacks(IGazingInMirrorActions)" />
-        /// <seealso cref="GazingInMirrorActions.UnregisterCallbacks(IGazingInMirrorActions)" />
-        public void SetCallbacks(IGazingInMirrorActions instance)
+        /// <seealso cref="UIActions.AddCallbacks(IUIActions)" />
+        /// <seealso cref="UIActions.RemoveCallbacks(IUIActions)" />
+        /// <seealso cref="UIActions.UnregisterCallbacks(IUIActions)" />
+        public void SetCallbacks(IUIActions instance)
         {
-            foreach (var item in m_Wrapper.m_GazingInMirrorActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_GazingInMirrorActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
     /// <summary>
-    /// Provides a new <see cref="GazingInMirrorActions" /> instance referencing this action map.
+    /// Provides a new <see cref="UIActions" /> instance referencing this action map.
     /// </summary>
-    public GazingInMirrorActions @GazingInMirror => new GazingInMirrorActions(this);
+    public UIActions @UI => new UIActions(this);
+
+    // FlippingBook
+    private readonly InputActionMap m_FlippingBook;
+    private List<IFlippingBookActions> m_FlippingBookActionsCallbackInterfaces = new List<IFlippingBookActions>();
+    private readonly InputAction m_FlippingBook_Move;
+    private readonly InputAction m_FlippingBook_MoveWASD;
+    private readonly InputAction m_FlippingBook_Interact;
+    private readonly InputAction m_FlippingBook_Pause;
+    private readonly InputAction m_FlippingBook_PrimaryAction;
+    private readonly InputAction m_FlippingBook_SecondaryAction;
+    private readonly InputAction m_FlippingBook_Look;
+    private readonly InputAction m_FlippingBook_Arrows;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "FlippingBook".
+    /// </summary>
+    public struct FlippingBookActions
+    {
+        private @Redinput m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public FlippingBookActions(@Redinput wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "FlippingBook/Move".
+        /// </summary>
+        public InputAction @Move => m_Wrapper.m_FlippingBook_Move;
+        /// <summary>
+        /// Provides access to the underlying input action "FlippingBook/MoveWASD".
+        /// </summary>
+        public InputAction @MoveWASD => m_Wrapper.m_FlippingBook_MoveWASD;
+        /// <summary>
+        /// Provides access to the underlying input action "FlippingBook/Interact".
+        /// </summary>
+        public InputAction @Interact => m_Wrapper.m_FlippingBook_Interact;
+        /// <summary>
+        /// Provides access to the underlying input action "FlippingBook/Pause".
+        /// </summary>
+        public InputAction @Pause => m_Wrapper.m_FlippingBook_Pause;
+        /// <summary>
+        /// Provides access to the underlying input action "FlippingBook/PrimaryAction".
+        /// </summary>
+        public InputAction @PrimaryAction => m_Wrapper.m_FlippingBook_PrimaryAction;
+        /// <summary>
+        /// Provides access to the underlying input action "FlippingBook/SecondaryAction".
+        /// </summary>
+        public InputAction @SecondaryAction => m_Wrapper.m_FlippingBook_SecondaryAction;
+        /// <summary>
+        /// Provides access to the underlying input action "FlippingBook/Look".
+        /// </summary>
+        public InputAction @Look => m_Wrapper.m_FlippingBook_Look;
+        /// <summary>
+        /// Provides access to the underlying input action "FlippingBook/Arrows".
+        /// </summary>
+        public InputAction @Arrows => m_Wrapper.m_FlippingBook_Arrows;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_FlippingBook; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="FlippingBookActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(FlippingBookActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="FlippingBookActions" />
+        public void AddCallbacks(IFlippingBookActions instance)
+        {
+            if (instance == null || m_Wrapper.m_FlippingBookActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_FlippingBookActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @MoveWASD.started += instance.OnMoveWASD;
+            @MoveWASD.performed += instance.OnMoveWASD;
+            @MoveWASD.canceled += instance.OnMoveWASD;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+            @PrimaryAction.started += instance.OnPrimaryAction;
+            @PrimaryAction.performed += instance.OnPrimaryAction;
+            @PrimaryAction.canceled += instance.OnPrimaryAction;
+            @SecondaryAction.started += instance.OnSecondaryAction;
+            @SecondaryAction.performed += instance.OnSecondaryAction;
+            @SecondaryAction.canceled += instance.OnSecondaryAction;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
+            @Arrows.started += instance.OnArrows;
+            @Arrows.performed += instance.OnArrows;
+            @Arrows.canceled += instance.OnArrows;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="FlippingBookActions" />
+        private void UnregisterCallbacks(IFlippingBookActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @MoveWASD.started -= instance.OnMoveWASD;
+            @MoveWASD.performed -= instance.OnMoveWASD;
+            @MoveWASD.canceled -= instance.OnMoveWASD;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+            @PrimaryAction.started -= instance.OnPrimaryAction;
+            @PrimaryAction.performed -= instance.OnPrimaryAction;
+            @PrimaryAction.canceled -= instance.OnPrimaryAction;
+            @SecondaryAction.started -= instance.OnSecondaryAction;
+            @SecondaryAction.performed -= instance.OnSecondaryAction;
+            @SecondaryAction.canceled -= instance.OnSecondaryAction;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
+            @Arrows.started -= instance.OnArrows;
+            @Arrows.performed -= instance.OnArrows;
+            @Arrows.canceled -= instance.OnArrows;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="FlippingBookActions.UnregisterCallbacks(IFlippingBookActions)" />.
+        /// </summary>
+        /// <seealso cref="FlippingBookActions.UnregisterCallbacks(IFlippingBookActions)" />
+        public void RemoveCallbacks(IFlippingBookActions instance)
+        {
+            if (m_Wrapper.m_FlippingBookActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="FlippingBookActions.AddCallbacks(IFlippingBookActions)" />
+        /// <seealso cref="FlippingBookActions.RemoveCallbacks(IFlippingBookActions)" />
+        /// <seealso cref="FlippingBookActions.UnregisterCallbacks(IFlippingBookActions)" />
+        public void SetCallbacks(IFlippingBookActions instance)
+        {
+            foreach (var item in m_Wrapper.m_FlippingBookActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_FlippingBookActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="FlippingBookActions" /> instance referencing this action map.
+    /// </summary>
+    public FlippingBookActions @FlippingBook => new FlippingBookActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -4838,11 +5553,11 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         }
     }
     /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "MatchEngine" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "FS_MatchEngine" which allows adding and removing callbacks.
     /// </summary>
-    /// <seealso cref="MatchEngineActions.AddCallbacks(IMatchEngineActions)" />
-    /// <seealso cref="MatchEngineActions.RemoveCallbacks(IMatchEngineActions)" />
-    public interface IMatchEngineActions
+    /// <seealso cref="FS_MatchEngineActions.AddCallbacks(IFS_MatchEngineActions)" />
+    /// <seealso cref="FS_MatchEngineActions.RemoveCallbacks(IFS_MatchEngineActions)" />
+    public interface IFS_MatchEngineActions
     {
         /// <summary>
         /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
@@ -5049,11 +5764,11 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         void OnSlot0(InputAction.CallbackContext context);
     }
     /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "FS_UI" which allows adding and removing callbacks.
     /// </summary>
-    /// <seealso cref="UIActions.AddCallbacks(IUIActions)" />
-    /// <seealso cref="UIActions.RemoveCallbacks(IUIActions)" />
-    public interface IUIActions
+    /// <seealso cref="FS_UIActions.AddCallbacks(IFS_UIActions)" />
+    /// <seealso cref="FS_UIActions.RemoveCallbacks(IFS_UIActions)" />
+    public interface IFS_UIActions
     {
         /// <summary>
         /// Method invoked when associated input action "Navigate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
@@ -5338,11 +6053,75 @@ public partial class @Redinput: IInputActionCollection2, IDisposable
         void OnSlot0(InputAction.CallbackContext context);
     }
     /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "GazingInMirror" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
     /// </summary>
-    /// <seealso cref="GazingInMirrorActions.AddCallbacks(IGazingInMirrorActions)" />
-    /// <seealso cref="GazingInMirrorActions.RemoveCallbacks(IGazingInMirrorActions)" />
-    public interface IGazingInMirrorActions
+    /// <seealso cref="UIActions.AddCallbacks(IUIActions)" />
+    /// <seealso cref="UIActions.RemoveCallbacks(IUIActions)" />
+    public interface IUIActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMove(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MoveWASD" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMoveWASD(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInteract(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPause(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PrimaryAction" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPrimaryAction(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SecondaryAction" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSecondaryAction(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLook(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Arrows" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnArrows(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "FlippingBook" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="FlippingBookActions.AddCallbacks(IFlippingBookActions)" />
+    /// <seealso cref="FlippingBookActions.RemoveCallbacks(IFlippingBookActions)" />
+    public interface IFlippingBookActions
     {
         /// <summary>
         /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.

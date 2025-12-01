@@ -46,7 +46,7 @@ namespace RedCard {
         GoalScored,
     }
 
-    [System.Serializable]
+    [Serializable]
     public class CallData {
         public Call call; // call that should be made
         public bool timedOut = false;
@@ -126,6 +126,8 @@ namespace RedCard {
         public static Action<Semantics, RefTarget> OnRefSpoke;
 
         public const string REFEREEING_ACTION_MAP = "Refereeing";
+        public const string UI_MAP = "UI";
+        public const string FLIPPING_BOOK_MAP = "FlippingBook";
 
         public static RedMatch match {
             get {
@@ -139,7 +141,7 @@ namespace RedCard {
 
         private void Awake() {
             if (_match) {
-                Debug.LogError("a meatch already exists!");
+                Debug.LogError("a match already exists!");
                 Destroy(gameObject);
             }
             else {
@@ -150,6 +152,8 @@ namespace RedCard {
 
         public void Init() {
             if (!initialized) {
+
+                Common.Init();
 
                 Language.current = Language.english;
 
@@ -171,6 +175,11 @@ namespace RedCard {
                 Debug.Assert(hud);
 
                 Debug.Assert(customizationOptions);
+
+                var action = PlayerInput.all[0].actions.FindActionMap(UI_MAP).FindAction("Pause");
+                if (action != null) {
+                    action.started += PauseGame;
+                }
             }
         }
 
@@ -733,6 +742,27 @@ namespace RedCard {
             lr.SetPositions(smoothedLine.ToArray());
         }
 
+        public void PauseGame(InputAction.CallbackContext ctx) {
+            if (menu.title) {
+                // no pausing at title screen duh
+                return;
+            }
+
+            if (menu.gameObject.activeSelf) {
+                print("unpausing");
+                Time.timeScale = 1f;
+                menu.gameObject.SetActive(false);
+                // hmm need to do stuff
+            }
+            else {
+                print("pausing");
+                Time.timeScale = 0f;
+                menu.gameObject.SetActive(true);
+                menu.OpenTopLevelMenu();
+            }
+
+
+        }
 
         public static void AssignMap(string mapName) {
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
