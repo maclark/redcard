@@ -1700,6 +1700,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4979615782337257677}
+  - component: {fileID: 5776576124414025475}
   - component: {fileID: 500209861376368975}
   - component: {fileID: 5364549354267104488}
   - component: {fileID: 6615394311999694674}
@@ -1728,6 +1729,39 @@ Transform:
   - {fileID: 4674694695941949775}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5776576124414025475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4757969063864661321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82c46f9fa9dc1fd469ab1e7a00c137ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  contentsButtonBoxes: {fileID: 2187330221272302828}
+  jumpToContents: {fileID: 3646839493572184628}
+  jumpToLawButtons:
+  - {fileID: 8395238946902269835}
+  - {fileID: 7591625912430746634}
+  - {fileID: 5319060210801733060}
+  - {fileID: 5868755150630017293}
+  - {fileID: 4146801743746300376}
+  - {fileID: 1667458168003755451}
+  - {fileID: 5016857088964420359}
+  - {fileID: 994497734670491079}
+  - {fileID: 6656914330929504708}
+  - {fileID: 554569792746434766}
+  - {fileID: 678682027685586927}
+  - {fileID: 865027656446203309}
+  - {fileID: 1095773588794219103}
+  - {fileID: 7562938133204400175}
+  - {fileID: 930745035841047943}
+  - {fileID: 3244135112418974367}
+  - {fileID: 729848626192293607}
+  - {fileID: 1830577592635993263}
 --- !u!114 &500209861376368975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1749,49 +1783,6 @@ MonoBehaviour:
   bookmark: {fileID: 1955733266251816621}
   bookmarkRenderer: {fileID: 1115457024900728404}
   rb: {fileID: 7507754554833196600}
-  bookText:
-    title: 0
-    pages:
-    - <font color=green>hello</color>
-    - <font size=52>BIG hello</font></size>
-    - just a page over here
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
-    - and this is last page, go back to Earth.
   pageIndex: 0
   bookmarkIndex: 0
   reader: {fileID: 0}
@@ -3178,7 +3169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2187330221272302828}
   m_Layer: 6
-  m_Name: Contents
+  m_Name: ContentsJumpButtons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -11,12 +11,12 @@ namespace RedCard {
         Newspaper,
     }
 
-    [System.Serializable]
-    public class BookText {
-        public BookTitle title;
-        public string[] pages = new string[2];
+    public interface IBookText {
+        public void ShowPage(BookMaker maker, int pageIndex);
+        public int GetPageCount();
     }
 
+    [RequireComponent(typeof(IBookText))]
     public class Book : MonoBehaviour {
 
         [Header("ASSIGNATIONS")]
@@ -28,17 +28,16 @@ namespace RedCard {
         public MeshRenderer bookmarkRenderer;
         public Rigidbody rb;
 
-        [Header("SETTINGS")]
-        public BookText bookText;
-
 
         [Header("VARS")]
         public int pageIndex = 0;
         public int bookmarkIndex = 0;
         public RefControls reader;
+        public IBookText bookText;
 
 
         private void Awake() {
+            bookText = GetComponent<IBookText>();
             Debug.Assert(bookText != null);
 
             openBook.SetActive(false);
@@ -58,7 +57,7 @@ namespace RedCard {
 
         public void ShowPage() {
             // expect some kind of book object with an array of pages and we have page index
-            if (pageIndex < 0 || pageIndex >= bookText.pages.Length - 1) {
+            if (pageIndex < 0 || pageIndex >= bookText.GetPageCount() - 1) {
                 // remember, pageIndex is just for the left page shown
                 Debug.LogError("pageIndex oob " + pageIndex);
                 pageIndex = 0;
@@ -72,8 +71,7 @@ namespace RedCard {
                 bookmarkRenderer.enabled = false;
             }
 
-            BookMaker.maker.WritePages(pageIndex, bookText.pages[pageIndex], bookText.pages[pageIndex + 1], null);
-            print("showing page " + pageIndex + " of book " + bookText.title);
+            bookText.ShowPage(BookMaker.maker, pageIndex);
         }
 
         private bool ClickedWithBook(InputAction.CallbackContext ctx, RefControls arbitro) {
@@ -101,8 +99,8 @@ namespace RedCard {
                                 break;
                             case PageNavigation.FlipRight:
                                 pageIndex += 2;
-                                if (pageIndex >= bookText.pages.Length) {
-                                    pageIndex = bookText.pages.Length - 2;
+                                if (pageIndex >= bookText.GetPageCount()) {
+                                    pageIndex = bookText.GetPageCount() - 2;
                                     CloseBook(new InputAction.CallbackContext(), null);
                                 }
                                 break;

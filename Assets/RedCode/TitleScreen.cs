@@ -43,7 +43,10 @@ namespace RedCard {
         private float countdownToStart = 0f;
 
         private void Awake() {
-            Menu.ResetPrefs(); 
+            Menu.ResetPrefs();
+
+
+            Common.Init();
             Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
 
             KnockWhistle(.5f * Vector3.right);

@@ -13,6 +13,7 @@ namespace RedCard {
     public class BookMaker : MonoBehaviour {
 
         public Canvas canvas;
+        public RulesOfSoccerCanvas rulesOfSoccerCanvas;
         public Image background;
         public TMP_Text leftPage;
         public TMP_Text rightPage;
@@ -42,31 +43,6 @@ namespace RedCard {
             }
 
             _instance = this;
-        }
-
-        public void WritePages(int pageNo, string leftWords, string rightWords, PageImage[] illustrations) {
-            for (int i = 0; i < pageImages.Length; i++) {
-                Image im = pageImages[i];
-                if (illustrations != null && i < illustrations.Length) {
-                    im.gameObject.SetActive(true);
-                    PageImage pi = illustrations[i];
-                    im.sprite = pi.spr;
-                    RectTransform rt = im.GetComponent<RectTransform>();
-                    rt.sizeDelta = pi.size;
-                    rt.anchoredPosition = pi.anchoredPos;
-                }
-                else im.gameObject.SetActive(false);
-            }
-
-            //leftPage.text = leftWords;
-            //rightPage.text = rightWords;
-            if (pageNo < 0 || pageNo >= Common.int_strings.Length) {
-                Debug.LogError("oob page no: " + pageNo);
-            }
-            else {
-                leftPageNo.text = Common.int_strings[pageNo + 1];
-                rightPageNo.text = Common.int_strings[pageNo + 2];
-            }
         }
     }
 }
