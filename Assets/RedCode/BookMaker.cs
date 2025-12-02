@@ -60,8 +60,13 @@ namespace RedCard {
 
             //leftPage.text = leftWords;
             //rightPage.text = rightWords;
-            leftPageNo.text = Common.int_strings[pageNo + 1];
-            rightPageNo.text = Common.int_strings[pageNo + 2];
+            if (pageNo < 0 || pageNo >= Common.int_strings.Length) {
+                Debug.LogError("oob page no: " + pageNo);
+            }
+            else {
+                leftPageNo.text = Common.int_strings[pageNo + 1];
+                rightPageNo.text = Common.int_strings[pageNo + 2];
+            }
         }
     }
 }
