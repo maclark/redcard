@@ -586,7 +586,7 @@ namespace RedCard {
 
             float x = cursor.width / 2f;
             float y = cursor.height / 2f;
-            Cursor.SetCursor(cursor, new Vector2(x, y), CursorMode.Auto);
+            Cursor.SetCursor(cursor, new Vector2(x, y), CursorMode.ForceSoftware);
 
             cachedVisibleCursor = Cursor.visible;
             cachedCursorLockMode = Cursor.lockState;

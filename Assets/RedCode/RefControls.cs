@@ -297,7 +297,7 @@ namespace RedCard {
 
             float x = hud.cursor.width / 2f;
             float y = hud.cursor.height / 2f;
-            Cursor.SetCursor(hud.cursor, new Vector2(x, y), CursorMode.Auto);
+            Cursor.SetCursor(hud.cursor, new Vector2(x, y), CursorMode.ForceSoftware);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             canLookAround = true;
@@ -1101,6 +1101,10 @@ namespace RedCard {
             dt = Time.deltaTime;
 
             lookRay = new Ray(cameraTransform.position, cameraTransform.forward);
+
+            if (itemHeld) {
+                if (itemHeld.onHeld != null) itemHeld.onHeld(new InputAction.CallbackContext(), this);
+            }
 
             if (blowingWhistle) tBlowingWhistle += dt;
             if (raisingCard) {

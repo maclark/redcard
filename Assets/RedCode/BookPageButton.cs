@@ -13,6 +13,6 @@ namespace RedCard {
 
     public class BookPageButton : MonoBehaviour {
         public PageNavigation navigation;
-        public int chapterPageStart = -1;
+        public int number = -1;
     }
 }

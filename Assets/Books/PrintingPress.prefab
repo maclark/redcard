@@ -3036,7 +3036,7 @@ GameObject:
   - component: {fileID: 1082685499671258398}
   - component: {fileID: 8515886520353938425}
   m_Layer: 0
-  m_Name: BookMaker
+  m_Name: PrintingPress
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3068,29 +3068,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3785050089206878172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70c4f058163e87e46acc69fcfe0fc2e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 454eb2dc0f570ce42a128b83811c1449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  canvas: {fileID: 4785106542799381833}
   rulesOfSoccerCanvas: {fileID: 4435809396050120431}
-  background: {fileID: 7264458676170291295}
-  leftPage: {fileID: 8308605135343031656}
-  rightPage: {fileID: 630433703389519750}
-  leftPageNo: {fileID: 5833465610756136643}
-  rightPageNo: {fileID: 5025122558555693657}
-  leftBackground: {fileID: 7264458676170291295}
-  rightBackground: {fileID: 3931462524684785552}
-  pageImages:
-  - {fileID: 8534623208470939568}
-  - {fileID: 5318441583478146503}
-  - {fileID: 4686829572319140878}
-  - {fileID: 1636046887963146436}
-  - {fileID: 3179958337440603393}
-  - {fileID: 8285275786018953988}
-  - {fileID: 7809035393819568331}
-  - {fileID: 3499079490856227793}
-  - {fileID: 3983832597904315493}
-  - {fileID: 2253099180607503812}
 --- !u!1 &3842080046978585276
 GameObject:
   m_ObjectHideFlags: 0
@@ -5701,7 +5682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7214031930785574730
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5858,7 +5839,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8544068432095390396
 RectTransform:
   m_ObjectHideFlags: 0

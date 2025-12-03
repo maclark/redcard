@@ -1971,7 +1971,10 @@ MonoBehaviour:
   grabHand: {fileID: 6028507917835439365}
   fToDrop: {fileID: 8480613626074020922}
   wheel: {fileID: 7583297055392149943}
-  cursor: {fileID: 2800000, guid: 481264ad3d60131458cceca328641c2a, type: 3}
+  cursor: {fileID: 2800000, guid: 2595de6113d85e14ca8f87061f0be0b5, type: 3}
+  leftArrowCursor: {fileID: 2800000, guid: 72b872a11f3fc254b9f9ad2a932d5797, type: 3}
+  rightArrowCursor: {fileID: 2800000, guid: 03abc247a80274644a8e7f5b1f52998d, type: 3}
+  goToCursor: {fileID: 2800000, guid: 543b513a6b4a11f4d92ee26df8aefa27, type: 3}
   heartRate: {fileID: 4527091047737842480}
   heartRateSlider: {fileID: 0}
   lactate: {fileID: 703925733660790437}

@@ -12,7 +12,7 @@ namespace RedCard {
     }
 
     public interface IBookText {
-        public void ShowPage(BookMaker maker, int pageIndex);
+        public void ShowPage(PrintingPress maker, int pageIndex);
         public int GetPageCount();
     }
 
@@ -35,6 +35,10 @@ namespace RedCard {
         public RefControls reader;
         public IBookText bookText;
 
+        private Ray lookRay;
+        private BookPageButton lookingAt;
+
+
 
         private void Awake() {
             bookText = GetComponent<IBookText>();
@@ -47,6 +51,7 @@ namespace RedCard {
             gameObject.layer = RefControls.Item_Layer;
 
             if (TryGetComponent(out Item it)) {
+                it.onHeld += FollowGaze;
                 it.onPrimary += ClickedWithBook;
                 it.onSecondary += CloseBook;
                 it.onGrabbed += Grabbed;
@@ -71,49 +76,82 @@ namespace RedCard {
                 bookmarkRenderer.enabled = false;
             }
 
-            bookText.ShowPage(BookMaker.maker, pageIndex);
+            bookText.ShowPage(PrintingPress.press, pageIndex);
+        }
+
+        private bool FollowGaze(InputAction.CallbackContext _ctx, RefControls arbitro) {
+
+            var was = lookingAt;
+            if (openBook.gameObject.activeSelf) {
+                lookRay = arbitro.cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+                if (Physics.Raycast(lookRay, out RaycastHit hit, 99f, pageMask)) {
+                    lookingAt = hit.collider.GetComponent<BookPageButton>();
+                }
+                else lookingAt = null;
+            }
+            else lookingAt = null;
+
+
+            if (was != lookingAt) {
+                Texture2D cursor = arbitro.hud.cursor;
+                if (lookingAt) {
+                    if (lookingAt.navigation == PageNavigation.FlipLeft) {
+                        cursor = arbitro.hud.leftArrowCursor;
+                    }
+                    else if (lookingAt.navigation == PageNavigation.FlipRight) {
+                        cursor = arbitro.hud.rightArrowCursor;
+                    }
+                    else {
+                        cursor = arbitro.hud.goToCursor;
+                    }
+                }
+
+                float x = cursor.width / 2f;
+                float y = cursor.height / 2f;
+                Cursor.SetCursor(cursor, new Vector2(x, y), CursorMode.ForceSoftware);
+            }
+            // else was and lookingAt were either same nav or both null
+
+
+            return false;
         }
 
         private bool ClickedWithBook(InputAction.CallbackContext ctx, RefControls arbitro) {
             if (!ctx.started) return false; ////// early return ///////// 
 
             if (openBook.gameObject.activeSelf) {
-                // let's raycast! see what we hit!
-                Ray lookRay = arbitro.cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-                if (Physics.Raycast(lookRay, out RaycastHit hit, 99f, pageMask)) {
-                    if (hit.collider.TryGetComponent(out BookPageButton page)) {
-                        print("clicked on page " + page.navigation);
-                        switch (page.navigation) {
-                            case PageNavigation.ContentsShortcut:
-                                pageIndex = 1;
-                                break;
-                            case PageNavigation.SetBookmark:
-                                if (pageIndex > 1) bookmarkIndex = pageIndex;
-                                break;
-                            case PageNavigation.JumpToBookmark:
-                                pageIndex = bookmarkIndex;
-                                break;
-                            case PageNavigation.FlipLeft:
-                                pageIndex -= 2;
-                                if (pageIndex < 0) pageIndex = 0;
-                                break;
-                            case PageNavigation.FlipRight:
-                                pageIndex += 2;
-                                if (pageIndex >= bookText.GetPageCount()) {
-                                    pageIndex = bookText.GetPageCount() - 2;
-                                    CloseBook(new InputAction.CallbackContext(), null);
-                                }
-                                break;
-                            case PageNavigation.ChapterHeading:
-                                pageIndex = page.chapterPageStart;
-                                break;
-                            default:
-                                Debug.LogError("unhandled page navigation " + page.navigation);
-                                break;
-                        }
-
-                        ShowPage();
+                if (lookingAt) {
+                    print("clicked on page " + lookingAt.navigation);
+                    switch (lookingAt.navigation) {
+                        case PageNavigation.ContentsShortcut:
+                            pageIndex = 2;
+                            break;
+                        case PageNavigation.SetBookmark:
+                            if (pageIndex > 1) bookmarkIndex = pageIndex;
+                            break;
+                        case PageNavigation.JumpToBookmark:
+                            pageIndex = bookmarkIndex;
+                            break;
+                        case PageNavigation.FlipLeft:
+                            pageIndex -= 2;
+                            if (pageIndex < 0) pageIndex = 0;
+                            break;
+                        case PageNavigation.FlipRight:
+                            pageIndex += 2;
+                            if (pageIndex >= bookText.GetPageCount()) {
+                                pageIndex = bookText.GetPageCount() - 2;
+                                CloseBook(new InputAction.CallbackContext(), null);
+                            }
+                            break;
+                        case PageNavigation.ChapterHeading:
+                            pageIndex = lookingAt.number;
+                            break;
+                        default:
+                            Debug.LogError("unhandled page navigation " + lookingAt.navigation);
+                            break;
                     }
+
+                    ShowPage();
                 }
             }
             else {
@@ -137,6 +175,11 @@ namespace RedCard {
             closedBook.gameObject.SetActive(true);
             openBook.gameObject.SetActive(false);
 
+            // in case cursor was green or an arrow
+            Texture2D cursor = arbitro.hud.cursor;
+            float x = cursor.width / 2f; 
+            float y = cursor.height / 2f; 
+            Cursor.SetCursor(cursor, new Vector2(x, y), CursorMode.ForceSoftware);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             if (reader) {

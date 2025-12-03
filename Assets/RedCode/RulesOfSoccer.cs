@@ -7,8 +7,9 @@ namespace RedCard {
     public class RulesOfSoccer : MonoBehaviour, IBookText {
 
         public Transform contentsButtonBoxes;
-        public Transform jumpToContents;
-        public Transform[] jumpToLawButtons = new Transform[0];
+        public BookPageButton jumpToContents;
+        public BookPageButton[] jumpToLawButtons = new BookPageButton[0];
+
 
         // (law#, lawTitle, lawStartPageIndex)
         public List<(int, string, int)> lawSections = new List<(int, string, int)>() {
@@ -17,12 +18,18 @@ namespace RedCard {
             {(3, "Number of Players", 10)},
             {(4, "Players' Equipment", 14)},
             {(5, "Referees", 18)},
-            {(6, "Field of Play", 22)},
-            {(7, "Field of Play", 26)},
-            {(8, "Field of Play", 30)},
-            {(9, "Field of Play", 34)},
-            {(10, "Field of Play", 38)},
-            {(11, "Field of Play", 42)},
+            {(6, "Linesmen", 22)},
+            {(7, "Duration of Game", 26)},
+            {(8, "The Start of Play", 30)},
+            {(9, "Ball In and Out of Play", 34)},
+            {(10, "Method of Scoring", 38)},
+            {(11, "Off-Side", 42)},
+            {(12, "Fouls and Misconduct", 46)},
+            {(13, "Free-kick", 50)},
+            {(14, "Penalty-kick", 54)},
+            {(15, "Throw-in", 58)},
+            {(16, "Goal-Kick", 62)},
+            {(17, "CornerKick", 64)},
         };
 
         // ACTUAL BOOK LAYOUT:
@@ -44,14 +51,30 @@ namespace RedCard {
         // hm, translation for books will be expensive....
 
         const int INDEX_PAGE1 = 4;
+        const int INDEX_CONTENTS = 2; 
 
-        public int GetPageCount() {
-            return 46;
+
+        public void Awake() {
+
+            jumpToContents.number = INDEX_CONTENTS;
+
+            for (int i = 0; i < jumpToLawButtons.Length; i++) {
+                BookPageButton jump = jumpToLawButtons[i];
+                if (i < lawSections.Count) {
+                    jump.number = lawSections[i].Item3;
+                }
+                else Debug.LogWarning("more jump to law buttons than law sections");
+            }
         }
 
-        public void ShowPage(BookMaker maker, int leftPageIndex) {
+        public int GetPageCount() {
+            return Mathf.Max(70, lawSections[^1].Item3 + 2);
+        }
 
-            RulesOfSoccerCanvas rosc = maker.rulesOfSoccerCanvas;
+        public void ShowPage(PrintingPress press, int leftPageIndex) {
+            print("showing page " + leftPageIndex);
+
+            RulesOfSoccerCanvas rosc = press.rulesOfSoccerCanvas;
 
             string leftDisplayPage = "";
             if (leftPageIndex < INDEX_PAGE1) {
@@ -84,13 +107,15 @@ namespace RedCard {
             rosc.normalSpread.gameObject.SetActive(false);
 
             if (leftPageIndex == 0) {
+                print("title!");
                 rosc.titleSpread.gameObject.SetActive(true);
                 rosc.leftTopDetails.gameObject.SetActive(false);
                 rosc.rightTopDetails.gameObject.SetActive(false);
                 rosc.leftBottomDetails.gameObject.SetActive(false);
                 rosc.rightBottomDetails.gameObject.SetActive(false);
             }
-            else if (leftPageIndex == 2) {
+            else if (leftPageIndex == INDEX_CONTENTS) {
+                print("contents!");
                 jumpToContents.gameObject.SetActive(false);
                 contentsButtonBoxes.gameObject.SetActive(true);
                 rosc.contentsSpread.gameObject.SetActive(true);
@@ -120,6 +145,7 @@ namespace RedCard {
                 }
                 else {
                     if (atLawTitle) {
+                        print("law title!");
                         rosc.lawSpread.gameObject.SetActive(true);
                         rosc.lawSpreadNum.text = law.Item1.ToRomanUpper();
                         rosc.lawSpreadTitle.text = law.Item2;
@@ -129,6 +155,7 @@ namespace RedCard {
                         rosc.rightBottomDetails.gameObject.SetActive(false);
                     }
                     else {
+                        print("normal!");
                         rosc.normalSpread.gameObject.SetActive(true);
                         rosc.leftTopLawNum.text = "LAW " + law.Item1.ToRomanUpper();
                         rosc.rightTopLawTitle.text = law.Item2;

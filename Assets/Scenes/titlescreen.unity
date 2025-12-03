@@ -1213,7 +1213,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f8c0f7bec669f2c4ea0a5dba924f1a32, type: 2}
+  - {fileID: 2100000, guid: 62be8da5993ee8146bd471715d72572a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1735,6 +1735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc7e4e829f88df7448c50529f0569125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  makingTrailer: 0
   mainCamera: {fileID: 803599859}
   rbWhistle: {fileID: 1992041811}
   menu: {fileID: 1191985732}

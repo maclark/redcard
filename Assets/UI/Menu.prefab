@@ -2221,7 +2221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   fadeOverlay: {fileID: 8739400891427852163}
   selectedSound: {fileID: 8300000, guid: 6748df50c7c1b9846830f6925668ce88, type: 3}
-  cursor: {fileID: 2800000, guid: 481264ad3d60131458cceca328641c2a, type: 3}
+  cursor: {fileID: 2800000, guid: 2595de6113d85e14ca8f87061f0be0b5, type: 3}
   rtTitle: {fileID: 1431920255743943646}
   rtCredits: {fileID: 6180715895555270543}
   settingsFromTitleButton: {fileID: 3362534964937814237}

@@ -10,6 +10,7 @@ namespace RedCard {
 
 
         public delegate bool ItemAction(UnityEngine.InputSystem.InputAction.CallbackContext ctx, RefControls arbitro);
+        public ItemAction onHeld;
         public ItemAction onPrimary;
         public ItemAction onSecondary;
         public ItemAction onGrabbed;

@@ -96,4 +96,16 @@ public static class Common
 
         return sb.ToString();
     }
+
+    public static Texture2D TintTexture(Texture2D source, Color colorTint) {
+        Texture2D tinted = new Texture2D(source.width, source.height, source.format, false);
+        Color[] pixels = source.GetPixels();
+
+        for (int i = 0; i < pixels.Length; i++)
+            pixels[i] *= colorTint;
+
+        tinted.SetPixels(pixels);
+        tinted.Apply();
+        return tinted;
+    }
 }
