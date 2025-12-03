@@ -1,0 +1,40 @@
+NEXT FEST by Jan 5
+
+DESCRIPTIONS:
+about:
+[need gifs]
+translations
+
+GRAPHICAL ASSETS:
+all
+icon/shortcut icon
+
+TRAILERS:
+all
+
+LANGUAGES:
+support em all
+
+MIN REQUIREMENTS:
+?
+
+ACCESSIBILITY
+added:
+adjustable difficulty, save anytime
+
+consider:
+subtitles
+steam input, playstation controllers
+subtitles, adjustable text size, camera comfort
+mouse only, touch only
+color alternatives
+
+support email, website, socials
+
+LOCALIZATION:
+?
+
+CLOUD:
+?
+
+ACHIEVEMENTS:
