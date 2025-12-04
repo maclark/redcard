@@ -23,8 +23,10 @@ namespace RedCard {
         public LayerMask pageMask;
         public GameObject openBook;
         public GameObject closedBook;
+        public Collider closedBookCollider;
         public Transform contents;
         public Transform bookmark;
+        public Transform bookmarkHint;
         public MeshRenderer bookmarkRenderer;
         public Rigidbody rb;
 
@@ -94,12 +96,18 @@ namespace RedCard {
 
             if (was != lookingAt) {
                 Texture2D cursor = arbitro.hud.cursor;
+                Cursor.visible = true; //
+                bookmarkHint.gameObject.SetActive(true);
                 if (lookingAt) {
                     if (lookingAt.navigation == PageNavigation.FlipLeft) {
                         cursor = arbitro.hud.leftArrowCursor;
                     }
                     else if (lookingAt.navigation == PageNavigation.FlipRight) {
                         cursor = arbitro.hud.rightArrowCursor;
+                    }
+                    else if (lookingAt.navigation == PageNavigation.SetBookmark) {
+                        Cursor.visible = false;
+                        bookmarkHint.gameObject.SetActive(true);
                     }
                     else {
                         cursor = arbitro.hud.goToCursor;
@@ -121,6 +129,8 @@ namespace RedCard {
 
             if (openBook.gameObject.activeSelf) {
                 if (lookingAt) {
+
+                    int oldPageIndex = pageIndex;
                     print("clicked on page " + lookingAt.navigation);
                     switch (lookingAt.navigation) {
                         case PageNavigation.ContentsShortcut:
@@ -140,7 +150,7 @@ namespace RedCard {
                             pageIndex += 2;
                             if (pageIndex >= bookText.GetPageCount()) {
                                 pageIndex = bookText.GetPageCount() - 2;
-                                CloseBook(new InputAction.CallbackContext(), null);
+                                CloseBook(new InputAction.CallbackContext(), arbitro);
                             }
                             break;
                         case PageNavigation.ChapterHeading:
@@ -151,13 +161,19 @@ namespace RedCard {
                             break;
                     }
 
+                    int pagesFlipped = Mathf.Abs(pageIndex - oldPageIndex);
+                    // duh, if you flip page, index increases by two, bc you're viewing new spread!
+                    if (pagesFlipped == 2) AudioManager.PlaySFXOneShot(PrintingPress.press.pageFlip);
+                    else if (pagesFlipped > 2) AudioManager.PlaySFXOneShot(PrintingPress.press.pageFlipping);
                     ShowPage();
                 }
             }
             else {
 
+                AudioManager.PlaySFXOneShot(PrintingPress.press.bookOpening);
                 openBook.gameObject.SetActive(true);
                 closedBook.gameObject.SetActive(false);
+                closedBookCollider.enabled = closedBook.gameObject.activeSelf;
 
                 Cursor.visible = true;
                 Cursor.lockState = (PlayerPrefs.GetInt(Menu.Prefs_UnconfineCursor) == 1) ? CursorLockMode.None : CursorLockMode.Confined;
@@ -172,14 +188,21 @@ namespace RedCard {
         }
 
         private bool CloseBook(InputAction.CallbackContext _ctx, RefControls arbitro) {
+
+            if (!closedBook.gameObject.activeSelf) {
+                AudioManager.PlaySFXOneShot(PrintingPress.press.bookClosing);
+            }
+
             closedBook.gameObject.SetActive(true);
+            closedBookCollider.enabled = closedBook.gameObject.activeSelf;
             openBook.gameObject.SetActive(false);
 
-            // in case cursor was green or an arrow
+            // in case cursor was messed with
             Texture2D cursor = arbitro.hud.cursor;
-            float x = cursor.width / 2f; 
-            float y = cursor.height / 2f; 
+            float x = cursor.width / 2f;
+            float y = cursor.height / 2f;
             Cursor.SetCursor(cursor, new Vector2(x, y), CursorMode.ForceSoftware);
+
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             if (reader) {
@@ -191,6 +214,7 @@ namespace RedCard {
         }
 
         private bool Grabbed(InputAction.CallbackContext ctx, RefControls arbitro) {
+            AudioManager.PlaySFXOneShot(PrintingPress.press.bookOpening);
             rb.isKinematic = true;
             transform.localRotation = Quaternion.Euler(-5f, 180f, 0f);
             foreach (Transform t in closedBook.transform) {

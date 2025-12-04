@@ -13,6 +13,10 @@ namespace RedCard {
     public class PrintingPress : MonoBehaviour {
 
         public RulesOfSoccerCanvas rulesOfSoccerCanvas;
+        public AudioClip bookOpening;
+        public AudioClip bookClosing;
+        public AudioClip pageFlip;
+        public AudioClip pageFlipping;
 
         private static PrintingPress _instance;
 

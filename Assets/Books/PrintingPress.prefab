@@ -3072,6 +3072,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   rulesOfSoccerCanvas: {fileID: 4435809396050120431}
+  bookOpening: {fileID: 8300000, guid: c5a8eb0b50f55d949ae08d425c66ccdc, type: 3}
+  bookClosing: {fileID: 8300000, guid: d7339b45d2a89214d88dc4df660f1acb, type: 3}
+  pageFlip: {fileID: 8300000, guid: 73467492866c27b40a79ba759f9447a7, type: 3}
+  pageFlipping: {fileID: 8300000, guid: e4657f74fde3c7f4ea3ec3caec20c16c, type: 3}
 --- !u!1 &3842080046978585276
 GameObject:
   m_ObjectHideFlags: 0

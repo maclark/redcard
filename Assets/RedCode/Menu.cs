@@ -9,6 +9,8 @@ namespace RedCard {
 
         [Header("ASSIGNATIONS")]
         public Image fadeOverlay;
+        public AudioClip pausedSound;
+        public AudioClip unpausedSound;
         public AudioClip selectedSound;
         public Texture2D cursor;
 
@@ -19,6 +21,7 @@ namespace RedCard {
         public Button creditsButton;
         public Button quitButton;
         public Button wishlistButton; // to leave review or something
+        public AudioSource asoWishlist;
         public TMP_Text wishlistTxt;
         public Image wishlistGlow;
         public Button discordButton;
@@ -37,7 +40,8 @@ namespace RedCard {
 
         [Header("SAVE & QUIT")]
         public RectTransform rtConfirmAndQuit;
-        public Button saveAndQuit;
+        public Button saveReturnToMain;
+        public Button saveQuitToDesktop;
         public Button yesSaveAndQuit;
         public Button doNotSaveAndQuit;
 
@@ -54,6 +58,7 @@ namespace RedCard {
         public TMP_Dropdown languageDropdown;
         public Image languageDropdownArrow;
         public float sliderSoundGap = .05f;
+        public float lastSliderSlidSoundPlayed;
         public Slider sfxVolSlider;
         public Slider voicesSlider;
         public Slider musicSlider;
@@ -70,7 +75,6 @@ namespace RedCard {
         public Button momIsWatching;
         public TMP_Text momIsWatchingTxt;
         public AudioClip sliderSlidSound;
-        public float lastSliderSlidSoundPlayed;
         Button vulgaritySelected;
         TMP_Text vulgaritySelectedTxt;
         Button vulgarityHighlighted;
@@ -125,29 +129,25 @@ namespace RedCard {
             yesContinueGame.gameObject.SetActive(false);
             newGame.onClick.AddListener(PlayNewGame);
             newGame.gameObject.SetActive(false);
+
+            // still have to hide this, until certain to get rid of it
             rtConfirmAndQuit.gameObject.SetActive(false);
 
             // PAUSE menu
             resume.onClick.AddListener(ResumeGame);
-            resume.onClick.AddListener(() => AudioManager.PlaySFXOneShot(selectedSound));
+            resume.onClick.AddListener(() => AudioManager.PlaySFXOneShot(pausedSound));
             settingsFromPauseButton.onClick.AddListener(OpenSettings);
-            saveAndQuit.onClick.AddListener(() => {
-                AudioManager.PlaySFXOneShot(selectedSound);
-                rtConfirmAndQuit.gameObject.SetActive(true);
-            });
-            yesSaveAndQuit.onClick.AddListener(SaveAndQuitToMain);
-            doNotSaveAndQuit.onClick.AddListener(() => {
-                AudioManager.PlaySFXOneShot(selectedSound);
-                rtConfirmAndQuit.gameObject.SetActive(false);
-            });
+            saveReturnToMain.onClick.AddListener(SaveAndReturnToMain);
+            saveQuitToDesktop.onClick.AddListener(SaveAndQuitToDesktop);
 
-
+            // unused now
+            //yesSaveAndQuit.onClick.AddListener(SaveAndReturnToMain);
+            //doNotSaveAndQuit.onClick.AddListener(() => {
+            //    AudioManager.PlaySFXOneShot(selectedSound);
+            //    rtConfirmAndQuit.gameObject.SetActive(false);
+            //});
 
             // SETTINGS MENU
-            // needs to be made independent of the main menu
-            // because we want to just reuse this same settings menu in-game, duh!
-            // this isn't Flock of Dogs!!!
-
             rtGeneralSettings.gameObject.SetActive(true);
             rtControlsSettings.gameObject.SetActive(false);
 
@@ -234,6 +234,9 @@ namespace RedCard {
             if (PlayerPrefs.HasKey(Prefs_Vulgarity)) {
                 v = (Vulgarity)PlayerPrefs.GetInt(Prefs_Vulgarity);
             }
+            explicitLangaugeTxt.color = Colors.blackish_green;
+            mincedOathsTxt.color = Colors.blackish_green;
+            momIsWatchingTxt.color = Colors.blackish_green;
             SelectVulgarity(v);
             vulgarityHighlight.gameObject.SetActive(false);
         }
@@ -309,7 +312,7 @@ namespace RedCard {
             else Debug.LogError("clicking on Play but we're not at title screen!");
         }
 
-        private void SaveAndQuitToMain() {
+        private void SaveAndReturnToMain() {
             Debug.LogWarning("fade out and load title scene");
             AudioManager.PlaySFXOneShot(selectedSound);
             RedMatch.match.Save();
@@ -317,6 +320,17 @@ namespace RedCard {
             tQuitting = 0f;
             fadeOverlay.color = Color.clear;
             fadeOverlay.gameObject.SetActive(true);
+        }
+
+        private void SaveAndQuitToDesktop() {
+            Debug.LogWarning("fade out and load title scene");
+            AudioManager.PlaySFXOneShot(selectedSound);
+            RedMatch.match.Save();
+            quittingToMain = true;
+            tQuitting = 0f;
+            fadeOverlay.color = Color.clear;
+            fadeOverlay.gameObject.SetActive(true);
+            Application.Quit();
         }
 
         private void ResumeGame() {
@@ -380,8 +394,6 @@ namespace RedCard {
             }
         }
 
-
-
         public static float DecibelsFrom01(float value) {
             if (value < 0 || value > 1) {
                 Debug.LogWarning("out of range volume value " + value);
@@ -390,11 +402,12 @@ namespace RedCard {
         }
 
         private void SlidSlider(float value) {
-            print("slid slider");
-            if (Time.time - lastSliderSlidSoundPlayed > sliderSoundGap) {
+            if (Time.unscaledTime - lastSliderSlidSoundPlayed > sliderSoundGap) {
+                print("slid slider");
                 AudioManager.PlaySFXOneShot(sliderSlidSound);
-                lastSliderSlidSoundPlayed = Time.time;
+                lastSliderSlidSoundPlayed = Time.unscaledTime;
             }
+            else print("slid slider without sound, ");
         }
 
         private void SlidSFX(float value) {

@@ -63,10 +63,12 @@ namespace RedCard {
             phWishlist.onEnter += (_data) => {
                 colorPeriod = 1f;
                 wishlistSpeed = 20f;
+                menu.asoWishlist.Play();
             };
             phWishlist.onExit += (_data) => {
                 colorPeriod = 5f;
                 wishlistSpeed = 2.5f;
+                menu.asoWishlist.Stop();
             };
         }
 

@@ -752,6 +752,7 @@ namespace RedCard {
                 print("unpausing");
                 Time.timeScale = 1f;
                 menu.gameObject.SetActive(false);
+                AudioManager.PlaySFXOneShot(menu.unpausedSound);
                 // hmm need to do stuff
             }
             else {
@@ -759,6 +760,7 @@ namespace RedCard {
                 Time.timeScale = 0f;
                 menu.gameObject.SetActive(true);
                 menu.OpenTopLevelMenu();
+                AudioManager.PlaySFXOneShot(menu.pausedSound);
             }
 
 
