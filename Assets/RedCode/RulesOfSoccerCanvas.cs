@@ -9,6 +9,10 @@ namespace RedCard {
         public RectTransform lawSpread;
         public TMP_Text lawSpreadTitle;
         public TMP_Text lawSpreadNum;
+        //public Image logo; // logo doesn't ever change?
+        public TMP_Text lawPageTitle;
+        public TMP_Text lawPageNum;
+        public TMP_Text lawPageText;
 
         public RectTransform normalSpread;
 

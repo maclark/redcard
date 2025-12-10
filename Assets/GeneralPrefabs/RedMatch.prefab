@@ -44,9 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f429e470746c854696f49333522b7d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 41d59e161569b204cacee7421c92d4c6, type: 2}
   customizationOptions: {fileID: 11400000, guid: b8118786ed2cbeb4589ed7619bf32db4, type: 2}
   state: 0
   frozenWaitingForCall: 0
+  menu: {fileID: 0}
   throwInDotThreshold: 0.33
   botLeftBox0: {fileID: 0}
   topRightBox0: {fileID: 0}

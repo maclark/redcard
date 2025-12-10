@@ -147,12 +147,16 @@ namespace RedCard {
                     if (atLawTitle) {
                         print("law title!");
                         rosc.lawSpread.gameObject.SetActive(true);
-                        rosc.lawSpreadNum.text = law.Item1.ToRomanUpper();
+                        rosc.lawSpreadNum.text = "Law " + law.Item1.ToRomanUpper();
                         rosc.lawSpreadTitle.text = law.Item2;
+                        rosc.lawPageNum.text = "LAW " + law.Item1.ToRomanUpper();
+                        rosc.lawPageTitle.text = law.Item2;
+                        //rosc.lawPageText = ?;
+
                         rosc.leftTopDetails.gameObject.SetActive(false);
-                        rosc.rightTopDetails.gameObject.SetActive(false);
+                        rosc.rightTopDetails.gameObject.SetActive(true);
                         rosc.leftBottomDetails.gameObject.SetActive(false);
-                        rosc.rightBottomDetails.gameObject.SetActive(false);
+                        rosc.rightBottomDetails.gameObject.SetActive(true);
                     }
                     else {
                         print("normal!");

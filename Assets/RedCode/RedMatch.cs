@@ -90,7 +90,7 @@ namespace RedCard {
 
     public partial class RedMatch : MonoBehaviour {
 
-        internal RedSettings settings;
+        public RedSettings settings;
         public CustomizationOptions customizationOptions;
         public State state = State.Unset;
         public bool frozenWaitingForCall = false;
@@ -168,7 +168,6 @@ namespace RedCard {
                 teamB.attackingEnd = FieldEnd.West;
                 teamB.squadName = "Bulls";
 
-                settings = Resources.Load<RedSettings>("RedSettings");
                 Debug.Assert(settings);
 
                 hud = FindFirstObjectByType<HUD>();
