@@ -13,6 +13,9 @@ in ref's gym bag:
 - other jokes? bengay? 
 - crossword puzzle(s)
 
+
+- track clapping sound effect on hovering over wishlist
+
 books:
 - figure out mapping of canvas onto render texture onto mesh
 - render BookUI layer on ArmsCam to avoid clipping issue
