@@ -403,39 +403,32 @@ namespace RedCard {
 
         private void SlidSlider(float value) {
             if (Time.unscaledTime - lastSliderSlidSoundPlayed > sliderSoundGap) {
-                print("slid slider");
                 AudioManager.PlaySFXOneShot(sliderSlidSound);
                 lastSliderSlidSoundPlayed = Time.unscaledTime;
             }
-            else print("slid slider without sound, ");
         }
 
         private void SlidSFX(float value) {
-            Debug.Log("sliding sfx");
             PlayerPrefs.SetFloat(Prefs_SFXVol, value);
             AudioManager.am.mixer.SetFloat(Prefs_SFXVol, DecibelsFrom01(value));
         }
 
         private void SlidVoices(float value) {
-            print("sliding voices");
             PlayerPrefs.SetFloat(Prefs_VoicesVol, value);
             AudioManager.am.mixer.SetFloat(Prefs_VoicesVol, DecibelsFrom01(value));
         }
 
         private void SlidMusic(float value) {
-            print("sliding music");
             PlayerPrefs.SetFloat(Prefs_MusicVol, value);
             AudioManager.am.mixer.SetFloat(Prefs_MusicVol, DecibelsFrom01(value));
         }
 
         public static void ResetPrefs() {
-            print("reset settings preferences");
             PlayerPrefs.DeleteKey(Prefs_MusicVol);
             PlayerPrefs.DeleteKey(Prefs_SFXVol);
             PlayerPrefs.DeleteKey(Prefs_VoicesVol);
             PlayerPrefs.DeleteKey(Prefs_Fullscreen);
             PlayerPrefs.DeleteKey(Prefs_Vsync);
-            PlayerPrefs.DeleteKey("Vsycn"); // temporary
             PlayerPrefs.DeleteKey(Prefs_Vulgarity);
 
             Debug.LogWarning("#TODO reset ref arm preferences");

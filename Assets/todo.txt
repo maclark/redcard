@@ -14,19 +14,9 @@ in ref's gym bag:
 - crossword puzzle(s)
 
 
-- track clapping sound effect on hovering over wishlist
-
-books:
-- figure out mapping of canvas onto render texture onto mesh
-- render BookUI layer on ArmsCam to avoid clipping issue
-
-difficulty:
-kids, no cussing, parents get angry?
-
 ref hit by ball?
 
 sounds:
-- open book, flip page
 - customization: separate slider sound for hair and nails
 - customization: maybe some grunts and and hrms and ahs ?
 - customization: switch arms, dominant, leave  
@@ -39,8 +29,8 @@ customization:
 - amputation
 
 business:
+- finish steam page
 - gifs/video
-- steam page
 - website
 - discord
 - socials: tiktok
