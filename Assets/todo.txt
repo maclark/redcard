@@ -35,6 +35,60 @@ business:
 - discord
 - socials: tiktok
 
+simulation:
+- how to do it?
+- 
+
+animations+voiceovers:
+- run, walk, one-footed tackle, two-footed
+- headbutt
+- jump header
+- stumble
+- grab
+- punch
+- kick player
+- pass ball
+- shoot ball
+- celebrate
+- fall
+- injured
+- roll around faking injury
+- inappropriate gesture
+- who me?
+- posing with arms on hips
+
+
+voicelines:
+- "are you fucking blind?"
+- "who? me?"
+- *grunts*
+- *wanting ball sound*
+- *cries of pain [genuine]*
+- *cries of pain [fake]*
+- "man on!"
+- "gonna take all day then?"
+- "that's at least 3 times, sir."
+- "please, please"
+- "all ball"
+- "he didn't touch the ball!"
+- "good call, sir"
+- "that was a bad one, sir"
+- "heads"
+- "tails"
+- "we will switch sides"
+- [general insults player to player]
+	+ your mother smells
+	+ fuck you
+	+ shut the fuck up
+	+ go to hell
+	+ you're a piece of shit
+	+ 
+
+
+
+SFX:
+- fans chanting, booing, cheering, jeering
+
 trailer:
 BEFORE THERE WAS V.A.R.
 tying his laces
