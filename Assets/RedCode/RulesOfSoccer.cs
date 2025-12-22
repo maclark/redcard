@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.IO;
 using System.Collections.Generic;
+
 
 namespace RedCard {
 
@@ -9,7 +12,6 @@ namespace RedCard {
         public Transform contentsButtonBoxes;
         public BookPageButton jumpToContents;
         public BookPageButton[] jumpToLawButtons = new BookPageButton[0];
-
 
         // (law#, lawTitle, lawStartPageIndex)
         public List<(int, string, int)> lawSections = new List<(int, string, int)>() {
@@ -65,6 +67,31 @@ namespace RedCard {
                 }
                 else Debug.LogWarning("more jump to law buttons than law sections");
             }
+
+            LoadROSC();
+        }
+
+#if UNITY_EDITOR
+
+        private void Update() {
+
+            if (UnityEngine.InputSystem.Keyboard.current.f5Key.wasPressedThisFrame) {
+                LoadROSC();
+            }
+        }
+
+#endif
+
+        private void LoadROSC() {
+            //#TODO
+            var path = Path.Combine(
+                //Application.dataPath,
+                //AssetDatabase.GetAssetPath(BookText).Replace("Assets/", "")
+            );
+
+            //Document = BookParser.Parse(path);
+
+            // TODO: Rebuild UI from Document
         }
 
         public int GetPageCount() {
@@ -151,7 +178,7 @@ namespace RedCard {
                         rosc.lawSpreadTitle.text = law.Item2;
                         rosc.lawPageNum.text = "LAW " + law.Item1.ToRomanUpper();
                         rosc.lawPageTitle.text = law.Item2;
-                        //rosc.lawPageText = ?;
+                        rosc.lawPageText.text = "This is the wording of this law";
 
                         rosc.leftTopDetails.gameObject.SetActive(false);
                         rosc.rightTopDetails.gameObject.SetActive(true);

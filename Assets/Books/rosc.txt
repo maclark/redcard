@@ -1,0 +1,19 @@
+#7
+[col=0] 
+(1)
+
+
+
+
+(2)
+
+[col=1 indent=0]
+The ball shall be spherical.
+This is the next line.
+And another.
+
+[col=1 indent=1]
+(<b>a</b>) Make sure it's round!
+
+#8
+
