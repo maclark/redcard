@@ -93,6 +93,8 @@ namespace RedCard {
             }
             else lookingAt = null;
 
+            // is this hacky? i don't know
+            if (RedMatch.match.paused) lookingAt = null;
 
             if (was != lookingAt) {
                 Texture2D cursor = arbitro.hud.cursor;

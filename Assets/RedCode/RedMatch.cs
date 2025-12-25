@@ -93,6 +93,7 @@ namespace RedCard {
         public RedSettings settings;
         public CustomizationOptions customizationOptions;
         public State state = State.Unset;
+        public bool paused = false;
         public bool frozenWaitingForCall = false;
         public Menu menu;
 
@@ -749,6 +750,7 @@ namespace RedCard {
 
             if (menu.gameObject.activeSelf) {
                 print("unpausing");
+                paused = false;
                 Time.timeScale = 1f;
                 menu.gameObject.SetActive(false);
                 AudioManager.PlaySFXOneShot(menu.unpausedSound);
@@ -756,6 +758,7 @@ namespace RedCard {
             }
             else {
                 print("pausing");
+                paused = true;
                 Time.timeScale = 0f;
                 menu.gameObject.SetActive(true);
                 menu.OpenTopLevelMenu();
