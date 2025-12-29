@@ -15,6 +15,10 @@ namespace RedCard {
         public TMP_Text lawPageText;
 
         public RectTransform normalSpread;
+        public TMP_Text leftPageCol0;
+        public TMP_Text leftPageCol1;
+        public TMP_Text rightPageCol0;
+        public TMP_Text rightPageCol1;
 
         public TMP_Text leftTopLawNum;
         public RectTransform leftTopDetails;

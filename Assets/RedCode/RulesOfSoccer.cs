@@ -1,6 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System;
+using UnityEngine.AddressableAssets;
 using System.IO;
 using System.Collections.Generic;
 
@@ -9,9 +8,11 @@ namespace RedCard {
 
     public class RulesOfSoccer : MonoBehaviour, IBookText {
 
+        public AssetReferenceT<TextAsset> textRef;
         public Transform contentsButtonBoxes;
         public BookPageButton jumpToContents;
         public BookPageButton[] jumpToLawButtons = new BookPageButton[0];
+        public BookDocument document;
 
         // (law#, lawTitle, lawStartPageIndex)
         public List<(int, string, int)> lawSections = new List<(int, string, int)>() {
@@ -53,7 +54,8 @@ namespace RedCard {
         // hm, translation for books will be expensive....
 
         const int INDEX_PAGE1 = 4;
-        const int INDEX_CONTENTS = 2; 
+        const int INDEX_CONTENTS = 2;
+        const string INDENT_SPACES = "    "; // 4 spaces
 
 
         public void Awake() {
@@ -82,16 +84,12 @@ namespace RedCard {
 
 #endif
 
+
         private void LoadROSC() {
-            //#TODO
-            var path = Path.Combine(
-                //Application.dataPath,
-                //AssetDatabase.GetAssetPath(BookText).Replace("Assets/", "")
-            );
-
-            //Document = BookParser.Parse(path);
-
-            // TODO: Rebuild UI from Document
+            if (textRef.Asset is TextAsset ta) {
+                document = BookParser.Parse(ta.text);
+            }
+            else Debug.LogError("cannot find text for rules of soccer ros: " + textRef.Asset);
         }
 
         public int GetPageCount() {
@@ -171,6 +169,10 @@ namespace RedCard {
                     Debug.LogError("couldn't find law section for page index " + leftPageIndex);
                 }
                 else {
+
+                    BookPage leftPage = document.Pages[leftPageIndex];
+                    BookPage rightPage = document.Pages[leftPageIndex + 1];
+
                     if (atLawTitle) {
                         print("law title!");
                         rosc.lawSpread.gameObject.SetActive(true);
@@ -194,6 +196,53 @@ namespace RedCard {
                         rosc.rightTopDetails.gameObject.SetActive(true);
                         rosc.leftBottomDetails.gameObject.SetActive(true);
                         rosc.rightBottomDetails.gameObject.SetActive(true);
+
+                        string col0 = "";
+                        string col1 = "";
+                        string currentCol;
+                        for (int i = 0; i < leftPage.Blocks.Count; i++) {
+                            BookBlock block = leftPage.Blocks[i];
+                            if (block.Column == 0) currentCol = col0;
+                            else currentCol = col1;
+                            for (int j = 0; j < block.Elements.Count; j++) {
+                                BookElement element = block.Elements[j];
+                                if (element.Type == BookElementType.Space) {
+                                    for (int k = 0; k < element.SpaceLines; k++) {
+                                        currentCol += "\n";
+                                    }
+                                }
+                                else if (element.Type == BookElementType.Paragraph) {
+                                    if (block.Indent == 1) currentCol += INDENT_SPACES;
+                                    currentCol += $"{element.Text}\n";
+                                }
+                                else Debug.LogError("what book type is this? " + element.Type);
+                            }
+                        }
+
+                        rosc.leftPageCol0.text = col0;
+                        rosc.leftPageCol1.text = col1;
+
+                        for (int i = 0; i < rightPage.Blocks.Count; i++) {
+                            BookBlock block = rightPage.Blocks[i];
+                            if (block.Column == 0) currentCol = col0;
+                            else currentCol = col1;
+                            for (int j = 0; j < block.Elements.Count; j++) {
+                                BookElement element = block.Elements[j];
+                                if (element.Type == BookElementType.Space) {
+                                    for (int k = 0; k < element.SpaceLines; k++) {
+                                        currentCol += "\n";
+                                    }
+                                }
+                                else if (element.Type == BookElementType.Paragraph) {
+                                    if (block.Indent == 1) currentCol += INDENT_SPACES;
+                                    currentCol += $"{element.Text}\n";
+                                }
+                                else Debug.LogError("what book type is this? " + element.Type);
+                            }
+                        }
+
+                        rosc.rightPageCol0.text = col0;
+                        rosc.rightPageCol1.text = col1;
                     }
                 }
             }

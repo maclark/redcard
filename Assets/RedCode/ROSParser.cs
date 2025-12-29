@@ -41,8 +41,8 @@ namespace RedCard {
         private static readonly Regex SpaceRegex =
             new(@"\[space=(\d+)\]", RegexOptions.IgnoreCase);
 
-        public static BookDocument Parse(string filePath) {
-            var lines = File.ReadAllLines(filePath);
+        public static BookDocument Parse(string text) {
+            var lines = File.ReadAllLines(text);
 
             var doc = new BookDocument();
 

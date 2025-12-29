@@ -15,6 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/thetunnels.unity
     guid: 7333906eeffa8b54c8c80e9207abc55f
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: edc83285a3b22d04792aa0e7627a72ca, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 58c2bb1b2c15279499252c60059831ef, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: c2ed4e8a4846107439263a41d6598eda, type: 3}
   m_UseUCBPForAssetBundles: 0
