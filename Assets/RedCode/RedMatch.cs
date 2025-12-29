@@ -90,20 +90,24 @@ namespace RedCard {
 
     public partial class RedMatch : MonoBehaviour {
 
+        [Header("ASSIGNATIONS")]
         public RedSettings settings;
         public CustomizationOptions customizationOptions;
+        public Menu menu;
+        public GameObject playerOutlinePrefab;
+        public GameObject uiSprayLinePrefab;
+
+        [Header("SETTINGS")]
+        public bool frozenWaitingForCall = false;
+        public float throwInDotThreshold = .33f;
+
+        [Header("VARS")]
         public State state = State.Unset;
         public bool paused = false;
-        public bool frozenWaitingForCall = false;
-        public Menu menu;
-
-        public float throwInDotThreshold = .33f;
         public Transform botLeftBox0;
         public Transform topRightBox0;
         public Transform botLeftBox1;
         public Transform topRightBox1;
-        public GameObject playerOutlinePrefab;
-        public GameObject uiSprayLinePrefab;
         public RedTeam teamA;
         public RedTeam teamB;
         public RefControls arbitro;
