@@ -787,7 +787,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   ceiling: {fileID: 2387941400978287230}
   ceilingLights:
-  - {fileID: 0}
+  - {fileID: 1723322082348278624}
   - {fileID: 6690050138209835347}
   ceilingBulbs:
   - {fileID: 2350262992857248265}

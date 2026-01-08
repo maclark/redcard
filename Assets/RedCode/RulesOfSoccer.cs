@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using System.IO;
 using System.Collections.Generic;
 
 
@@ -8,7 +6,7 @@ namespace RedCard {
 
     public class RulesOfSoccer : MonoBehaviour, IBookText {
 
-        public AssetReferenceT<TextAsset> textRef;
+        public TextAsset textAsset;
         public Transform contentsButtonBoxes;
         public BookPageButton jumpToContents;
         public BookPageButton[] jumpToLawButtons = new BookPageButton[0];
@@ -84,12 +82,9 @@ namespace RedCard {
 
 #endif
 
-
         private void LoadROSC() {
-            if (textRef.Asset is TextAsset ta) {
-                document = BookParser.Parse(ta.text);
-            }
-            else Debug.LogError("cannot find text for rules of soccer ros: " + textRef.Asset);
+            Debug.LogWarning("textAsset.text " + textAsset.text);
+            document = BookParser.Parse(textAsset.text);
         }
 
         public int GetPageCount() {

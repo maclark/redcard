@@ -1294,12 +1294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c46f9fa9dc1fd469ab1e7a00c137ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  textRef:
-    m_AssetGUID: d8c6089e6fc01ef449191ae5bf32eafa
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_SubObjectGUID: 
-    m_EditorAssetChanged: 0
+  textAsset: {fileID: 4900000, guid: d8c6089e6fc01ef449191ae5bf32eafa, type: 3}
   contentsButtonBoxes: {fileID: 2187330221272302828}
   jumpToContents: {fileID: 7209376558068992834}
   jumpToLawButtons:

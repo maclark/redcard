@@ -283,8 +283,8 @@ namespace RedCard {
                 print("mouse present, not on laptop, lookingWithArrows initialized: " + lookingWithArrows);
             }
 
-
             if (Application.isEditor) debugStartWithEquipment = true;
+            lookingWithArrows = false;
 
             RedMatch.match.menu.gameObject.SetActive(false);
 

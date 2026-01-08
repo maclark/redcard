@@ -42,7 +42,8 @@ namespace RedCard {
             new(@"\[space=(\d+)\]", RegexOptions.IgnoreCase);
 
         public static BookDocument Parse(string text) {
-            var lines = File.ReadAllLines(text);
+
+            string[] lines = text.Split('\n');
 
             var doc = new BookDocument();
 
