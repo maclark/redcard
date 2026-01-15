@@ -5,11 +5,8 @@ namespace RedCard {
     public class RedBall : MonoBehaviour {
 
 
+        [Header("ASSIGNATIONS")]
         public Rigidbody rb;
-
-        private void Awake() {
-            if (TryGetComponent(out MeshRenderer mr)) mr.materials[0].color = Color.red;
-        }
 
         private void OnCollisionEnter(Collision collision) {
             if (collision.collider.TryGetComponent(out CaptainBody cap)) {
