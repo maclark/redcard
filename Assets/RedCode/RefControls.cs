@@ -306,7 +306,7 @@ namespace RedCard {
             acquiredEquipment.Add(RefEquipment.Barehand);
 
             // if at stadium, equip 'em all
-            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Stadium1_Small" || debugStartWithEquipment) { 
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Stadium1_Small" || debugStartWithEquipment) {
                 acquiredEquipment.Add(RefEquipment.Whistle);
                 hud.MakeVisible(RefEquipment.Whistle);
                 acquiredEquipment.Add(RefEquipment.Watch);
@@ -365,6 +365,14 @@ namespace RedCard {
 
             cam.fieldOfView = normal_vert_fov;
             cameraTransform = cam.transform;
+
+
+            for (int i = 0; i < cam.layerCullDistances.Length; i++) {
+                print($"layerCullDistances[{i}] ({LayerMask.LayerToName(i)}): {cam.layerCullDistances[i]}");
+
+            } 
+            //float[] distances = new float[0];
+            //cam.layerCullDistances = distances;
 
             controller = GetComponent<CharacterController>();
 
