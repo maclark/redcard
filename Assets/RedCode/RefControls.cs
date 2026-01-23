@@ -49,6 +49,7 @@ namespace RedCard {
 
         [Header("ASSIGNATIONS")]
         public Camera cam;
+        public Camera armCam;
         public HUD hud;
         public CrossHairs crossHairs;
         public Arm leftArm;

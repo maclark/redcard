@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 namespace RedCard { 
 
     // debug input class
     public partial class RedMatch : MonoBehaviour {
 
+
+        public LayerMask worldAndArmsMask;
+        public LayerMask worldMask;
 
         public bool DebugInput() {
 
@@ -35,6 +39,23 @@ namespace RedCard {
                     arbitro.canLookAround = true;
                 }
             }
+            else if (Keyboard.current.f6Key.wasPressedThisFrame) {
+                UniversalAdditionalCameraData camData = arbitro.cam.GetUniversalAdditionalCameraData();
+                camData.cameraStack.Clear();
+                camData.renderPostProcessing = true;
+                camData.antialiasing = AntialiasingMode.TemporalAntiAliasing;
+                arbitro.cam.cullingMask = worldAndArmsMask;
+                arbitro.armCam.enabled = false;
+            }
+            else if (Keyboard.current.f7Key.wasPressedThisFrame) {
+                UniversalAdditionalCameraData camData = arbitro.cam.GetUniversalAdditionalCameraData();
+                camData.cameraStack.Clear();
+                camData.cameraStack.Add(arbitro.armCam);
+                camData.renderPostProcessing = false;
+                camData.antialiasing = AntialiasingMode.None;
+                arbitro.cam.cullingMask = worldMask;
+                arbitro.armCam.enabled = true;
+            }
             else if (Keyboard.current.yKey.wasPressedThisFrame) {
                 w.PopulateBoxes(w.coinFlipWinnerQuestion);
             }
@@ -47,6 +68,9 @@ namespace RedCard {
             else if (Keyboard.current.oKey.wasPressedThisFrame) {
                 w.PopulateBoxes(w.coinFlipExplanation);
             }
+
+
+
 
 
             return false;

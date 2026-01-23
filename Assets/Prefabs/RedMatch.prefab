@@ -65,6 +65,12 @@ MonoBehaviour:
   hud: {fileID: 0}
   targets: []
   correctCalls: []
+  worldAndArmsMask:
+    serializedVersion: 2
+    m_Bits: 759
+  worldMask:
+    serializedVersion: 2
+    m_Bits: 695
 --- !u!1001 &1994657704809149855
 PrefabInstance:
   m_ObjectHideFlags: 0
