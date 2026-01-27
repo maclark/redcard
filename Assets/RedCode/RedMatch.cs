@@ -96,6 +96,7 @@ namespace RedCard {
         public Menu menu;
         public GameObject playerOutlinePrefab;
         public GameObject uiSprayLinePrefab;
+        public DevConsole console;
 
         [Header("SETTINGS")]
         public bool frozenWaitingForCall = false;
@@ -161,6 +162,9 @@ namespace RedCard {
                 Common.Init();
 
                 Language.current = Language.english;
+
+                console.open = false;
+                console.enabled = false;
 
                 initialized = true;
                 state = State.PreMatchTunnelsAndLocker;
@@ -772,11 +776,16 @@ namespace RedCard {
 
         }
 
+        private static string active_map;
+        public static string GetActiveMap() => active_map;
         public static void AssignMap(string mapName) {
             ReadOnlyArray<PlayerInput> allInput = PlayerInput.all;
             foreach (PlayerInput input in allInput) {
                 InputActionMap map = input.actions.FindActionMap(mapName);
-                if (map != null) input.SwitchCurrentActionMap(mapName);
+                if (map != null) {
+                    input.SwitchCurrentActionMap(mapName);
+                    active_map = mapName;
+                }
                 else Debug.LogError("can't find map: " + mapName);
             }
         }

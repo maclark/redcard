@@ -13,6 +13,8 @@ namespace RedCard {
 
         public bool DebugInput() {
 
+            if (console.open) return false;
+
             //print("f:" + Time.frameCount);
 
 
@@ -25,7 +27,11 @@ namespace RedCard {
 
             DialogWheel w = arbitro.hud.wheel;
 
-            if (Keyboard.current.tabKey.wasPressedThisFrame) {
+
+            if (Keyboard.current.backquoteKey.wasPressedThisFrame) {
+                console.Open();
+            }
+            else if (Keyboard.current.tabKey.wasPressedThisFrame) {
                 if (!Cursor.visible) {
                     print("free looking on");
                     Cursor.lockState = CursorLockMode.None;

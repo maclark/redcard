@@ -1107,13 +1107,15 @@ namespace RedCard {
 
             if (RedMatch.match.DebugInput()) return; ///////////////earlyreturn///////////////
 
-            dt = Time.deltaTime;
-
-            lookRay = new Ray(cameraTransform.position, cameraTransform.forward);
 
             if (itemHeld) {
                 if (itemHeld.onHeld != null) itemHeld.onHeld(new InputAction.CallbackContext(), this);
             }
+
+
+           
+            dt = Time.deltaTime;
+            lookRay = new Ray(cameraTransform.position, cameraTransform.forward);
 
             if (blowingWhistle) tBlowingWhistle += dt;
             if (raisingCard) {

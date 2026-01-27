@@ -83,7 +83,7 @@ namespace RedCard {
 #endif
 
         private void LoadROSC() {
-            Debug.LogWarning("textAsset.text " + textAsset.text);
+            Debug.Log("LoadROSC, textAsset.text:\n" + textAsset.text);
             document = BookParser.Parse(textAsset.text);
         }
 
