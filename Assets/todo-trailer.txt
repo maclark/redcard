@@ -1,0 +1,32 @@
+- music
+	+ blow the whistle?
+	+ joel or friend or other source or none, just Braveheart drums
+- sfx
+	+ stadium crowd (various)
+	+ whistle
+	+ crowd cheering
+	+ panting
+	+ grunting
+	+ sound of a tackle
+	+ crowd reacting
+- wording
+	"In the time before V.A.R."
+	"One man safeguarded the beautiful game"
+	"From the depravity of men"
+- footballer animations
+	+ running with ball
+	+ running without ball
+	+ two-footed foul
+	+ getting tackled, being hurt
+	+ pleading
+	+ angry
+	+ punching
+- first person animations
+	+ blowing whistle
+	+ gesturing 'let's play'
+	+ pumping arms while running
+	+ one finger up
+	+ showing red card 
+	+ frightened/defensive arms
+	+ camera shake as getting knocked out
+

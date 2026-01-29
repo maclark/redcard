@@ -1,0 +1,109 @@
+BUGS:
+oh they're waiting to be found and made!
+
+BUSINESS:
+- make game (see below)
+- make trailer (see todo-trailer)
+- steam page (see todo-steam)
+- work on voicework
+- record short video every session!
+- make InJellyTent.com
+- combine/rebrand Discord
+- red cards (business cards/merch)
+- AIGN
+- WC stuff with ambitious
+- talk 2 Paul
+- social media
+
+SIMULATION:
+- footballer basic behavior!
+- coaches basic pacing behavior  
+- linesmen basic behavior
+- inferred position of foul + gesture to correct
+- if ball waay out of bounds, and no call, players should behave appropriately (gesture for call?)
+- if ball slightly out of bounds, linesman should start waving flag
+- ref hit by ball?
+- Modesto F.C. or Rossmoor? or Santa Ana F.C.
+
+MODELING:
+- corner flags, nets, field, striping
+- crowd, flags, chants, flares
+- stands, hoardings, floodlights, player benches
+- footballer heads
+- linesmen?
+- first person hands
+- coaches
+- ref gear
+- toilet, sink
+- locker
+- gym bag
+- door, light fixtures
+
+3rd PERSON ANIMATIONS:
+- run, walk, one-footed tackle, two-footed
+- headbutt
+- jumping
+- jumping with header
+- stumble
+- grab
+- punch
+- kick player
+- pass ball
+- shoot ball
+- celebrate
+- fall
+- injured
+- roll around faking injury
+- inappropriate gesture
+- who me?
+- posing with arms on hips
+
+1st PERSON ANIMATIONS:
+- lifting whistle, shaking whistle, holding whistle
+- pumping arms while sprinting (should work with whatever ref is holding)
+- gesture play on
+- gesture no
+- hold hands up defensively
+- shake finger
+- give thumbs up
+- gesture "come here"
+- general indicating
+- counterstrike "inspect"
+
+PROTOCOLS:
+- walking out of tunnels
+- warming up
+- coin toss
+- halftime retreat
+- second half (just have players on field already probably)
+
+SECRET:
+- model devil
+- animate devil
+- model hands hands grabbing
+- design battle
+- provide devil daggers reference
+- earth opens up
+- fall into void, land on hellscape plain
+
+UXUIMENUS:
+- test gamepad support
+- add Sars-CoV-2 toggle
+
+BOOKS:
+- men's fitness
+- IFAB laws of the game
+- progress & poverty
+- note from daughter
+- other jokes? bengay? 
+- crossword puzzle(s)
+
+REF CUSTOMIZER:
+- separate slider sound for hair and nails
+- maybe some grunts and and hrms and ahs ?
+- switch arms, dominant, leave  
+- make camera bob around some?
+- nail painting doesn't change world
+- some of the skin colors are a little too albino...but maybe need a mapping from skin color to mesh color
+- rings, bracelets?
+- amputation
