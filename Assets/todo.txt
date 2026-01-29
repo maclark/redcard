@@ -1,7 +1,111 @@
-using #GAMEPAD to note things that need to be tested with...the gamepad!
+
+
+
+ALL TASKS:
+
+BUGS:
+
+TRAILER:
+
+- music
+	+ blow the whistle?
+	+ joel or friend or other source or none, just Braveheart drums
+- sfx
+	+ stadium crowd (various)
+	+ whistle
+	+ crowd cheering
+	+ panting
+	+ grunting
+	+ sound of a tackle
+	+ crowd reacting
+- wording
+	"In the time before V.A.R."
+	"One man safeguarded the beautiful game"
+	"From the depravity of men"
+- footballer animations
+	+ running with ball
+	+ running without ball
+	+ two-footed foul
+	+ getting tackled, being hurt
+	+ pleading
+	+ angry
+	+ punching
+- first person animations
+	+ blowing whistle
+	+ gesturing 'let's play'
+	+ pumping arms while running
+	+ one finger up
+	+ showing red card 
+	+ frightened/defensive arms
+	+ camera shake as getting knocked out
+
+
+SIMULATION:
+- footballer basic behavior!
+- coaches basic pacing behavior  
+- linesmen basic behavior
+
+
+STADIUM:
+- stands, hoardings, floodlights, player benches
+- corner flags, nets, field, striping
+- crowd, flags, chants, flares
+
+MODELING:
+K heads
+K first person hands
+K coaches
+K ref gear
+K locker room
+
+ANIMATIONS:
+- run, walk, one-footed tackle, two-footed
+- headbutt
+- jump header
+- stumble
+- grab
+- punch
+- kick player
+- pass ball
+- shoot ball
+- celebrate
+- fall
+- injured
+- roll around faking injury
+- inappropriate gesture
+- who me?
+- posing with arms on hips
+ 
+
+
+- Modesto F.C. or Rossmoor? or Santa Ana F.C.
+
+PROTOCOLS:
+- walking out of tunnels
+- warming up
+- coin toss
+- halftime retreat
+- second half (just have players on field already probably)
+- 
+
+SECRET:
+K model devil
+K animate devil
+K model hands hands grabbing
+- provide devil daggers reference
+- earth opens up
+- fall into void, land on hellscape plain
+
+
+BUSINESS:
+- website
+- steam page
+- socials etc
+
+UX:
+- test gamepad support
 
 inferred position of foul + gesture to correct
-turn off simulator audiolistener once embodied within redref with audiolistener
 if ball waay out of bounds, and no call, players should behave appropriately (gesture for call?)
 if ball slightly out of bounds, linesman should start waving flag
 
@@ -38,72 +142,51 @@ simulation:
 - how to do it?
 - 
 
-animations+voiceovers:
-- run, walk, one-footed tackle, two-footed
-- headbutt
-- jump header
-- stumble
-- grab
-- punch
-- kick player
-- pass ball
-- shoot ball
-- celebrate
-- fall
-- injured
-- roll around faking injury
-- inappropriate gesture
-- who me?
-- posing with arms on hips
-
-
-voicelines:
-- "are you fucking blind?"
-- "who? me?"
-- *grunts*
-- *wanting ball sound*
-- *cries of pain [genuine]*
-- *cries of pain [fake]*
-- "man on!"
-- "gonna take all day then?"
-- "that's at least 3 times, sir."
-- "please, please"
-- "all ball"
-- "he didn't touch the ball!"
-- "good call, sir"
-- "that was a bad one, sir"
-- "heads"
-- "tails"
-- "we will switch sides"
-- [general insults player to player]
-	+ your mother smells
-	+ fuck you
-	+ shut the fuck up
-	+ go to hell
-	+ you're a piece of shit
-	+ 
 
 
 
-SFX:
-- fans chanting, booing, cheering, jeering
+website
+merch for dec 3
 
-trailer:
-BEFORE THERE WAS V.A.R.
-tying his laces
-ONE MAN STOOD ALONE
-checking his watch
-SAFEGUARDING THE BEAUTIFUL GAME
-*whistle blows* open arms gesture, kick off
-FROM THE DEPRAVITY OF MEN
-two footed tackle
-elbow foul
-headbutt
-*whistle blows*
-"are you fucking blind?"
-smash cut to REDCARD being shown
-player charges ref and knocks him out
-title screen: REDCARD
-card: blow the whistle 
-by World Cup '26 
-...if it kills me (or Kurt)
+STEAM...........
+
+next fest by Jan 5
+
+DESCRIPTIONS:
+about:
+[need gifs]
+translations
+
+GRAPHICAL ASSETS:
+all
+icon/shortcut icon
+
+TRAILERS:
+all
+
+LANGUAGES:
+support em all
+
+MIN REQUIREMENTS:
+?
+
+ACCESSIBILITY
+added:
+adjustable difficulty, save anytime
+
+consider:
+subtitles
+steam input, playstation controllers
+subtitles, adjustable text size, camera comfort
+mouse only, touch only
+color alternatives
+
+support email, website, socials
+
+LOCALIZATION:
+?
+
+CLOUD:
+?
+
+ACHIEVEMENTS:
