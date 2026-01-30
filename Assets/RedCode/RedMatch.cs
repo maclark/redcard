@@ -71,19 +71,20 @@ namespace RedCard {
     }
 
     public class RedTeam {
-        public int id = 0;
-        public int goals = 0;
+        public int id = -1;
+        public int goals = -1;
         public string squadName = "unnamed";
         public RefTarget goal;
         public FieldEnd attackingEnd;
         public float respect = 1f;
+        public List<RedPlayer> players = new List<RedPlayer>();
     }
 
     public class RedPlayer {
-        public int id = 0;
+        public int id = -1;
+        public RedTeam team;
         public string firstName = "firstName";
         public string surname = "lastName";
-        public RedTeam team;
         public float anger = 0f;
         public AngerBar angerBar;
     }
@@ -157,135 +158,207 @@ namespace RedCard {
         }
 
         public void Init() {
-            if (!initialized) {
+            if (initialized) return;
+            initialized = true;
 
-                Common.Init();
+            Common.Init();
 
-                Language.current = Language.english;
+            Language.current = Language.english;
 
-                console.open = false;
-                console.enabled = false;
+            console.open = false;
+            console.enabled = false;
 
-                initialized = true;
-                state = State.PreMatchTunnelsAndLocker;
-                teamA = new RedTeam();
-                teamA.id = 1;
-                teamA.squadName = "Arrows";
-                teamA.attackingEnd = FieldEnd.East;
-                teamB = new RedTeam();
-                teamB.id = 2;
-                teamB.attackingEnd = FieldEnd.West;
-                teamB.squadName = "Bulls";
+            initialized = true;
+            state = State.PreMatchTunnelsAndLocker;
+            teamA = new RedTeam();
+            teamA.id = 1;
+            teamA.squadName = "Arrows";
+            teamA.attackingEnd = FieldEnd.East;
+            teamB = new RedTeam();
+            teamB.id = 2;
+            teamB.attackingEnd = FieldEnd.West;
+            teamB.squadName = "Bulls";
 
-                Debug.Assert(settings);
+            Debug.Assert(settings);
 
-                hud = FindFirstObjectByType<HUD>();
-                Debug.Assert(hud);
+            hud = FindFirstObjectByType<HUD>();
+            Debug.Assert(hud);
 
-                Debug.Assert(customizationOptions);
+            Debug.Assert(customizationOptions);
 
-                var action = PlayerInput.all[0].actions.FindActionMap(UI_MAP).FindAction("Pause");
-                if (action != null) {
-                    action.started += PauseGame;
+            var action = PlayerInput.all[0].actions.FindActionMap(UI_MAP).FindAction("Pause");
+            if (action != null) {
+                action.started += PauseGame;
+            }
+
+            // make them in the hallway
+
+            // i looked at MatchManager.CreateMatch(match details) and then that calls CreateMatch(team1, team2)
+            // i've cut out a lot of stuff, but that's where it creates the MatchPlayers
+            // which i keep
+            //
+            // FS has statistics, camera, and scene manager setup i've cut out
+            // it also jumps straight to kick off, which i'm cutting out
+            // also cut out an event callback to make a UI panel appear maybe, who knows
+            // there's a function for sending players to kick off positions
+            // another Event callback...
+            // and sets GameTeam1 and GameTeam2 to the created teams
+
+            // what does new MatchPlayer do! hmmm.....
+            /* ok it assigns PlayerEntry
+             * it assigns position
+             * it assigns number
+             * 
+             * it calls setup which assigns skills as integers for strength, dribbling, running, passing, etc
+             * using ModifySkill which takes into account their assigned position
+             * which is how the formation setting stuff comes into play 
+             */
+
+
+            //var homeTeamMatchPlayers = new MatchPlayer[11];
+            //for (int i = 0; i < 11; i++) {
+            //    homeTeamMatchPlayers[i] = new MatchPlayer(
+            //        i + 1,
+            //        matchDetails.homeTeam.Players[i],
+            //        11 > i ? homeFormation.Positions[i] : matchDetails.homeTeam.Players[i].Position);
+            //}
+
+            // what does MatchTeam do!?!?
+            /* it just holds TeamEntry, Formation, MatchPlayer[], TeamTactics, TacticPresetType, using home or away kit, AI Level
+             * 
+             * 
+             * 
+             */
+            //var homeMatchTeam = new MatchTeam() {
+            //    Players = homeTeamMatchPlayers,
+            //    Team = matchDetails.homeTeam,
+            //    Formation = matchDetails.homeTeam.Formation,
+            //    TeamTactics = homeTactics,
+            //    Kit = matchDetails.homeKitSelection,
+            //    AILevel = details.userTeam == MatchCreateRequest.UserTeam.Home ? AILevel.Legendary : details.aiLevel
+            //};
+
+            //var awayTeamMatchPlayers = new MatchPlayer[11];
+
+            //for (int i = 0; i < 11; i++) {
+            //    awayTeamMatchPlayers[i] = new MatchPlayer(
+            //        i + 1,
+            //        matchDetails.awayTeam.Players[i],
+            //        11 > i ? awayFormation.Positions[i] : matchDetails.awayTeam.Players[i].Position);
+            //}
+
+            //var awayMatchTeam = new MatchTeam() {
+            //    Players = awayTeamMatchPlayers,
+            //    Team = matchDetails.awayTeam,
+            //    Formation = matchDetails.awayTeam.Formation,
+            //    TeamTactics = awayTactics,
+            //    Kit = matchDetails.awayKitSelection,
+            //    AILevel = details.userTeam == MatchCreateRequest.UserTeam.Away ? AILevel.Legendary : details.aiLevel
+            //};
+            //
+
+            // we are the center ref! 
+            // need to make the linesmen
+            // need to place all players
+            // need to place ball (are we going to have many balls?)
+
+            float x1 = RedSim.Goal1Pos.x;
+            float x2 = RedSim.Goal2Pos.x;
+            match.centerSpot = new Vector3((x2 - x1) / 2f, 0f, 0f); 
+            // team1 is defined as attacking East
+            // if team1's goal is farther in +x-axis,
+            // then it is attacking -x-axis
+            East = x1 > x2 ? -Vector3.right : Vector3.right;
+            West = -East;
+
+            // make sure the goals are spread along the correct
+            Debug.Assert(Mathf.Abs(x1 - x2) > 10f);
+
+            //Match.mm = current;
+            //Match.teamA.fsTeam = current.GameTeam1;
+            match.teamA.id = RedSim.Team1Id;
+            match.teamA.squadName = RedSim.SquadName(match.teamA.id) + "_A";
+            //Match.teamB.fsTeam = current.GameTeam2;
+            match.teamB.id = RedSim.Team2Id;
+            match.teamB.squadName = RedSim.SquadName(match.teamB.id) + "_B";
+
+            if (match.teamA.squadName == match.teamB.squadName) {
+                Debug.LogWarning("c'mon, same team is playing each other...");
+            }
+
+            print(match.teamA.squadName + " is TeamA_" + match.teamA.id + " is GameTeam1, attacking " + match.teamA.attackingEnd + ", " + EndDir(match.teamA.attackingEnd));
+            print(match.teamB.squadName + " is TeamB_" + match.teamB.id + " is GameTeam2, attacking " + match.teamB.attackingEnd + ", " + EndDir(match.teamB.attackingEnd));
+
+            //Match.currentMatchBall = current.MatchBall.gameObject;
+
+            RedSim.MakeRedPlayers(match.teamA);
+            RedSim.MakeRedPlayers(match.teamB);
+
+            // line up players in tunnel
+
+            Transform frontOfLine = new GameObject().transform;
+
+            for (int i = 0; i < match.teamA.players.Count; i++) {
+
+            }
+            for (int i = 0; i < match.teamB.players.Count; i++) {
+
+            }
+            
+            // #LINESMEN
+            // #COACH
+            // #PHYSIO
+            // #BENCH
+            // #INVADER
+            // need to register these other RedPlayers
+
+            foreach (var target in match.targets) {
+                switch (target.targetType) {
+                    case TargetType.CornerFlag:
+                        target.attackingEnd = NearestEnd(target.transform.position);
+                        match.cornerFlags.Add(target);
+                        break;
+                    case TargetType.SixYardBox:
+                        if (target.attackingEnd == FieldEnd.Unassigned) {
+                            Debug.LogWarning("unassigned attacking end on six yard box");
+                        }
+
+                        match.sixYardBoxes.Add(target);
+                        if (target.attackingEnd == match.teamA.attackingEnd) match.teamA.goal = target;
+                        else if (target.attackingEnd == match.teamB.attackingEnd) match.teamB.goal = target;
+
+                        EighteenYardBox box = target.GetComponentInChildren<EighteenYardBox>();
+                        Debug.Assert(box && box.botLeft && box.topRight);
+                        box.botLeft.gameObject.SetActive(false);
+                        box.topRight.gameObject.SetActive(false);
+
+                        Bounds b = NearestEnd(target.transform.position) == FieldEnd.East ? match.eastBox : match.westBox;
+                        Vector3 boxCenter = (box.topRight.position - box.botLeft.position) / 2f;
+                        Vector3 boxSize = new Vector3(box.topRight.position.x - box.botLeft.position.x,
+                            5f,
+                            box.topRight.position.z - box.botLeft.position.z);
+                        b = new Bounds(boxCenter, boxSize);
+                        break;
+
+                    case TargetType.PenaltySpot:
+                        float x = target.transform.position.x;
+                        if (x > match.centerSpot.x) {
+                            if (East.x > 0f) target.attackingEnd = FieldEnd.East;
+                            else target.attackingEnd = FieldEnd.West;
+                        }
+                        else {
+                            if (East.x > 0f) target.attackingEnd = FieldEnd.West;
+                            else target.attackingEnd = FieldEnd.East;
+                        }
+                        break;
                 }
             }
-        }
 
-        public static void InitFS() {
-
-            //Debug.Assert(current.GameTeam1);
-            //Debug.Assert(current.GameTeam2);
-            //Debug.Assert(current.GameTeam1 != current.GameTeam2);
-
-            if (match) {
-                float x1 = RedSim.Goal1Pos.x;
-                float x2 = RedSim.Goal2Pos.x;
-                match.centerSpot = new Vector3((x2 - x1) / 2f, 0f, 0f); 
-                // team1 is defined as attacking East
-                // if team1's goal is farther in +x-axis,
-                // then it is attacking -x-axis
-                East = x1 > x2 ? -Vector3.right : Vector3.right;
-                West = -East;
-
-                // make sure the goals are spread along the correct
-                Debug.Assert(Mathf.Abs(x1 - x2) > 10f);
-
-                //Match.mm = current;
-                //Match.teamA.fsTeam = current.GameTeam1;
-                match.teamA.id = RedSim.Team1Id;
-                match.teamA.squadName = RedSim.SquadName(match.teamA.id) + "_A";
-                //Match.teamB.fsTeam = current.GameTeam2;
-                match.teamB.id = RedSim.Team2Id;
-                match.teamB.squadName = RedSim.SquadName(match.teamB.id) + "_B";
-
-                if (match.teamA.squadName == match.teamB.squadName) {
-                    Debug.LogWarning("c'mon, same team is playing each other...");
-                }
-
-                print(match.teamA.squadName + " is TeamA_" + match.teamA.id + " is GameTeam1, attacking " + match.teamA.attackingEnd + ", " + EndDir(match.teamA.attackingEnd));
-                print(match.teamB.squadName + " is TeamB_" + match.teamB.id + " is GameTeam2, attacking " + match.teamB.attackingEnd + ", " + EndDir(match.teamB.attackingEnd));
-
-                //Match.currentMatchBall = current.MatchBall.gameObject;
-
-                RedSim.MakeRedPlayers(match.teamA);
-                RedSim.MakeRedPlayers(match.teamB);
-                
-                // #LINESMEN
-                // #COACH
-                // #PHYSIO
-                // #BENCH
-                // #INVADER
-                // need to register these other RedPlayers
-
-                foreach (var target in match.targets) {
-                    switch (target.targetType) {
-                        case TargetType.CornerFlag:
-                            target.attackingEnd = NearestEnd(target.transform.position);
-                            match.cornerFlags.Add(target);
-                            break;
-                        case TargetType.SixYardBox:
-                            if (target.attackingEnd == FieldEnd.Unassigned) {
-                                Debug.LogWarning("unassigned attacking end on six yard box");
-                            }
-
-                            match.sixYardBoxes.Add(target);
-                            if (target.attackingEnd == match.teamA.attackingEnd) match.teamA.goal = target;
-                            else if (target.attackingEnd == match.teamB.attackingEnd) match.teamB.goal = target;
-
-                            EighteenYardBox box = target.GetComponentInChildren<EighteenYardBox>();
-                            Debug.Assert(box && box.botLeft && box.topRight);
-                            box.botLeft.gameObject.SetActive(false);
-                            box.topRight.gameObject.SetActive(false);
-
-                            Bounds b = NearestEnd(target.transform.position) == FieldEnd.East ? match.eastBox : match.westBox;
-                            Vector3 boxCenter = (box.topRight.position - box.botLeft.position) / 2f;
-                            Vector3 boxSize = new Vector3(box.topRight.position.x - box.botLeft.position.x,
-                                5f,
-                                box.topRight.position.z - box.botLeft.position.z);
-                            b = new Bounds(boxCenter, boxSize);
-                            break;
-
-                        case TargetType.PenaltySpot:
-                            float x = target.transform.position.x;
-                            if (x > match.centerSpot.x) {
-                                if (East.x > 0f) target.attackingEnd = FieldEnd.East;
-                                else target.attackingEnd = FieldEnd.West;
-                            }
-                            else {
-                                if (East.x > 0f) target.attackingEnd = FieldEnd.West;
-                                else target.attackingEnd = FieldEnd.East;
-                            }
-                            break;
-                    }
-                }
-
-                Debug.Assert(match.teamA.goal);
-                Debug.Assert(match.teamB.goal);
+            Debug.Assert(match.teamA.goal);
+            Debug.Assert(match.teamB.goal);
 
 
 
-            }
-            else Debug.LogError("no RedMatch.Match?");
         }
 
 
