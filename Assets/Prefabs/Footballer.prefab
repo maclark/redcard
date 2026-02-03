@@ -121,8 +121,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4161990726940630463}
-  - component: {fileID: 7876709459337664555}
   - component: {fileID: 3251211105511128021}
+  - component: {fileID: -6816572553609376314}
+  - component: {fileID: 7876709459337664555}
+  - component: {fileID: 8190611822246567248}
   m_Layer: 3
   m_Name: Footballer
   m_TagString: Untagged
@@ -148,6 +150,38 @@ Transform:
   - {fileID: 1060171038407115780}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3251211105511128021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7109349363153571345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b662e92771c1b864a8797ba46a35e7b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetType: 10
+  outline: {fileID: 8503169371439873654}
+  attackingEnd: 0
+--- !u!114 &-6816572553609376314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7109349363153571345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 366a9aa2d6aef2c44a9398eb284d8194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  capsule: {fileID: 7876709459337664555}
+  direction: {x: 0, y: 0, z: 0}
+  isPhysicsEnabled: 0
+  moveSpeed: 0
+  targetMoveSpeed: 0
 --- !u!136 &7876709459337664555
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -171,21 +205,33 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3251211105511128021
-MonoBehaviour:
+--- !u!54 &8190611822246567248
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7109349363153571345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b662e92771c1b864a8797ba46a35e7b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetType: 10
-  outline: {fileID: 8503169371439873654}
-  attackingEnd: 0
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 1
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 2
+  m_Constraints: 116
+  m_CollisionDetection: 3
 --- !u!1 &8503169371439873654
 GameObject:
   m_ObjectHideFlags: 0

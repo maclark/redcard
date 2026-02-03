@@ -58,8 +58,8 @@ namespace RedCard {
         public RedTeam team;
 
         // coach, linesman, bench, invader, could all be player
-        public RedPlayer victim; 
-        public RedPlayer perpetrator; 
+        public Jugador victim; 
+        public Jugador perpetrator; 
         public float occurredAt;
         public Vector3 location;
     }
@@ -77,16 +77,7 @@ namespace RedCard {
         public RefTarget goal;
         public FieldEnd attackingEnd;
         public float respect = 1f;
-        public List<RedPlayer> players = new List<RedPlayer>();
-    }
-
-    public class RedPlayer {
-        public int id = -1;
-        public RedTeam team;
-        public string firstName = "firstName";
-        public string surname = "lastName";
-        public float anger = 0f;
-        public AngerBar angerBar;
+        public List<Jugador> players = new List<Jugador>();
     }
 
     public partial class RedMatch : MonoBehaviour {
@@ -95,7 +86,7 @@ namespace RedCard {
         public RedSettings settings;
         public CustomizationOptions customizationOptions;
         public Menu menu;
-        public GameObject playerOutlinePrefab;
+        public GameObject jugadorPrefab;
         public GameObject uiSprayLinePrefab;
         public DevConsole console;
 
@@ -119,7 +110,7 @@ namespace RedCard {
 
         internal List<RefTarget> cornerFlags = new List<RefTarget>();
         internal List<RefTarget> sixYardBoxes = new List<RefTarget>();
-        internal Dictionary<RefTarget, RedPlayer> allPlayers = new Dictionary<RefTarget, RedPlayer>();
+        internal Dictionary<RefTarget, Jugador> allPlayers = new Dictionary<RefTarget, Jugador>();
         internal Bounds eastBox;
         internal Bounds westBox;
 
@@ -260,7 +251,49 @@ namespace RedCard {
             // we are the center ref! 
             // need to make the linesmen
             // need to place all players
+
+            // "SetTeam"
+            // took in MatchTeam which has info about kit and formation
+            // created PlayerBases and fed kit and positional info
+
+            // starting players, not worrying about bench 
+            string[] teamAGivenNames = new string[teamA.players.Count];
+            string[] teamASurnames = new string[teamA.players.Count];
+            string[] teamBGivenNames = new string[teamA.players.Count];
+            string[] teamBSurnames = new string[teamA.players.Count];
+
+            allPlayers.Clear();
+            teamA.players = new List<Jugador>(11);
+            List<Jugador> starters = new List<Jugador>();
+            for (int i = 0; i < 11; i++) {
+                Jugador player = new Jugador();
+                player.id = i + 1;
+                player.team = teamA;
+                player.givenName = teamAGivenNames[i];
+                player.surname = teamASurnames[i];
+                starters.Add(player);
+            }
+            teamB.players = new List<Jugador>(11);
+            for (int i = 0; i < 11; i++) {
+                Jugador player = new Jugador();
+                player.id = i + 1 + 11;
+                player.team = teamB;
+                player.givenName = teamBGivenNames[i];
+                player.surname = teamBSurnames[i];
+                starters.Add(player);
+            }
+
+
+            Vector3 tunnelPosition = new Vector3(0f, 1f, 0f);
+            Quaternion tunnelRotation = Quaternion.identity;
+            for (int i = 0; i < starters.Count; i++) {
+                Jugador player = starters[i];
+                player.controller = Instantiate(jugadorPrefab, tunnelPosition, tunnelRotation).GetComponent<JugadorController>();
+                allPlayers.Add(player.controller.target, player);
+            }
+
             // need to place ball (are we going to have many balls?)
+            // could just be placed in scene
 
             float x1 = RedSim.Goal1Pos.x;
             float x2 = RedSim.Goal2Pos.x;
@@ -372,11 +405,11 @@ namespace RedCard {
             else Debug.LogError("couldn't find quality level " + levelName);
         }
 
-        internal static void ProcessEmotions(RedPlayer player) {
+        internal static void ProcessEmotions(Jugador player) {
             //#TODO
         }
 
-        internal static void Angered(RedPlayer player, float amount, float teamAmount) {
+        internal static void Angered(Jugador player, float amount, float teamAmount) {
             Angered(player.team, teamAmount);
             float total = amount / player.team.respect;
             player.anger += total;
@@ -593,7 +626,7 @@ namespace RedCard {
         }
 
         internal static void IndicateNormalFoul(RefTarget target, Vector3 fieldPos) {
-            RedPlayer p = match.allPlayers[target];
+            Jugador p = match.allPlayers[target];
             RedTeam awardedTeam = OtherTeam(p.team);
             FSInterpreter.Foul(awardedTeam, fieldPos);
 
