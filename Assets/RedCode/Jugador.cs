@@ -9,6 +9,7 @@ namespace RedCard {
         public RedTeam team;
         public RefTarget target;
         public AngerBar angerBar;
+        public bool isGoalie = false;
         public float anger = 0f;
         public JugadorController controller;
 

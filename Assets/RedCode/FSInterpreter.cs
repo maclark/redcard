@@ -24,7 +24,7 @@ namespace RedCard {
         //    return GetRedPlayer(playerBase.PlayerController.UnityObject.GetComponentInChildren<RefTarget>());
         //}
         public static Jugador GetRedPlayer(RefTarget target) {
-            return RedMatch.match.allPlayers[target];
+            return RedMatch.match.allJugadores[target];
         }
 
         //public static void HandleKickOff(MatchManager mm) {

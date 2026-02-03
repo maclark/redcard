@@ -7,6 +7,7 @@ namespace RedCard {
 
         public RefTarget target;
         public CapsuleCollider capsule;
+        public Rigidbody rb;
         public Action<Collision> CollisionEnterEvent { get; set; }
         public Vector3 direction;
         public bool isPhysicsEnabled;
@@ -15,14 +16,11 @@ namespace RedCard {
         //public FootballerAnimator anim;
         //public FootballerGraphic graphic;
         //public FootballerUI ui;
-
-
-        
-        private Rigidbody rb;
         // supposed to be a "new CapsuleCollider collider", but idk why
 
         private void OnValidate() {
             rb = GetComponent<Rigidbody>();
+            target = GetComponent<RefTarget>();
             capsule = GetComponent<CapsuleCollider>();
 
 

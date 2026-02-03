@@ -49,9 +49,34 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 41d59e161569b204cacee7421c92d4c6, type: 2}
   customizationOptions: {fileID: 11400000, guid: b8118786ed2cbeb4589ed7619bf32db4, type: 2}
   menu: {fileID: 3216489026989178295}
-  playerOutlinePrefab: {fileID: 4881715132754059330, guid: 3a8e98bc8afd3724683c3ad7a27790e6, type: 3}
+  jugadorPrefab: {fileID: 7109349363153571345, guid: d5d06fcc38e0a3344baef3efd1829b0d, type: 3}
   uiSprayLinePrefab: {fileID: 2187131136949513723, guid: fca99d3a75fc2dd4dabd4633566e2d8b, type: 3}
   console: {fileID: 5505645866435657406}
+  jugadorMaterial: {fileID: 13400000, guid: cf77bf81bb468ea47b44d15ab4879f8a, type: 2}
+  lineHead: {fileID: 0}
+  nombres:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   frozenWaitingForCall: 0
   throwInDotThreshold: 0.33
   state: 0

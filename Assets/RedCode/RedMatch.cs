@@ -77,7 +77,7 @@ namespace RedCard {
         public RefTarget goal;
         public FieldEnd attackingEnd;
         public float respect = 1f;
-        public List<Jugador> players = new List<Jugador>();
+        public List<Jugador> jugadores = new List<Jugador>();
     }
 
     public partial class RedMatch : MonoBehaviour {
@@ -89,6 +89,9 @@ namespace RedCard {
         public GameObject jugadorPrefab;
         public GameObject uiSprayLinePrefab;
         public DevConsole console;
+        public PhysicsMaterial jugadorMaterial;
+        public Transform lineHead;
+        public string[] nombres = new string[22];
 
         [Header("SETTINGS")]
         public bool frozenWaitingForCall = false;
@@ -110,7 +113,7 @@ namespace RedCard {
 
         internal List<RefTarget> cornerFlags = new List<RefTarget>();
         internal List<RefTarget> sixYardBoxes = new List<RefTarget>();
-        internal Dictionary<RefTarget, Jugador> allPlayers = new Dictionary<RefTarget, Jugador>();
+        internal Dictionary<RefTarget, Jugador> allJugadores = new Dictionary<RefTarget, Jugador>();
         internal Bounds eastBox;
         internal Bounds westBox;
 
@@ -163,12 +166,12 @@ namespace RedCard {
             state = State.PreMatchTunnelsAndLocker;
             teamA = new RedTeam();
             teamA.id = 1;
-            teamA.squadName = "Arrows";
+            teamA.squadName = "Los Alamitos";
             teamA.attackingEnd = FieldEnd.East;
             teamB = new RedTeam();
             teamB.id = 2;
             teamB.attackingEnd = FieldEnd.West;
-            teamB.squadName = "Bulls";
+            teamB.squadName = "Somerville";
 
             Debug.Assert(settings);
 
@@ -257,39 +260,89 @@ namespace RedCard {
             // created PlayerBases and fed kit and positional info
 
             // starting players, not worrying about bench 
-            string[] teamAGivenNames = new string[teamA.players.Count];
-            string[] teamASurnames = new string[teamA.players.Count];
-            string[] teamBGivenNames = new string[teamA.players.Count];
-            string[] teamBSurnames = new string[teamA.players.Count];
 
-            allPlayers.Clear();
-            teamA.players = new List<Jugador>(11);
-            List<Jugador> starters = new List<Jugador>();
-            for (int i = 0; i < 11; i++) {
-                Jugador player = new Jugador();
-                player.id = i + 1;
-                player.team = teamA;
-                player.givenName = teamAGivenNames[i];
-                player.surname = teamASurnames[i];
-                starters.Add(player);
-            }
-            teamB.players = new List<Jugador>(11);
-            for (int i = 0; i < 11; i++) {
-                Jugador player = new Jugador();
-                player.id = i + 1 + 11;
-                player.team = teamB;
-                player.givenName = teamBGivenNames[i];
-                player.surname = teamBSurnames[i];
-                starters.Add(player);
+            allJugadores.Clear();
+            teamA.jugadores.Clear();
+            teamB.jugadores.Clear();
+
+            if (nombres.Length != 22) {
+                Debug.LogWarning("not 22 nombres!");
+                nombres = new string[22];
             }
 
+            string[] givenNames = new string[22];
+            string[] surnames = new string[22];
+            for (int i = 0; i < nombres.Length; i++) {
+                string nombre = nombres[i];
+                int firstSpace = nombre.IndexOf(' ');
+                if (firstSpace < 0 || firstSpace >= nombre.Length - 1) {
+                    Debug.LogError("missing name part: " + nombre);
+                    givenNames[i] = nombres[i];
+                    surnames[i] = nombres[i];
+                }
+                else {
+                    givenNames[i] = nombre.Substring(0, firstSpace);
+                    surnames[i] = nombre.Substring(firstSpace + 1, nombre.Length -  (firstSpace + 1));
+                }
+                print($"{givenNames[i]}, {givenNames[i].Length}");
+                print($"{surnames[i]}, {surnames[i].Length}");
+            }
 
-            Vector3 tunnelPosition = new Vector3(0f, 1f, 0f);
-            Quaternion tunnelRotation = Quaternion.identity;
-            for (int i = 0; i < starters.Count; i++) {
-                Jugador player = starters[i];
-                player.controller = Instantiate(jugadorPrefab, tunnelPosition, tunnelRotation).GetComponent<JugadorController>();
-                allPlayers.Add(player.controller.target, player);
+            if (!lineHead) {
+                Debug.LogError("missing lineHead!");
+                lineHead = new GameObject().transform;
+            }
+
+            // starters
+            float lineGap = 1.5f;
+            int linePos = 0;
+            float lateralShift = 0f;
+            for (int i = 0; i < 22; i++) {
+                Jugador jugador = new Jugador();
+                jugador.id = i + 1;
+                jugador.givenName = givenNames[i];
+                jugador.surname = surnames[i];
+                if (i < 11) {
+                    linePos = i;
+                    jugador.isGoalie = i == 0;
+                    jugador.team = teamA;
+                    lateralShift = -1f;
+                }
+                else {
+                    linePos = i - 11;
+                    jugador.isGoalie = i == 11;
+                    jugador.team = teamB;
+                    lateralShift = 1f;
+                }
+                jugador.team.jugadores.Add(jugador);
+
+                jugador.controller = Instantiate(jugadorPrefab, 
+                    lineHead.position - lineHead.forward * linePos * lineGap + lineHead.right * lateralShift, 
+                    lineHead.rotation)
+                    .GetComponent<JugadorController>();
+
+                // see CodeBasedController.SetPlayer
+                // #TODO player variety:
+                // skipping the height/weight calculations
+                // vary collider sizes
+                // collider height reflects jumping
+                // collider width reflects weight (goalies get boost)
+                // vary body types, skipping visual scaling
+                // shadow?, skipping take a shadow
+
+                jugador.controller.name = $"{jugador.surname}({jugador.team.squadName})";
+                jugador.controller.gameObject.layer = LayerMask.NameToLayer(Tags.JUGADORES_LAYER);
+                jugador.controller.rb.mass = 20f; // maps directly to jugador strength, ranges from 20 to 25 maybe
+                jugador.controller.rb.isKinematic = true;
+                //jugador.graphics....kit, number, name, and goalies special?
+                //jugador.anim.SetFloat(JugadorAnimatorVariable.Agility, jugador.agility / 100f);
+                //jugador.controller.CollisionEnterEvent = jugador.OnCollisionEnter;
+                jugador.controller.isPhysicsEnabled = false;
+                jugador.controller.capsule.material = jugadorMaterial;
+
+                // #TODO goalkeepers are special
+
+                allJugadores.Add(jugador.controller.target, jugador);
             }
 
             // need to place ball (are we going to have many balls?)
@@ -324,20 +377,11 @@ namespace RedCard {
 
             //Match.currentMatchBall = current.MatchBall.gameObject;
 
-            RedSim.MakeRedPlayers(match.teamA);
-            RedSim.MakeRedPlayers(match.teamB);
+            //RedSim.MakeRedPlayers(match.teamA);
+            //RedSim.MakeRedPlayers(match.teamB);
 
             // line up players in tunnel
 
-            Transform frontOfLine = new GameObject().transform;
-
-            for (int i = 0; i < match.teamA.players.Count; i++) {
-
-            }
-            for (int i = 0; i < match.teamB.players.Count; i++) {
-
-            }
-            
             // #LINESMEN
             // #COACH
             // #PHYSIO
@@ -422,7 +466,7 @@ namespace RedCard {
             float total = amount / team.respect;
             if (amount < 0) print($"{team.squadName} soothed {amount}");
             else print($"{team.squadName} angered {amount}");
-            foreach(var item in match.allPlayers) {
+            foreach(var item in match.allJugadores) {
                 if (item.Value.team == team) {
                     item.Value.anger += amount;
                     item.Value.angerBar.SetFill(item.Value.anger / match.settings.maxAnger);
@@ -626,7 +670,7 @@ namespace RedCard {
         }
 
         internal static void IndicateNormalFoul(RefTarget target, Vector3 fieldPos) {
-            Jugador p = match.allPlayers[target];
+            Jugador p = match.allJugadores[target];
             RedTeam awardedTeam = OtherTeam(p.team);
             FSInterpreter.Foul(awardedTeam, fieldPos);
 

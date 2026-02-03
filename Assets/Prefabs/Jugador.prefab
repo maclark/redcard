@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 7876709459337664555}
   - component: {fileID: 8190611822246567248}
   m_Layer: 3
-  m_Name: Footballer
+  m_Name: Jugador
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -177,7 +177,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 366a9aa2d6aef2c44a9398eb284d8194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  target: {fileID: 0}
   capsule: {fileID: 7876709459337664555}
+  rb: {fileID: 8190611822246567248}
   direction: {x: 0, y: 0, z: 0}
   isPhysicsEnabled: 0
   moveSpeed: 0
@@ -372,7 +374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f509ae045ea313f4ba4d56df3a44f700, type: 3}
       propertyPath: m_Name
-      value: Football_Player
+      value: JugadorRenderer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
