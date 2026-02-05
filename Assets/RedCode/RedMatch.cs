@@ -47,6 +47,7 @@ namespace RedCard {
 
     public partial class RedMatch : MonoBehaviour {
 
+        // assigned in prefab
         [Header("ASSIGNATIONS")]
         public RedSettings settings;
         public CustomizationOptions customizationOptions;
@@ -55,6 +56,8 @@ namespace RedCard {
         public GameObject uiSprayLinePrefab;
         public DevConsole console;
         public PhysicsMaterial jugadorMaterial;
+
+        // assigned in scene, overriding prefab
         [Header("SCENE ASSIGNATIONS")]
         public Transform lineHead;
         public RedBall matchBall;
@@ -76,14 +79,17 @@ namespace RedCard {
         public Transform topRightBox0;
         public Transform botLeftBox1;
         public Transform topRightBox1;
-        public RedTeam teamA;
-        public RedTeam teamB;
+        public RedTeam losAl;
+        public RedTeam somerville;
         public RefControls arbitro;
         public HUD hud;
         public float clock;
         public float elapsedInState;
         public List<RefTarget> targets = new List<RefTarget>();
         public List<CallData> correctCalls = new List<CallData>();
+
+        [Header("CHECKPOINTS")]
+        public bool takenBallOffPodium = false;
 
         internal List<RefTarget> cornerFlags = new List<RefTarget>();
         internal List<RefTarget> sixYardBoxes = new List<RefTarget>();
@@ -136,18 +142,18 @@ namespace RedCard {
 
             initialized = true;
             matchState = MatchState.PreMatchTunnelsAndLocker;
-            teamA = new RedTeam();
-            teamA.id = 1;
-            teamA.squadName = "Los Alamitos";
-            teamA.attackingEnd = FieldEnd.East;
-            teamA.goalNet = goalNet0;
-            teamA.offsideLine = offsideLineA;
-            teamB = new RedTeam();
-            teamB.id = 2;
-            teamB.attackingEnd = FieldEnd.West;
-            teamB.squadName = "Somerville";
-            teamB.goalNet = goalNet1;
-            teamB.offsideLine = offsideLineB;
+            losAl = new RedTeam();
+            losAl.id = 1;
+            losAl.squadName = "Los Alamitos";
+            losAl.attackingEnd = FieldEnd.East;
+            losAl.goalNet = goalNet0;
+            losAl.offsideLine = offsideLineA;
+            somerville = new RedTeam();
+            somerville.id = 2;
+            somerville.attackingEnd = FieldEnd.West;
+            somerville.squadName = "Somerville";
+            somerville.goalNet = goalNet1;
+            somerville.offsideLine = offsideLineB;
 
             Debug.Assert(goalNet0);
             Debug.Assert(goalNet1);
@@ -243,8 +249,8 @@ namespace RedCard {
             // starting players, not worrying about bench 
 
             allJugadores.Clear();
-            teamA.jugadores.Clear();
-            teamB.jugadores.Clear();
+            losAl.jugadores.Clear();
+            somerville.jugadores.Clear();
 
             if (nombres.Length != 22) {
                 Debug.LogWarning("not 22 nombres!");
@@ -286,13 +292,13 @@ namespace RedCard {
                 if (i < 11) {
                     linePos = i;
                     jugador.isGoalie = i == 0;
-                    jugador.team = teamA;
+                    jugador.team = losAl;
                     lateralShift = -1f;
                 }
                 else {
                     linePos = i - 11;
                     jugador.isGoalie = i == 11;
-                    jugador.team = teamB;
+                    jugador.team = somerville;
                     lateralShift = 1f;
                 }
                 jugador.team.jugadores.Add(jugador);
@@ -341,8 +347,8 @@ namespace RedCard {
             // make sure the goals are spread along the correct
             Debug.Assert(Mathf.Abs(x1 - x2) > 10f);
 
-            print(teamA.squadName + " is TeamA_" + teamA.id + " is GameTeam1, attacking " + teamA.attackingEnd + ", " + EndDir(teamA.attackingEnd));
-            print(teamB.squadName + " is TeamB_" + teamB.id + " is GameTeam2, attacking " + teamB.attackingEnd + ", " + EndDir(teamB.attackingEnd));
+            print(losAl.squadName + " is TeamA_" + losAl.id + " is GameTeam1, attacking " + losAl.attackingEnd + ", " + EndDir(losAl.attackingEnd));
+            print(somerville.squadName + " is TeamB_" + somerville.id + " is GameTeam2, attacking " + somerville.attackingEnd + ", " + EndDir(somerville.attackingEnd));
 
             //Match.currentMatchBall = current.MatchBall.gameObject;
 
@@ -370,8 +376,8 @@ namespace RedCard {
                         }
 
                         sixYardBoxes.Add(target);
-                        if (target.attackingEnd == teamA.attackingEnd) teamA.sixYardBox = target;
-                        else if (target.attackingEnd == teamB.attackingEnd) teamB.sixYardBox = target;
+                        if (target.attackingEnd == losAl.attackingEnd) losAl.sixYardBox = target;
+                        else if (target.attackingEnd == somerville.attackingEnd) somerville.sixYardBox = target;
 
                         EighteenYardBox box = target.GetComponentInChildren<EighteenYardBox>();
                         Debug.Assert(box && box.botLeft && box.topRight);
@@ -432,8 +438,8 @@ namespace RedCard {
             // calculate some basic stuff to help everyone behave :)
             xBall = matchBall.transform.position.x;
             xCenter = field.transform.position.x;
-            teamA.offsideLine.SetX(CalculateOffside(teamA.goalNet.position.x, teamA.jugadores));
-            teamB.offsideLine.SetX(CalculateOffside(teamB.goalNet.position.x, teamB.jugadores));
+            losAl.offsideLine.SetX(CalculateOffside(losAl.goalNet.position.x, losAl.jugadores));
+            somerville.offsideLine.SetX(CalculateOffside(somerville.goalNet.position.x, somerville.jugadores));
 
             float dt = Time.deltaTime;
             float time = Time.time;

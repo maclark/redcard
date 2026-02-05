@@ -88,12 +88,12 @@ namespace RedCard {
 
 
         internal static void CallHalftime() {
-            var cachedGoal = match.teamA.goalNet;
-            var cachedEnd = match.teamA.attackingEnd;
-            match.teamA.goalNet = match.teamB.goalNet;
-            match.teamA.attackingEnd = match.teamB.attackingEnd;
-            match.teamB.goalNet = cachedGoal;
-            match.teamB.attackingEnd = cachedEnd;
+            var cachedGoal = match.losAl.goalNet;
+            var cachedEnd = match.losAl.attackingEnd;
+            match.losAl.goalNet = match.somerville.goalNet;
+            match.losAl.attackingEnd = match.somerville.attackingEnd;
+            match.somerville.goalNet = cachedGoal;
+            match.somerville.attackingEnd = cachedEnd;
 
             print("made call: halftime");
         }
@@ -134,8 +134,8 @@ namespace RedCard {
         }
 
         internal static RedTeam WhoseAttackingEnd(Vector3 pos) {
-            if (match.teamA.attackingEnd == NearestEnd(pos)) return match.teamA;
-            else return match.teamB;
+            if (match.losAl.attackingEnd == NearestEnd(pos)) return match.losAl;
+            else return match.somerville;
         }
 
         internal static RedTeam WhoseDefensiveEnd(Vector3 pos) {
@@ -143,13 +143,13 @@ namespace RedCard {
         }
 
         internal static RedTeam OtherTeam(RedTeam team0) {
-            if (match.teamA == team0) return match.teamB;
-            else return match.teamA;
+            if (match.losAl == team0) return match.somerville;
+            else return match.losAl;
         }
 
         internal static RedTeam WhoseAttackingEnd(FieldEnd end) {
-            if (match.teamA.attackingEnd == end) return match.teamA;
-            else return match.teamB;
+            if (match.losAl.attackingEnd == end) return match.losAl;
+            else return match.somerville;
         }
 
         public static void WhistleBlown(float duration) {
@@ -239,8 +239,8 @@ namespace RedCard {
                     case TargetType.CenterCircle:
                         FieldEnd scoredAt = (RedSim.CurrentBallPos.x > target.transform.position.x) ? FieldEnd.East : FieldEnd.West;
                         print("scoredAt: " + scoredAt);
-                        if (match.teamA.attackingEnd == scoredAt) IndicateGoalScoredBy(match.teamA);
-                        else IndicateGoalScoredBy(match.teamB);
+                        if (match.losAl.attackingEnd == scoredAt) IndicateGoalScoredBy(match.losAl);
+                        else IndicateGoalScoredBy(match.somerville);
                         break;
                     default:
                         Debug.LogWarning("unhandled targettype: " + target.targetType);
@@ -441,11 +441,11 @@ namespace RedCard {
                             Angered(madeCall.perpetrator, sets.angerWronglyCalledForFoul, sets.teamAngerWronglyCalledForFoul);
                         }
                         else {
-                            Angered(match.teamA, sets.teamAngerWronglyCalledForFoul);
-                            Angered(match.teamB, sets.teamAngerWronglyCalledForFoul);
+                            Angered(match.losAl, sets.teamAngerWronglyCalledForFoul);
+                            Angered(match.somerville, sets.teamAngerWronglyCalledForFoul);
                         }
-                        LoseRespect(match.teamA, sets.respectLostWrongFoul);
-                        LoseRespect(match.teamB, sets.respectLostWrongFoul);
+                        LoseRespect(match.losAl, sets.respectLostWrongFoul);
+                        LoseRespect(match.somerville, sets.respectLostWrongFoul);
                         break;
 
                 }
