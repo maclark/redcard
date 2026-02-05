@@ -399,33 +399,32 @@ namespace RedCard {
                         break;
                 }
             }
-
-            Debug.Assert(teamA.goalNet);
-            Debug.Assert(teamB.goalNet);
         }
 
         private float CalculateOffside(float xNet, List<Jugador> jugadores) {
             float signGoal = Mathf.Sign(xNet - xCenter);
-            float last = xCenter;
-            float secondToLast = xCenter;
+            float deepest = 0f;
+            float secondDeepest = 0f;
             for (int i = 0; i < jugadores.Count; i++) {
                 float xJugador = jugadores[i].controller.transform.position.x;
-                if (Mathf.Sign(xJugador) == signGoal) {
-                    float toJugador = Mathf.Abs(xJugador - xCenter);
-                    if (toJugador > last) {
-                        secondToLast = last;
-                        last = toJugador;
+                float toJugador = xJugador - xCenter;
+                if (Mathf.Sign(toJugador) == signGoal) {
+                    float jugadorDepth = Mathf.Abs(toJugador);
+                    if (jugadorDepth > deepest) {
+                        secondDeepest = deepest;
+                        deepest = jugadorDepth;
                     }
-                    else if (toJugador > secondToLast) {
-                        secondToLast = toJugador;
+                    else if (jugadorDepth > secondDeepest) {
+                        secondDeepest = jugadorDepth;
                     }
                 }
             }
-            if (Mathf.Sign(xBall) == signGoal) {
-                float toBall = Mathf.Abs(xBall - xCenter);
-                if (toBall > secondToLast) secondToLast = toBall;
+            float toBall = xBall - xCenter;
+            if (Mathf.Sign(toBall) == signGoal) {
+                float ballDepth = Mathf.Abs(toBall);
+                if (ballDepth > secondDeepest) secondDeepest = ballDepth;
             }
-            return xCenter + secondToLast * signGoal;
+            return xCenter + secondDeepest * signGoal;
         }
 
         public void LateUpdate() {
@@ -434,9 +433,6 @@ namespace RedCard {
             xBall = matchBall.transform.position.x;
             xCenter = field.transform.position.x;
             teamA.offsideLine.SetX(CalculateOffside(teamA.goalNet.position.x, teamA.jugadores));
-            Debug.Assert(teamB.offsideLine);
-            Debug.Assert(teamB.goalNet);
-            Debug.Assert(teamB.jugadores != null);
             teamB.offsideLine.SetX(CalculateOffside(teamB.goalNet.position.x, teamB.jugadores));
 
             float dt = Time.deltaTime;
