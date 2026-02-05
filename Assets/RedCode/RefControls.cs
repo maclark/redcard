@@ -388,7 +388,7 @@ namespace RedCard {
             // find folder Assets/FootballSimulator/Input/engine.inputactions
             // voila
             string mapName = RedMatch.REFEREEING_ACTION_MAP;
-            RedMatch.AssignMap(mapName);
+            RedMatch.AssignInputMap(mapName);
 
             var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("Pause");
             if (action != null) {

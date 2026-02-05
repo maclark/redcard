@@ -40,8 +40,8 @@ namespace RedCard {
             enabled = true;
             open = true;
 
-            oldInputMap = RedMatch.GetActiveMap();
-            RedMatch.AssignMap("Console");
+            oldInputMap = RedMatch.GetActiveInputMap();
+            RedMatch.AssignInputMap("Console");
         }
 
         private void Update() {
@@ -49,7 +49,7 @@ namespace RedCard {
                 enabled = false;
                 open = false;
                 input = "";
-                RedMatch.AssignMap(oldInputMap);
+                RedMatch.AssignInputMap(oldInputMap);
             }
         }
 

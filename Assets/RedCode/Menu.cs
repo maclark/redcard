@@ -584,7 +584,7 @@ namespace RedCard {
             // if we had customizer open, don't need to switch to UI_MAP
 
             string mapName = RedMatch.UI_MAP;
-            RedMatch.AssignMap(mapName);
+            RedMatch.AssignInputMap(mapName);
             var action = PlayerInput.all[0].actions.FindActionMap(mapName).FindAction("PrimaryAction");
             if (action != null) {
                 action.started += ClickedOnWhistleMaybe;
@@ -609,7 +609,7 @@ namespace RedCard {
                     action.started -= ClickedOnWhistleMaybe;
                 }
             }
-            RedMatch.AssignMap(RedMatch.REFEREEING_ACTION_MAP);
+            RedMatch.AssignInputMap(RedMatch.REFEREEING_ACTION_MAP);
 
             Cursor.visible = cachedVisibleCursor;
             Cursor.lockState = cachedCursorLockMode;
