@@ -1437,7 +1437,7 @@ GameObject:
   - component: {fileID: 1451399270597370621}
   m_Layer: 0
   m_Name: goal post (1)
-  m_TagString: Untagged
+  m_TagString: Woodwork
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1549,7 +1549,7 @@ GameObject:
   - component: {fileID: 2633266967445629306}
   m_Layer: 0
   m_Name: crossbar
-  m_TagString: Untagged
+  m_TagString: Woodwork
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1661,7 +1661,7 @@ GameObject:
   - component: {fileID: 3143184292900332971}
   m_Layer: 0
   m_Name: goal post
-  m_TagString: Untagged
+  m_TagString: Woodwork
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3785,7 +3785,7 @@ GameObject:
   - component: {fileID: 203410433415502855}
   m_Layer: 0
   m_Name: goal post (1)
-  m_TagString: Untagged
+  m_TagString: Woodwork
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4077,7 +4077,7 @@ GameObject:
   - component: {fileID: 1533342194187292410}
   m_Layer: 0
   m_Name: goal post
-  m_TagString: Untagged
+  m_TagString: Woodwork
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5393,7 +5393,7 @@ GameObject:
   - component: {fileID: 6289528587744078073}
   m_Layer: 0
   m_Name: crossbar
-  m_TagString: Untagged
+  m_TagString: Woodwork
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

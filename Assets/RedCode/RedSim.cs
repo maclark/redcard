@@ -58,25 +58,6 @@ namespace RedCard {
             }
         }
 
-        public static int Team1Id {
-            get {
-                return 1;
-            }
-        }
-
-        public static int Team2Id {
-            get {
-                return 2;
-            }
-        }
-
-        public static string SquadName(int teamId) {
-            //current.GameTeam2.Team.Team.TeamName;
-            if (teamId == 1) return "GreenJets";
-            else if (teamId == 2) return "TheEagles";
-            else return "TheZeroes";
-        }
-
         public static void MakeRedPlayers(RedTeam team) {
 #if FOOTBALL_SIMULATOR
             foreach (var p in current.GameTeam1.GamePlayers) {

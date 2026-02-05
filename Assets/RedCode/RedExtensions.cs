@@ -40,4 +40,8 @@ public static class RedExtensions
     public static Color SetAlpha(this Color c, float alpha) {
         return new Color(c.r, c.g, c.b, Mathf.Clamp01(alpha));
     }
+
+    public static void SetX(this Transform t, float x) {
+        t.position = new Vector3(x, t.position.y, t.position.z);
+    }
 }

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace RedCard {
 
-    public enum State {
+    public enum MatchState {
         Unset,
         PreMatchTunnelsAndLocker,
-        PreMatchField,
+        PreGameWarmup,
         FirstHalf,
         HalfTimeLeavingField,
         HalfTimeTunnelsAndLocker,
@@ -26,25 +26,6 @@ namespace RedCard {
         Explicit,
     }
 
-    // we need match jobs
-    // calling fouls/missing fouls
-    // then we classify fouls with anger levels and shit
-    public enum Call {
-        Unspecified,
-        StartMatch,
-        HalfTime,
-        EndMatch,
-        Foul,
-        Yellow, // this would include flopping
-        Red,
-        ThrowIn,
-        GoalKick,
-        CornerKick,
-        PenaltyKick,
-        Advantage, // how do we remember the need to go back and give yellow?
-        GoalScored,
-    }
-
 
     public enum FieldEnd {
         Unassigned,
@@ -56,8 +37,10 @@ namespace RedCard {
         public int id = -1;
         public int goals = -1;
         public string squadName = "unnamed";
-        public RefTarget goal;
+        public Transform goalNet;
+        public RefTarget sixYardBox;
         public FieldEnd attackingEnd;
+        public Transform offsideLine;
         public float respect = 1f;
         public List<Jugador> jugadores = new List<Jugador>();
     }
@@ -72,7 +55,14 @@ namespace RedCard {
         public GameObject uiSprayLinePrefab;
         public DevConsole console;
         public PhysicsMaterial jugadorMaterial;
+        [Header("SCENE ASSIGNATIONS")]
         public Transform lineHead;
+        public RedBall matchBall;
+        public Transform field;
+        public Transform goalNet0;
+        public Transform goalNet1;
+        public Transform offsideLineA;
+        public Transform offsideLineB;
         public string[] nombres = new string[22];
 
         [Header("SETTINGS")]
@@ -80,7 +70,7 @@ namespace RedCard {
         public float throwInDotThreshold = .33f;
 
         [Header("VARS")]
-        public State state = State.Unset;
+        public MatchState matchState = MatchState.Unset;
         public bool paused = false;
         public Transform botLeftBox0;
         public Transform topRightBox0;
@@ -90,6 +80,8 @@ namespace RedCard {
         public RedTeam teamB;
         public RefControls arbitro;
         public HUD hud;
+        public float clock;
+        public float elapsedInState;
         public List<RefTarget> targets = new List<RefTarget>();
         public List<CallData> correctCalls = new List<CallData>();
 
@@ -104,6 +96,8 @@ namespace RedCard {
         private static RedMatch _match;
         private static Vector3 East = Vector3.right;
         private static Vector3 West = -Vector3.right;
+        private float xBall;
+        private float xCenter;
 
 
         public const string REFEREEING_ACTION_MAP = "Refereeing";
@@ -141,17 +135,26 @@ namespace RedCard {
             console.enabled = false;
 
             initialized = true;
-            state = State.PreMatchTunnelsAndLocker;
+            matchState = MatchState.PreMatchTunnelsAndLocker;
             teamA = new RedTeam();
             teamA.id = 1;
             teamA.squadName = "Los Alamitos";
             teamA.attackingEnd = FieldEnd.East;
+            teamA.goalNet = goalNet0;
+            teamA.offsideLine = offsideLineA;
             teamB = new RedTeam();
             teamB.id = 2;
             teamB.attackingEnd = FieldEnd.West;
             teamB.squadName = "Somerville";
+            teamB.goalNet = goalNet1;
+            teamB.offsideLine = offsideLineB;
 
+            Debug.Assert(goalNet0);
+            Debug.Assert(goalNet1);
+            Debug.Assert(offsideLineA);
+            Debug.Assert(offsideLineB);
             Debug.Assert(settings);
+            Debug.Assert(matchBall);
 
             hud = FindFirstObjectByType<HUD>();
             Debug.Assert(hud);
@@ -326,9 +329,9 @@ namespace RedCard {
             // need to place ball (are we going to have many balls?)
             // could just be placed in scene
 
-            float x1 = RedSim.Goal1Pos.x;
-            float x2 = RedSim.Goal2Pos.x;
-            match.centerSpot = new Vector3((x2 - x1) / 2f, 0f, 0f); 
+            float x1 = goalNet0.position.x;// RedSim.Goal1Pos.x;
+            float x2 = goalNet1.position.x;// RedSim.Goal2Pos.x;
+            centerSpot = new Vector3((x2 - x1) / 2f, 0f, 0f); 
             // team1 is defined as attacking East
             // if team1's goal is farther in +x-axis,
             // then it is attacking -x-axis
@@ -338,25 +341,13 @@ namespace RedCard {
             // make sure the goals are spread along the correct
             Debug.Assert(Mathf.Abs(x1 - x2) > 10f);
 
-            //Match.mm = current;
-            //Match.teamA.fsTeam = current.GameTeam1;
-            match.teamA.id = RedSim.Team1Id;
-            match.teamA.squadName = RedSim.SquadName(match.teamA.id) + "_A";
-            //Match.teamB.fsTeam = current.GameTeam2;
-            match.teamB.id = RedSim.Team2Id;
-            match.teamB.squadName = RedSim.SquadName(match.teamB.id) + "_B";
-
-            if (match.teamA.squadName == match.teamB.squadName) {
-                Debug.LogWarning("c'mon, same team is playing each other...");
-            }
-
-            print(match.teamA.squadName + " is TeamA_" + match.teamA.id + " is GameTeam1, attacking " + match.teamA.attackingEnd + ", " + EndDir(match.teamA.attackingEnd));
-            print(match.teamB.squadName + " is TeamB_" + match.teamB.id + " is GameTeam2, attacking " + match.teamB.attackingEnd + ", " + EndDir(match.teamB.attackingEnd));
+            print(teamA.squadName + " is TeamA_" + teamA.id + " is GameTeam1, attacking " + teamA.attackingEnd + ", " + EndDir(teamA.attackingEnd));
+            print(teamB.squadName + " is TeamB_" + teamB.id + " is GameTeam2, attacking " + teamB.attackingEnd + ", " + EndDir(teamB.attackingEnd));
 
             //Match.currentMatchBall = current.MatchBall.gameObject;
 
-            //RedSim.MakeRedPlayers(match.teamA);
-            //RedSim.MakeRedPlayers(match.teamB);
+            //RedSim.MakeRedPlayers(teamA);
+            //RedSim.MakeRedPlayers(teamB);
 
             // line up players in tunnel
 
@@ -367,27 +358,27 @@ namespace RedCard {
             // #INVADER
             // need to register these other RedPlayers
 
-            foreach (var target in match.targets) {
+            foreach (var target in targets) {
                 switch (target.targetType) {
                     case TargetType.CornerFlag:
                         target.attackingEnd = NearestEnd(target.transform.position);
-                        match.cornerFlags.Add(target);
+                        cornerFlags.Add(target);
                         break;
                     case TargetType.SixYardBox:
                         if (target.attackingEnd == FieldEnd.Unassigned) {
                             Debug.LogWarning("unassigned attacking end on six yard box");
                         }
 
-                        match.sixYardBoxes.Add(target);
-                        if (target.attackingEnd == match.teamA.attackingEnd) match.teamA.goal = target;
-                        else if (target.attackingEnd == match.teamB.attackingEnd) match.teamB.goal = target;
+                        sixYardBoxes.Add(target);
+                        if (target.attackingEnd == teamA.attackingEnd) teamA.sixYardBox = target;
+                        else if (target.attackingEnd == teamB.attackingEnd) teamB.sixYardBox = target;
 
                         EighteenYardBox box = target.GetComponentInChildren<EighteenYardBox>();
                         Debug.Assert(box && box.botLeft && box.topRight);
                         box.botLeft.gameObject.SetActive(false);
                         box.topRight.gameObject.SetActive(false);
 
-                        Bounds b = NearestEnd(target.transform.position) == FieldEnd.East ? match.eastBox : match.westBox;
+                        Bounds b = NearestEnd(target.transform.position) == FieldEnd.East ? eastBox : westBox;
                         Vector3 boxCenter = (box.topRight.position - box.botLeft.position) / 2f;
                         Vector3 boxSize = new Vector3(box.topRight.position.x - box.botLeft.position.x,
                             5f,
@@ -397,7 +388,7 @@ namespace RedCard {
 
                     case TargetType.PenaltySpot:
                         float x = target.transform.position.x;
-                        if (x > match.centerSpot.x) {
+                        if (x > centerSpot.x) {
                             if (East.x > 0f) target.attackingEnd = FieldEnd.East;
                             else target.attackingEnd = FieldEnd.West;
                         }
@@ -409,15 +400,81 @@ namespace RedCard {
                 }
             }
 
-            Debug.Assert(match.teamA.goal);
-            Debug.Assert(match.teamB.goal);
+            Debug.Assert(teamA.goalNet);
+            Debug.Assert(teamB.goalNet);
+        }
 
-
-
+        private float CalculateOffside(float xNet, List<Jugador> jugadores) {
+            float signGoal = Mathf.Sign(xNet - xCenter);
+            float last = xCenter;
+            float secondToLast = xCenter;
+            for (int i = 0; i < jugadores.Count; i++) {
+                float xJugador = jugadores[i].controller.transform.position.x;
+                if (Mathf.Sign(xJugador) == signGoal) {
+                    float toJugador = Mathf.Abs(xJugador - xCenter);
+                    if (toJugador > last) {
+                        secondToLast = last;
+                        last = toJugador;
+                    }
+                    else if (toJugador > secondToLast) {
+                        secondToLast = toJugador;
+                    }
+                }
+            }
+            if (Mathf.Sign(xBall) == signGoal) {
+                float toBall = Mathf.Abs(xBall - xCenter);
+                if (toBall > secondToLast) secondToLast = toBall;
+            }
+            return xCenter + secondToLast * signGoal;
         }
 
         public void LateUpdate() {
-            // #TODO make them behave
+
+            // calculate some basic stuff to help everyone behave :)
+            xBall = matchBall.transform.position.x;
+            xCenter = field.transform.position.x;
+            teamA.offsideLine.SetX(CalculateOffside(teamA.goalNet.position.x, teamA.jugadores));
+            Debug.Assert(teamB.offsideLine);
+            Debug.Assert(teamB.goalNet);
+            Debug.Assert(teamB.jugadores != null);
+            teamB.offsideLine.SetX(CalculateOffside(teamB.goalNet.position.x, teamB.jugadores));
+
+            float dt = Time.deltaTime;
+            float time = Time.time;
+
+            elapsedInState += dt;
+
+            switch (matchState) {
+                case MatchState.PreMatchTunnelsAndLocker:
+                    break;
+                case MatchState.PreGameWarmup:
+                    break;
+                case MatchState.FirstHalf:
+                    clock += dt;
+                    break;
+                case MatchState.HalfTimeLeavingField:
+                    break;
+                case MatchState.HalfTimeTunnelsAndLocker:
+                    break;
+                case MatchState.HalfTimeReturningToField:
+                    break;
+                case MatchState.SecondHalf:
+                    clock += dt;
+                    break;
+                case MatchState.PostMatchLeavingField:
+                    break;
+                case MatchState.PostMatchTunnelsAndLocker:
+                    break;
+
+                default:
+                    Debug.LogError("unhandled match state: " + matchState);
+                    break;
+            }
+
+            //teamA.Behave();
+            //teamB.Behave();
+
+            // foreach (Linesman l in linesmen) l.Behave();
         }
 
 

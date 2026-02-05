@@ -6,9 +6,29 @@ using System.Collections.Generic;
 namespace RedCard { 
     
 
-    // refereeing
+    ///////// RedMatch.Refereeing
     public partial class RedMatch : MonoBehaviour 
     {
+
+        // we need match jobs
+        // calling fouls/missing fouls
+        // then we classify fouls with anger levels and shit
+        public enum Call {
+            Unspecified,
+            StartMatch,
+            HalfTime,
+            EndMatch,
+            Foul,
+            Yellow, // this would include flopping
+            Red,
+            ThrowIn,
+            GoalKick,
+            CornerKick,
+            PenaltyKick,
+            Advantage, // how do we remember the need to go back and give yellow?
+            GoalScored,
+        }
+
         [Serializable]
         public class CallData {
             public Call call; // call that should be made
@@ -68,11 +88,11 @@ namespace RedCard {
 
 
         internal static void CallHalftime() {
-            var cachedGoal = match.teamA.goal;
+            var cachedGoal = match.teamA.goalNet;
             var cachedEnd = match.teamA.attackingEnd;
-            match.teamA.goal = match.teamB.goal;
+            match.teamA.goalNet = match.teamB.goalNet;
             match.teamA.attackingEnd = match.teamB.attackingEnd;
-            match.teamB.goal = cachedGoal;
+            match.teamB.goalNet = cachedGoal;
             match.teamB.attackingEnd = cachedEnd;
 
             print("made call: halftime");
@@ -279,9 +299,9 @@ namespace RedCard {
         private static void AssessCall(CallData madeCall) {
 
             // if pre-game, assessment must be done differently
-            switch (match.state) {
-                case State.FirstHalf:
-                case State.SecondHalf:
+            switch (match.matchState) {
+                case MatchState.FirstHalf:
+                case MatchState.SecondHalf:
                     AssessCallDuringMatch(madeCall);
                     break;
 
