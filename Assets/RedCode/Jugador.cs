@@ -11,13 +11,14 @@ namespace RedCard {
         public RefTarget target;
         public AngerBar angerBar;
         public bool isGoalie = false;
+        public bool isInOffsidePosition = false;
         public float anger = 0f;
+        public float fieldProgress;
         public JugadorController controller;
 
 
 
         public List<Behavior> behaviors = new List<Behavior>() {
-            // to do
 
         }; 
 
@@ -40,6 +41,7 @@ namespace RedCard {
 
         }
 
+        public Vector3 pos => controller.transform.position;
 
         public void ProcessBehaviors(in float time) {
 
