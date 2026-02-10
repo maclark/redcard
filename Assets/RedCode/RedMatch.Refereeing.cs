@@ -88,11 +88,11 @@ namespace RedCard {
 
 
         internal static void CallHalftime() {
-            var cachedGoal = match.losAl.goalNet;
+            var cachedGoal = match.losAl.ourGoal;
             var cachedEnd = match.losAl.attackingEnd;
-            match.losAl.goalNet = match.somerville.goalNet;
+            match.losAl.ourGoal = match.somerville.ourGoal;
             match.losAl.attackingEnd = match.somerville.attackingEnd;
-            match.somerville.goalNet = cachedGoal;
+            match.somerville.ourGoal = cachedGoal;
             match.somerville.attackingEnd = cachedEnd;
 
             print("made call: halftime");

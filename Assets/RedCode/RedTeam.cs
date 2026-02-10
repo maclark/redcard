@@ -38,12 +38,14 @@ namespace RedCard {
         public int id = -1;
         public int goals = -1;
         public string squadName = "unnamed";
-        public GoalNet goalNet;
+        public GoalNet ourGoal;
+        public GoalNet opponentGoal;
         public RefTarget sixYardBox;
         public FieldEnd attackingEnd;
         public Transform offsideLine;
         public Transform densityPoint;
         public float respect = 1f;
+        public float ballProgress;
         public List<Jugador> jugadores = new List<Jugador>();
 
     public void DoTeamwork(
@@ -64,7 +66,7 @@ namespace RedCard {
 
             // tacticManager.Run(); // what's it do? why not in line it?
 
-            float ballProgess = Mathf.Abs(goalNet.transform.position.x - matchBall.transform.position.x) / xFieldEnd;
+            ballProgress = Mathf.Abs(ourGoal.transform.position.x - matchBall.transform.position.x) / xFieldEnd;
 
             {
                 // here, we could deal with showing/hiding UI
@@ -96,7 +98,7 @@ namespace RedCard {
                         xOpponentOffsideLine,
                         xOurOffsideLine,
                         matchBall,
-                        goalNet,
+                        ourGoal,
                         opponentGoalNet,
                         teammates,
                         opponents

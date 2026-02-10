@@ -1,0 +1,47 @@
+namespace RedCard {
+
+    public enum MovementType {
+        Relax,
+        Normal,
+        BestHeCanDo
+    }
+
+    public enum Acts {
+        Nothing,
+        GoingToGoal,
+        PassingToBetterOpportunity,
+        Crossing,
+        PassingToClosestTeammate,
+        PassingToAvailableClosestTeammate,
+        Shoot,
+        GoingToTackle,
+        LastThingToDoWhenWeHaveTheBall,
+        Tackling,
+        TacklingFailed,
+        Stunned,
+        MarkingTheOpponent,
+        ReachedToTheGoalButCouldNotShoot_PassingToClosestTeammate,
+        NothingToDo_GoingToShoot,
+        InMarking_LookingForTeammateToPass,
+        NothingToDo_PassingToClosestTeammate,
+        GoingToGetTheBall_BallChasing,
+        GoingToGetTheBall_WithCaution,
+        RunningForward,
+        RunningBehindTheDefenseLine,
+        PassingToBehindTheDefenseLine,
+        ThrowIn,
+        StrikerTacticalBehaviour,
+        TacticalPositioning,
+        DefensiveTacticalPositioningBehaviour,
+        BecomeAPassOption,
+        TargetMan,
+        JoinTheAttack,
+        PassAndRun,
+        MarkTheLastGuy,
+        Dribbling,
+        InputPass,
+        InputShoot
+    }
+
+
+}

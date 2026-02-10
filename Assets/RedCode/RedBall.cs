@@ -10,6 +10,7 @@ namespace RedCard {
 
         [Header("VARS")]
         public Jugador holder;
+        public Jugador thrower;
 
         private void OnCollisionEnter(Collision collision) {
             if (collision.collider.TryGetComponent(out CaptainBody cap)) {

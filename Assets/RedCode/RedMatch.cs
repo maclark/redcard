@@ -145,8 +145,9 @@ namespace RedCard {
             losAl.id = 1;
             losAl.squadName = "Los Alamitos";
             losAl.attackingEnd = FieldEnd.East;
-            losAl.goalNet = goalNet0;
-            losAl.goalNet.name = $"goalNet({losAl.squadName})";
+            losAl.ourGoal = goalNet0;
+            losAl.opponentGoal = goalNet1;
+            losAl.ourGoal.name = $"goalNet({losAl.squadName})";
             losAl.offsideLine = offsideLineA;
             losAl.offsideLine.name = $"offsideLine({losAl.squadName})";
             losAl.densityPoint = densityPointA;
@@ -155,8 +156,9 @@ namespace RedCard {
             somerville.id = 2;
             somerville.attackingEnd = FieldEnd.West;
             somerville.squadName = "Somerville";
-            somerville.goalNet = goalNet1;
-            somerville.goalNet.name = $"goalNet({somerville.squadName})";
+            somerville.ourGoal = goalNet1;
+            somerville.opponentGoal = goalNet0;
+            somerville.ourGoal.name = $"goalNet({somerville.squadName})";
             somerville.offsideLine = offsideLineB;
             somerville.offsideLine.name = $"offsideLine({somerville.squadName})";
             somerville.densityPoint = densityPointB;
@@ -310,6 +312,7 @@ namespace RedCard {
                     lineHead.position - lineHead.forward * linePos * lineGap + lineHead.right * lateralShift, 
                     lineHead.rotation)
                     .GetComponent<JugadorController>();
+                jugador.controller.jugador = jugador;
 
                 // see CodeBasedController.SetPlayer
                 // #TODO player variety:
@@ -442,8 +445,8 @@ namespace RedCard {
             // calculate some basic stuff to help everyone behave :)
             xBall = matchBall.transform.position.x;
             xCenter = field.transform.position.x;
-            losAl.offsideLine.SetX(CalculateOffside(losAl.goalNet.transform.position.x, losAl.jugadores));
-            somerville.offsideLine.SetX(CalculateOffside(somerville.goalNet.transform.position.x, somerville.jugadores));
+            losAl.offsideLine.SetX(CalculateOffside(losAl.ourGoal.transform.position.x, losAl.jugadores));
+            somerville.offsideLine.SetX(CalculateOffside(somerville.ourGoal.transform.position.x, somerville.jugadores));
 
             float dt = Time.deltaTime;
             float time = Time.time;
@@ -536,8 +539,8 @@ namespace RedCard {
                 losAl.offsideLine.position.x,
                 somerville.offsideLine.position.x,
                 matchBall,
-                losAl.goalNet,
-                somerville.goalNet,
+                losAl.ourGoal,
+                somerville.ourGoal,
                 losAl.jugadores.ToArray(),
                 somerville.jugadores.ToArray());
 
@@ -552,8 +555,8 @@ namespace RedCard {
                 somerville.offsideLine.position.x,
                 losAl.offsideLine.position.x,
                 matchBall,
-                somerville.goalNet,
-                losAl.goalNet,
+                somerville.ourGoal,
+                losAl.ourGoal,
                 somerville.jugadores.ToArray(),
                 losAl.jugadores.ToArray());
 
