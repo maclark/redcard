@@ -106,7 +106,7 @@ namespace RedCard {
         private void Update() {
             alpha -= Time.deltaTime;
             //equipmentGroup.alpha = Mathf.Lerp(0f, 1f, alpha / FADE_OUT_TIME);
-            if (debugClock) debugClock.text = RedSim.matchMinutes.ToString();
+            if (debugClock) debugClock.text = RedMatch.match.clock.ToString();
         }
 
         public void MakeVisible(RefEquipment equip) {

@@ -30,5 +30,13 @@ namespace RedCard {
             rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         }
 
+        public void Stop(in float dt) {
+            // const float DIRECTION_RECOVERY_WHEN_STOP = 5f;
+            // const float STOPPING_SPEED = 5;
+            // also, this is had use of lerp, right?
+            // but it's thru LateUpdate, which is a constant frame speed
+            targetMoveSpeed = Mathf.Lerp(targetMoveSpeed, 0, dt * 5);
+            direction = Vector3.Lerp(direction, transform.forward, dt * 5f);
+        }
     }
 }

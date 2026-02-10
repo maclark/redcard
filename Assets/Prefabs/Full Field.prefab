@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 1403331976697965831}
   - component: {fileID: 2770920432351757177}
   m_Layer: 0
-  m_Name: sideline (1)
+  m_Name: sidelineBot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -622,7 +622,7 @@ GameObject:
   - component: {fileID: 8415397807204944810}
   - component: {fileID: 7570473920807928341}
   m_Layer: 0
-  m_Name: sideline
+  m_Name: sidelineTop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3077,6 +3077,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1207506937851216220}
+  - component: {fileID: 135158206618202406}
   m_Layer: 0
   m_Name: goal1
   m_TagString: Untagged
@@ -3102,6 +3103,18 @@ Transform:
   - {fileID: 7461052972607840823}
   m_Father: {fileID: 785205828045005141}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &135158206618202406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4498340101895403071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0d0776ef9f95b4fa34871fa915a423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RedCard.GoalNet
 --- !u!1 &5304080975892569093
 GameObject:
   m_ObjectHideFlags: 0
@@ -3384,7 +3397,7 @@ GameObject:
   - component: {fileID: 6338409863791816949}
   - component: {fileID: 633488475793163530}
   m_Layer: 0
-  m_Name: endline
+  m_Name: endlineLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4904,6 +4917,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5439595611698210124}
+  - component: {fileID: 3384679895060705514}
   m_Layer: 0
   m_Name: goal0
   m_TagString: Untagged
@@ -4929,6 +4943,18 @@ Transform:
   - {fileID: 5487340363189527061}
   m_Father: {fileID: 785205828045005141}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3384679895060705514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8240028223615286571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0d0776ef9f95b4fa34871fa915a423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RedCard.GoalNet
 --- !u!1 &8304530560664907122
 GameObject:
   m_ObjectHideFlags: 0
@@ -5031,7 +5057,7 @@ GameObject:
   - component: {fileID: 1872723801367994345}
   - component: {fileID: 7752255309501518112}
   m_Layer: 0
-  m_Name: endline (1)
+  m_Name: endlineRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

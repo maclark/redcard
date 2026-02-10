@@ -8,6 +8,9 @@ namespace RedCard {
         [Header("ASSIGNATIONS")]
         public Rigidbody rb;
 
+        [Header("VARS")]
+        public Jugador holder;
+
         private void OnCollisionEnter(Collision collision) {
             if (collision.collider.TryGetComponent(out CaptainBody cap)) {
                 if (TryGetComponent(out Item it)) {

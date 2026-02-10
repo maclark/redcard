@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace RedCard {
 
-    public enum MatchState {
+    public enum WorldStatus {
         Unset,
         PreMatchTunnelsAndLocker,
         PreGameWarmup,
@@ -33,18 +33,6 @@ namespace RedCard {
         West,
     }
 
-    public class RedTeam {
-        public int id = -1;
-        public int goals = -1;
-        public string squadName = "unnamed";
-        public Transform goalNet;
-        public RefTarget sixYardBox;
-        public FieldEnd attackingEnd;
-        public Transform offsideLine;
-        public float respect = 1f;
-        public List<Jugador> jugadores = new List<Jugador>();
-    }
-
     public partial class RedMatch : MonoBehaviour {
 
         // assigned in prefab
@@ -62,10 +50,16 @@ namespace RedCard {
         public Transform lineHead;
         public RedBall matchBall;
         public Transform field;
-        public Transform goalNet0;
-        public Transform goalNet1;
+        public Transform endlineLeft;
+        public Transform endlineRight;
+        public Transform sidelineTop; 
+        public Transform sidelineBot; 
+        public GoalNet goalNet0;
+        public GoalNet goalNet1;
         public Transform offsideLineA;
         public Transform offsideLineB;
+        public Transform densityPointA; 
+        public Transform densityPointB; 
         public string[] nombres = new string[22];
 
         [Header("SETTINGS")]
@@ -73,7 +67,8 @@ namespace RedCard {
         public float throwInDotThreshold = .33f;
 
         [Header("VARS")]
-        public MatchState matchState = MatchState.Unset;
+        public WorldStatus matchState = WorldStatus.Unset;
+        public MatchStatus matchStatus = MatchStatus.NotPlaying;
         public bool paused = false;
         public Transform botLeftBox0;
         public Transform topRightBox0;
@@ -99,6 +94,7 @@ namespace RedCard {
 
         private bool initialized = false;
         private Vector3 centerSpot;
+        private Vector2 fieldSize;
         private static RedMatch _match;
         private static Vector3 East = Vector3.right;
         private static Vector3 West = -Vector3.right;
@@ -140,25 +136,32 @@ namespace RedCard {
             console.open = false;
             console.enabled = false;
 
-            initialized = true;
-            matchState = MatchState.PreMatchTunnelsAndLocker;
+            float fieldLength = endlineRight.position.x - endlineLeft.position.x;
+            float fieldWidth = sidelineTop.position.y - sidelineBot.position.y;
+            fieldSize = new Vector2(fieldLength, fieldWidth);
+
+            matchState = WorldStatus.PreMatchTunnelsAndLocker;
             losAl = new RedTeam();
             losAl.id = 1;
             losAl.squadName = "Los Alamitos";
             losAl.attackingEnd = FieldEnd.East;
             losAl.goalNet = goalNet0;
+            losAl.goalNet.name = $"goalNet({losAl.squadName})";
             losAl.offsideLine = offsideLineA;
+            losAl.offsideLine.name = $"offsideLine({losAl.squadName})";
+            losAl.densityPoint = densityPointA;
+            losAl.densityPoint.name = $"densityPoint({losAl.squadName})";
             somerville = new RedTeam();
             somerville.id = 2;
             somerville.attackingEnd = FieldEnd.West;
             somerville.squadName = "Somerville";
             somerville.goalNet = goalNet1;
+            somerville.goalNet.name = $"goalNet({somerville.squadName})";
             somerville.offsideLine = offsideLineB;
+            somerville.offsideLine.name = $"offsideLine({somerville.squadName})";
+            somerville.densityPoint = densityPointB;
+            somerville.densityPoint.name = $"densityPoint({somerville.squadName})";
 
-            Debug.Assert(goalNet0);
-            Debug.Assert(goalNet1);
-            Debug.Assert(offsideLineA);
-            Debug.Assert(offsideLineB);
             Debug.Assert(settings);
             Debug.Assert(matchBall);
 
@@ -335,8 +338,8 @@ namespace RedCard {
             // need to place ball (are we going to have many balls?)
             // could just be placed in scene
 
-            float x1 = goalNet0.position.x;// RedSim.Goal1Pos.x;
-            float x2 = goalNet1.position.x;// RedSim.Goal2Pos.x;
+            float x1 = goalNet0.transform.position.x;
+            float x2 = goalNet1.transform.position.x;
             centerSpot = new Vector3((x2 - x1) / 2f, 0f, 0f); 
             // team1 is defined as attacking East
             // if team1's goal is farther in +x-axis,
@@ -433,39 +436,58 @@ namespace RedCard {
             return xCenter + secondDeepest * signGoal;
         }
 
+        // i'm not surprised, but i don't know why FS uses LATEUpdate
         public void LateUpdate() {
 
             // calculate some basic stuff to help everyone behave :)
             xBall = matchBall.transform.position.x;
             xCenter = field.transform.position.x;
-            losAl.offsideLine.SetX(CalculateOffside(losAl.goalNet.position.x, losAl.jugadores));
-            somerville.offsideLine.SetX(CalculateOffside(somerville.goalNet.position.x, somerville.jugadores));
+            losAl.offsideLine.SetX(CalculateOffside(losAl.goalNet.transform.position.x, losAl.jugadores));
+            somerville.offsideLine.SetX(CalculateOffside(somerville.goalNet.transform.position.x, somerville.jugadores));
 
             float dt = Time.deltaTime;
             float time = Time.time;
 
             elapsedInState += dt;
 
+            float caculateDensity(RedTeam team) {
+                if (team.jugadores.Count == 0) return 0f; ///////////////
+                float xTotal = 0f;
+                for (int i = 0; i < team.jugadores.Count; i++) {
+                    Jugador jug = team.jugadores[i];
+                    if (!jug.isGoalie) {
+                        xTotal += jug.controller.transform.position.x;
+                    }
+                }
+                return xTotal / team.jugadores.Count;
+            }
+
+            float losAlDensity = Mathf.Lerp(caculateDensity(losAl), xBall, .5f);
+            float somervilleDensity = Mathf.Lerp(caculateDensity(somerville), xBall, .5f);
+            losAl.densityPoint.position = new Vector3(caculateDensity(losAl), 0f, fieldSize.y / 2f);
+            somerville.densityPoint.position = new Vector3(caculateDensity(somerville), 0f, fieldSize.y / 2f);
+
+
             switch (matchState) {
-                case MatchState.PreMatchTunnelsAndLocker:
+                case WorldStatus.PreMatchTunnelsAndLocker:
                     break;
-                case MatchState.PreGameWarmup:
+                case WorldStatus.PreGameWarmup:
                     break;
-                case MatchState.FirstHalf:
+                case WorldStatus.FirstHalf:
                     clock += dt;
                     break;
-                case MatchState.HalfTimeLeavingField:
+                case WorldStatus.HalfTimeLeavingField:
                     break;
-                case MatchState.HalfTimeTunnelsAndLocker:
+                case WorldStatus.HalfTimeTunnelsAndLocker:
                     break;
-                case MatchState.HalfTimeReturningToField:
+                case WorldStatus.HalfTimeReturningToField:
                     break;
-                case MatchState.SecondHalf:
+                case WorldStatus.SecondHalf:
                     clock += dt;
                     break;
-                case MatchState.PostMatchLeavingField:
+                case WorldStatus.PostMatchLeavingField:
                     break;
-                case MatchState.PostMatchTunnelsAndLocker:
+                case WorldStatus.PostMatchTunnelsAndLocker:
                     break;
 
                 default:
@@ -473,12 +495,70 @@ namespace RedCard {
                     break;
             }
 
-            //teamA.Behave();
-            //teamB.Behave();
+            TeamPosture losAlPosture;
+            TeamPosture somervillePosture;
+            if (matchBall.holder == null) {
+                losAlPosture = TeamPosture.BallChasing;
+                somervillePosture = TeamPosture.BallChasing;
+            }
+            else {
+                if (matchBall.holder.team == losAl) {
+                    if (matchBall.holder.isGoalie) {
+                        losAlPosture = TeamPosture.WaitingForGK;
+                        somervillePosture = TeamPosture.WaitingForOpponentGK;
+                    }
+                    else {
+                        losAlPosture = TeamPosture.Attacking;
+                        somervillePosture = TeamPosture.Defending;
+                    }
+                }
+                // somerville is possessing
+                else {
+                    if (matchBall.holder.isGoalie) {
+                        losAlPosture = TeamPosture.WaitingForOpponentGK;
+                        somervillePosture = TeamPosture.WaitingForGK;
+                    }
+                    else {
+                        losAlPosture = TeamPosture.Defending;
+                        somervillePosture = TeamPosture.Attacking;
+                    }
+                }
+            }
+
+            losAl.DoTeamwork(
+                in time,
+                in dt,
+                in fieldSize.x,
+                in fieldSize.y,
+                in matchStatus,
+                in losAlPosture,
+                in losAlDensity,
+                losAl.offsideLine.position.x,
+                somerville.offsideLine.position.x,
+                matchBall,
+                losAl.goalNet,
+                somerville.goalNet,
+                losAl.jugadores.ToArray(),
+                somerville.jugadores.ToArray());
+
+            somerville.DoTeamwork(
+                in time,
+                in dt,
+                in fieldSize.x,
+                in fieldSize.y,
+                in matchStatus,
+                in somervillePosture,
+                in somervilleDensity,
+                somerville.offsideLine.position.x,
+                losAl.offsideLine.position.x,
+                matchBall,
+                somerville.goalNet,
+                losAl.goalNet,
+                somerville.jugadores.ToArray(),
+                losAl.jugadores.ToArray());
 
             // foreach (Linesman l in linesmen) l.Behave();
         }
-
 
         public static void SetQuality(string levelName) {
             int index = QualitySettings.GetQualityLevel();

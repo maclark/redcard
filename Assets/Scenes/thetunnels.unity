@@ -525,11 +525,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70fd4b4b70ffcee4295a25d60051adee, type: 3}
---- !u!4 &354422470 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5439595611698210124, guid: aa39e754a1360ca45ad1356a8e2ae8c3, type: 3}
+--- !u!114 &354422471 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3384679895060705514, guid: aa39e754a1360ca45ad1356a8e2ae8c3, type: 3}
   m_PrefabInstance: {fileID: 8998370028585270264}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0d0776ef9f95b4fa34871fa915a423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RedCard.GoalNet
 --- !u!1001 &443834788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1449,6 +1455,96 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &993652234
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 993652237}
+  - component: {fileID: 993652236}
+  - component: {fileID: 993652235}
+  m_Layer: 0
+  m_Name: DensityB
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &993652235
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993652234}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: cb1d975d333b8cd4ea0b08a558f5b4ff, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &993652236
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993652234}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &993652237
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993652234}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2396,11 +2492,107 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1800767170 stripped
+--- !u!1 &1759436385
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1759436388}
+  - component: {fileID: 1759436387}
+  - component: {fileID: 1759436386}
+  m_Layer: 0
+  m_Name: DensityA
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &1759436386
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759436385}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: cb1d975d333b8cd4ea0b08a558f5b4ff, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1759436387
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759436385}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1759436388
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1207506937851216220, guid: aa39e754a1360ca45ad1356a8e2ae8c3, type: 3}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759436385}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1800767171 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 135158206618202406, guid: aa39e754a1360ca45ad1356a8e2ae8c3, type: 3}
   m_PrefabInstance: {fileID: 8998370028585270264}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0d0776ef9f95b4fa34871fa915a423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RedCard.GoalNet
 --- !u!1 &1862814839
 GameObject:
   m_ObjectHideFlags: 0
@@ -2982,11 +3174,11 @@ PrefabInstance:
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: goalNet0
       value: 
-      objectReference: {fileID: 354422470}
+      objectReference: {fileID: 354422471}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: goalNet1
       value: 
-      objectReference: {fileID: 1800767170}
+      objectReference: {fileID: 1800767171}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: lineHead
       value: 
@@ -2996,6 +3188,22 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8492506729157674639}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
+      propertyPath: endlineLeft
+      value: 
+      objectReference: {fileID: 8998370028585270269}
+    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
+      propertyPath: sidelineBot
+      value: 
+      objectReference: {fileID: 8998370028585270266}
+    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
+      propertyPath: sidelineTop
+      value: 
+      objectReference: {fileID: 8998370028585270267}
+    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
+      propertyPath: endlineRight
+      value: 
+      objectReference: {fileID: 8998370028585270268}
+    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: offsideLineA
       value: 
       objectReference: {fileID: 1701169801}
@@ -3004,48 +3212,56 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 796926714}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
+      propertyPath: densityPointA
+      value: 
+      objectReference: {fileID: 1759436388}
+    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
+      propertyPath: densityPointB
+      value: 
+      objectReference: {fileID: 993652237}
+    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[0]'
       value: Jason DiBernardo
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[1]'
-      value: Max Clark
+      value: Pierre Winter
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[2]'
-      value: Kevin Anglin
-      objectReference: {fileID: 0}
-    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
-      propertyPath: 'nombres.Array.data[3]'
-      value: Daniel Fithian
-      objectReference: {fileID: 0}
-    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
-      propertyPath: 'nombres.Array.data[4]'
       value: Sam Woolf
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
-      propertyPath: 'nombres.Array.data[5]'
-      value: Lou Virgadula
-      objectReference: {fileID: 0}
-    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
-      propertyPath: 'nombres.Array.data[6]'
+      propertyPath: 'nombres.Array.data[3]'
       value: Jesse Pridemore
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
-      propertyPath: 'nombres.Array.data[7]'
+      propertyPath: 'nombres.Array.data[4]'
       value: Camilo Barahona
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
-      propertyPath: 'nombres.Array.data[8]'
+      propertyPath: 'nombres.Array.data[5]'
       value: Makito Nakata
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
+      propertyPath: 'nombres.Array.data[6]'
+      value: Thorin Duffin
+      objectReference: {fileID: 0}
+    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
+      propertyPath: 'nombres.Array.data[7]'
+      value: Paolo Iaccarino
+      objectReference: {fileID: 0}
+    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
+      propertyPath: 'nombres.Array.data[8]'
+      value: Javier Mendoza
+      objectReference: {fileID: 0}
+    - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[9]'
-      value: Chris Palmieri
+      value: Moustafa Elsayed
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[10]'
-      value: Kevin Montiel
+      value: 'Edgar Barajas '
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[11]'
@@ -3053,43 +3269,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[12]'
-      value: Javier Mendoza
+      value: Matt Brown
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[13]'
-      value: Moustafa Elsayed
+      value: indian striker
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[14]'
-      value: west african
+      value: Okuary Osechas
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[15]'
-      value: north indian
+      value: Dan Fogarty
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[16]'
-      value: a good scot
+      value: Pumelele Maqubela
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[17]'
-      value: some frenchman
+      value: Lou Virgadula
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[18]'
-      value: Cesar Sosa
+      value: Kevin Montiel
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[19]'
-      value: Ted De La Haye
+      value: Alex Bedig
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[20]'
-      value: Andrey Belyaev
+      value: Daniel Fithian
       objectReference: {fileID: 0}
     - target: {fileID: 2960076845489640149, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: 'nombres.Array.data[21]'
-      value: John Kruckenberg
+      value: Kevin Anglin
       objectReference: {fileID: 0}
     - target: {fileID: 3241708381380998699, guid: e0416682e9b64b2439133adf0feb39f0, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3659,6 +3875,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 785205828045005141, guid: aa39e754a1360ca45ad1356a8e2ae8c3, type: 3}
   m_PrefabInstance: {fileID: 8998370028585270264}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &8998370028585270266 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8139826196833124845, guid: aa39e754a1360ca45ad1356a8e2ae8c3, type: 3}
+  m_PrefabInstance: {fileID: 8998370028585270264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8998370028585270267 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7697116404986776253, guid: aa39e754a1360ca45ad1356a8e2ae8c3, type: 3}
+  m_PrefabInstance: {fileID: 8998370028585270264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8998370028585270268 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6811518819118314057, guid: aa39e754a1360ca45ad1356a8e2ae8c3, type: 3}
+  m_PrefabInstance: {fileID: 8998370028585270264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8998370028585270269 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5630135095922047058, guid: aa39e754a1360ca45ad1356a8e2ae8c3, type: 3}
+  m_PrefabInstance: {fileID: 8998370028585270264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3675,6 +3911,8 @@ SceneRoots:
   - {fileID: 510039751}
   - {fileID: 1701169801}
   - {fileID: 796926714}
+  - {fileID: 1759436388}
+  - {fileID: 993652237}
   - {fileID: 8998370028585270264}
   - {fileID: 1117933520}
   - {fileID: 1862814841}

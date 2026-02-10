@@ -193,7 +193,7 @@ namespace RedCard {
             }
         }
 
-        public static void IndicateCall(RefTarget target, Vector3 indicateDir) {
+        public void IndicateCall(RefTarget target, Vector3 indicateDir) {
             // #TODO maybe rename this as MakeCall that returns a CallData
             // and then call AssessCall on that
 
@@ -224,8 +224,7 @@ namespace RedCard {
                 switch (target.targetType) {
                     case TargetType.Player:
                         // #TODO position of foul could called..hmmm
-                        Vector3 pos = RedSim.CurrentBallPos;
-                        IndicateNormalFoul(target, pos);
+                        IndicateNormalFoul(target, matchBall.transform.position);
                         break;
                     case TargetType.SixYardBox:
                         IndicateGoalKick(target);
@@ -237,7 +236,7 @@ namespace RedCard {
                         IndicatePenalty(target);
                         break;
                     case TargetType.CenterCircle:
-                        FieldEnd scoredAt = (RedSim.CurrentBallPos.x > target.transform.position.x) ? FieldEnd.East : FieldEnd.West;
+                        FieldEnd scoredAt = (matchBall.transform.position.x > target.transform.position.x) ? FieldEnd.East : FieldEnd.West;
                         print("scoredAt: " + scoredAt);
                         if (match.losAl.attackingEnd == scoredAt) IndicateGoalScoredBy(match.losAl);
                         else IndicateGoalScoredBy(match.somerville);
@@ -300,8 +299,8 @@ namespace RedCard {
 
             // if pre-game, assessment must be done differently
             switch (match.matchState) {
-                case MatchState.FirstHalf:
-                case MatchState.SecondHalf:
+                case WorldStatus.FirstHalf:
+                case WorldStatus.SecondHalf:
                     AssessCallDuringMatch(madeCall);
                     break;
 
@@ -454,7 +453,7 @@ namespace RedCard {
 
         public static void IndicateCornerKick(RefTarget target) {
 
-            RedSim.Corner();
+            //RedSim.Corner();
             RedTeam kickingTeam = WhoseAttackingEnd(target.attackingEnd);
             print("made call: corner called for " + kickingTeam.squadName);
             CallData madeCall = new CallData();
@@ -466,7 +465,7 @@ namespace RedCard {
         public static void IndicateGoalScoredBy(RedTeam team) {
             team.goals++;
 
-            RedSim.GoalScored(team);
+            //RedSim.GoalScored(team);
 
             print($"made call: {team.squadName}({team.id}) scored");
             CallData madeCall = new CallData();
@@ -480,7 +479,7 @@ namespace RedCard {
             Vector3 penaltySpot = target.transform.position;
             penaltySpot.y = 0f;
 
-            RedSim.Penalty(penaltySpot, shootingTeam);
+            //RedSim.Penalty(penaltySpot, shootingTeam);
 
             Debug.LogWarning("penalty kicks not implemented");
             print("made call: penalty awarded to " + shootingTeam.squadName);

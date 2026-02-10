@@ -760,7 +760,7 @@ namespace RedCard {
                     if (ctx.started) {
                         indicatedTarget = target;
                         indicating = true;
-                        RedMatch.IndicateCall(target, cameraTransform.forward);
+                        RedMatch.match.IndicateCall(target, cameraTransform.forward);
                         scanning = false;
                         if (target) target.outline.SetActive(false);
                         target = null;
