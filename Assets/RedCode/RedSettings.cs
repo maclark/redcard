@@ -39,6 +39,26 @@ namespace RedCard {
         // / / / / / / / / / simulator
         // / / / / / / / / / simulator
 
+        [Header("Ball Control")]
+        public AnimationCurve BallControlDifficultyCurveByImpactPulseCurve;
+        public AnimationCurve BallControlHeightMultiplierCurve;
+        public float BallControlMaxBallImpulse = 2f;
+
+        [Tooltip("Passing height multiplier")]
+        [SerializeField] private AnimationCurve passHeightDistanceCurve;
+        public float PassHeight(float distance) => passHeightDistanceCurve.Evaluate(distance);
+
+        [Tooltip("Crossing height multiplier")]
+        [SerializeField] private AnimationCurve crossHeightDistanceCurve;
+        public float CrossHeight(float distance) => crossHeightDistanceCurve.Evaluate(distance);
+
+        public AnimationCurve ShootHeightByBallHeightCurve;
+
+        public AnimationCurve CrossTargetAdditionNormalByDistance;
+
+        public AnimationCurve CrossingBehindDistanceByFieldProgress;
+
+
         [Header("RUN CURVES")]
         public AnimationCurve[] runningForwardCurves;
         public AnimationCurve avoidanceCurve;
@@ -63,6 +83,47 @@ namespace RedCard {
         public AnimationCurve AgileToDirectionMoveSpeedHardness;
         public AnimationCurve Angle_PlayerProgress;
 
+        [Header("Passing (throught)")]
+        public AnimationCurve PassingAngleCurve;
+        public float PassingPlayerVelocityModifier = 0.25f;
+        public float PassingDistancePlayerVelocityModifier = 0.01f;
+        public float PassingBackwardMaxDistance = 20f;
+        public float PassingOptionPriorityPower = 5f;
+        public float PassingOptionDistanceToPriority = 0.1f;
+        public float PassingCrossPriority = 10f;
+        public float MinimumPassDistance = 3f;
+        public float PassingFieldBoundCheck = 5f;
+        public float PassingMiddlePriority = 0.2f;
+        public float XPowerPow = 1;
+
+        public ThroughPassOption[] ThroughPassOptions;
+
+        [Header("Pass Power")]
+        /// <summary>
+        /// When a player want to pass another one, the angle to the target player is important
+        /// <para>The angle will be calculated by TargetPlayer.Pos - PasserPos & TargetPlayer.Direction</para>
+        /// </summary>
+        public AnimationCurve PassPowerDistanceCurve;
+        public AnimationCurve PassPowerReceiverSpeedCurve;
+        public float PassPowerCrossMod = 1.5f;
+
+        [Header("Pass Power Angled")]
+        public AnimationCurve PassPowerByPassAngleCurve;
+        public AnimationCurve PassPowerByAngledPassDistanceCurve;
+
+        [Header("CanSee")]
+        public AnimationCurve CanSeeSecureAngleModifierByBallProgressCurve;
+        public float CanSeeSecureAngleBetweenPasserAndThread = 20;
+        public float CanSeePredictPositionVelocityMod = 3;
+        public AnimationCurve CanSeeThreadDistanceAdditionByBallProgress;
+        public AnimationCurve CanSeeAngleModByDistanceCurve;
+        public AnimationCurve PassingCrossBlockApproveDistanceToTargetByDistance;
+        public AnimationCurve PassingCrossBlockApproveDistanceToPasserByDistance;
+
+        [Header("Curved ball settings")]
+        public float CurvedBallHitPositionVectorModifier = 0.25f;
+        public float CurvedBallHitDirectionLerper = 0.25f;
+
         [Header("Direction Error settings")]
         public bool IsDirectionErrorEnabled;
         public AnimationCurve DirectionErrorModByVelocityCurve;
@@ -75,6 +136,15 @@ namespace RedCard {
         public AnimationCurve ShootPowerBySkillCurve;
         public float ShootingBlockAngle = 10;
         public AnimationCurve ShootErrorRemoveByDistance;
+
+        [Tooltip("(PlayerSkill) Passing modifier")]
+        [Range(0, 10f)]
+        public float PassingModifier = 1f;
+
+        [Tooltip("(PlayerSkill) Dribbling modifier")]
+        [Range(0, 10f)]
+        public float DribbleModifier = 1f;
+
 
         [Header("AI Shoot Tolerance")]
         [Range(0f, 100f)]

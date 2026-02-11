@@ -11,7 +11,7 @@ namespace RedCard {
         public Jugador jugador;
 
         public Action<Collision> CollisionEnterEvent { get; set; }
-        public Vector3 direction;
+        public Vector3 dir;
         public bool IsPhysicsEnabled;
         public float moveSpeed;
         public float targetMoveSpeed;
@@ -51,7 +51,7 @@ namespace RedCard {
             // also, this is had use of lerp, right?
             // but it's thru LateUpdate, which is a constant frame speed
             targetMoveSpeed = Mathf.Lerp(targetMoveSpeed, 0, dt * 5);
-            direction = Vector3.Lerp(direction, transform.forward, dt * 5f);
+            dir = Vector3.Lerp(dir, transform.forward, dt * 5f);
         }
 
         /// <summary>
@@ -99,11 +99,11 @@ namespace RedCard {
             return false;
         }
         private (float turnResult, float angleDifferency) AgileToDirection(Vector3 targetDirection) {
-            if (direction == targetDirection) {
+            if (dir == targetDirection) {
                 return (1, 0);
             }
 
-            float angleDifferency = Mathf.Abs(Vector3.SignedAngle(direction, targetDirection, Vector3.up));
+            float angleDifferency = Mathf.Abs(Vector3.SignedAngle(dir, targetDirection, Vector3.up));
 
             float agility = jugador.GetAgility();
 

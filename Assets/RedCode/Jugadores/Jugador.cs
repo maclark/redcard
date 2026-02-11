@@ -30,6 +30,7 @@ namespace RedCard {
 
         // #CAPS
         public Vector3 Position => controller.transform.position;
+        public Vector3 Velocity => controller.dir * controller.moveSpeed;
 
 
         #region GET FUNCTIONS with MODIFIERS, for in game match.
@@ -94,7 +95,7 @@ namespace RedCard {
             //// Try chip shot if GK is away.
             //new ChipShootingBehaviour (),
 
-            //new ShootingBehaviour (0.75f, 0.5f),
+            new ShootingBehaviour (0.75f, 0.5f),
 
             // Relax if there noone around.
             new RunForwardWithBallBehavior(0,
@@ -113,33 +114,33 @@ namespace RedCard {
                 0.5f, // activate on ball height 0.5f
                 0.65f), // activate before ball progress 0.65),
 
-   //         new ShootingBehaviour (0, 1f),
+            new ShootingBehaviour (0, 1f),
 
    //         new CrossingBehaviour (0.925f, 2),
 
-                new DribblingBehaviour (RunForwardWithBallBehavior.ForwardCurve.MostlyStraight),
+            new DribblingBehaviour (RunForwardWithBallBehavior.ForwardCurve.MostlyStraight),
 
-   //         // Run to the goal with a normal chasing check.
-   //         new RunForwardWithBallBehaviour(0.5f,
-   //             RunForwardWithBallBehaviour.ForwardCurve.EarlyToGoal,
-   //             RunForwardWithBallBehaviour.BewareMod.Careful,
-   //             false),
+            // Run to the goal with a normal chasing check.
+            new RunForwardWithBallBehavior(0.5f,
+                RunForwardWithBallBehavior.ForwardCurve.EarlyToGoal,
+                RunForwardWithBallBehavior.BewareMod.Careful,
+                false),
 
-   //         new ShootingBehaviour (0, 1.25f),
+            new ShootingBehaviour (0, 1.25f),
 				
-			//// Run to the goal with a risky chasing check.
-   //         new RunForwardWithBallBehaviour(0.7f,
-   //             RunForwardWithBallBehaviour.ForwardCurve.EarlyToGoal,
-   //             RunForwardWithBallBehaviour.BewareMod.Normal,
-   //             false),
+			// Run to the goal with a risky chasing check.
+            new RunForwardWithBallBehavior(0.7f,
+                RunForwardWithBallBehavior.ForwardCurve.EarlyToGoal,
+                RunForwardWithBallBehavior.BewareMod.Normal,
+                false),
 
-   //         new ShootingBehaviour (0, 1.5f),
+            new ShootingBehaviour (0, 1.5f),
 
    //         new CrossingBehaviour (0.8f),
    //         new PassingBehaviour (0.8f, true, 5),
    //         new PassingBehaviour (0.95f),
 
-   //         new ShootingBehaviour (0, 2.5f),
+            new ShootingBehaviour (0, 2.5f),
 
    //         new CrossingBehaviour (0.925f, 10),
    //         new CrossingBehaviour (0.8f, 1),
@@ -201,125 +202,42 @@ namespace RedCard {
             Debug.Log("[Jugador] Shoot!");
         }
 
-        public void Pass(Vector3 targetPoint, float speedMod = 1) {
-            if (!IsHoldingBall) {
-                return;
+
+
+        /// <summary>
+        /// Closest to the attack power. For ordering.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public float XPower(in float sizeOfFieldX, in Vector3 position) {
+            float result;
+            if (attackingDir.x > 0) {
+                result = position.x;
+            }
+            else {
+                result = sizeOfFieldX - position.x;
             }
 
-            //#ANIMATION
-            //if (!PlayBallHitAnimation(targetPoint - Position, PlayerAnimatorVariable.Pass_R, true)) {
-            //    return;
-            //}
-
-            Debug.Log($"[Jugador] Pass to {targetPoint}");
-            targetBallHitVector = targetPoint;
-            targetBallHitSpeed = speedMod;
-
-            ballHitAnimationEvent = BallHitAnimationEvent.Pass;
-        }
-
-        public void Cross(Vector3 targetPoint) {
-            if (!IsHoldingBall) {
-                return;
-            }
-
-            //#ANIMATION
-            //if (IsGK && IsGKUntouchable) {
-            //    if (!PlayBallHitAnimation(targetPoint - Position, PlayerAnimatorVariable.GKDegage_R, true)) {
-            //        return;
-            //    }
-            //}
-            //else {
-            //    if (!PlayBallHitAnimation(targetPoint - Position, PlayerAnimatorVariable.LongBall_R, true)) {
-            //        return;
-            //    }
-            //}
-
-            Debug.Log("[Jugador] LongBall (Cross)!");
-            targetBallHitVector = targetPoint;
-
-            ballHitAnimationEvent = BallHitAnimationEvent.LongBall;
-        }
-
-        public bool PassToTarget(
-            in float deltaTime,
-            Vector3 targetPosition) {
-
-            if (controller.LookTo(in deltaTime, targetPosition - Position)) {
-                Pass(targetPosition);
-                return true;
-            }
-
-            return false;
+            return result;
         }
 
         /// <summary>
-        /// The best player can reach to target player at the shortest time.
+        /// Is the given player front of us.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="players"></param>
-        public static IEnumerable<Jugador> BestOptionsToTargetPlayer(
-            Jugador target,
-            IEnumerable<Jugador> players,
-            in float ballProgress,
-            in int howManyPlayersToPick,
-            bool considerOffside = true) {
-
-            var maxDistance =
-                RedMatch.
-                match.
-                settings.
-                BestOptionToTargetMaxDistanceByBallProgressCurve.
-                Evaluate(ballProgress);
-
-            (bool isEligible, float reachTime) ReachTime(Jugador jug) {
-                var predicted = Predicter(jug, target);
-
-                float distance = Vector3.Distance(predicted, jug.Position);
-
-                if (jug.IsGK) {
-                    distance += RedMatch.match.settings.BestOptionToTargetGKAddition;
-                }
-
-                float jugSpeed = jug.GetAcceleration() * jug.GetTopSpeed();
-
-                return (distance < maxDistance, distance / jugSpeed);
+        /// <param name="goalNet"></param>
+        /// <param name="targetPlayer"></param>
+        /// <returns></returns>
+        public bool IsFrontOfMe(Vector3 target, float threshold = 0) {
+            if (attackingDir.x > 0) {
+                return target.x >= Position.x + threshold;
             }
-
-            return players.Where(j =>
-            j.controller.IsPhysicsEnabled &&
-            (!considerOffside || !j.CaughtInOffside)).
-            Select(x => (x, ReachTime(x))). // convert to (player, isEligible, reachtime)
-            Where(x => x.Item2.isEligible). // eleminate not eligibles
-            OrderBy(x => x.Item2.reachTime). // order by reach time
-            Take(howManyPlayersToPick). // take required amount
-            Select(X => X.x); // convert to player
+            else {
+                return target.x <= Position.x - threshold;
+            }
         }
 
-        /// <summary>
-        /// The best player can reach to target position at the shortest time.
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="players"></param>
-        public static IEnumerable<Jugador> BestOptionsToTargetPosition(
-            Vector3 position,
-            IEnumerable<Jugador> players,
-            int howManyPlayersToPick,
-            bool considerOffside = true) {
-
-            float ReachTime(Jugador player) {
-                float distance = Vector3.Distance(position, player.Position);
-
-                float playerSpeed = player.GetAcceleration() * player.GetTopSpeed();
-
-                return distance / playerSpeed;
-            }
-
-            return players.Where(j =>
-            j.controller.IsPhysicsEnabled &&
-            (!considerOffside || !j.CaughtInOffside)).
-            OrderBy(x => ReachTime(x)).
-            Take(howManyPlayersToPick);
+        public Vector3 PredictPositionWithVelocityMod(in float velocityMod) {
+            return Position + Velocity * velocityMod;
         }
 
 
@@ -371,7 +289,7 @@ namespace RedCard {
         /// <param name="targetJug"></param>
         /// <returns></returns>
         public static Vector3 Predicter(Jugador sourceJug, Jugador targetJug) {
-            Vector3 targetVelocity = targetJug.controller.direction * targetJug.controller.moveSpeed;
+            Vector3 targetVelocity = targetJug.controller.dir * targetJug.controller.moveSpeed;
             Vector3 targetPoint = Predicter(sourceJug, targetJug.Position, targetVelocity);
 
             return targetPoint;

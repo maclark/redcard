@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace RedCard {
 
     public enum MovementType {
@@ -92,7 +94,33 @@ namespace RedCard {
 
         ParameterCount // Parameter count of the animator.
     }
+    public enum PassType {
+        ShortPass,
+        LongPass,
+        ThroughtPass
+    }
+    public struct PassTarget {
+        public readonly PassType _PassType;
+        public readonly string _OptionName;
+        public readonly Jugador _ActualTarget;
+        public readonly Vector3 _Position;
+        public readonly float _PassPower;
 
+        public PassTarget(
+            PassType passType,
+            string optionName,
+            Vector3 position,
+            Jugador actualTarget,
+            float passPower) {
 
+            _PassType = passType;
+            _OptionName = optionName;
+            _ActualTarget = actualTarget;
+            _Position = position;
+            _PassPower = passPower;
+        }
+
+        public bool IsValid => !string.IsNullOrEmpty(_OptionName);
+    }
 }
 

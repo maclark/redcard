@@ -148,7 +148,7 @@ namespace RedCard {
             jugador.CurrentAct = Acts.RunningForward;
 
             if (!isAlreadyActive) {
-                jugador.runForwardBehaviourFinalPosition = jugador.Position + jugador.controller.direction * 2;
+                jugador.runForwardBehaviourFinalPosition = jugador.Position + jugador.controller.dir * 2;
             }
 
             jugador.runForwardBehaviourFinalPosition = Vector3.Lerp(jugador.runForwardBehaviourFinalPosition, targetPosition, dt * ALREADY_ACTIVE_LERP_SPEED);
