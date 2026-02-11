@@ -26,7 +26,7 @@ namespace RedCard {
 
 
         public void Pass(Vector3 targetPoint, float speedMod = 1) {
-            if (!IsHoldingBall) {
+            if (!isHoldingBall) {
                 return;
             }
 
@@ -44,7 +44,7 @@ namespace RedCard {
 
 
         public void Cross(Vector3 targetPoint) {
-            if (!IsHoldingBall) {
+            if (!isHoldingBall) {
                 return;
             }
 
@@ -178,7 +178,7 @@ namespace RedCard {
 
             var passOptions = possibleTeammates.Where(x => x.controller.IsPhysicsEnabled && !x.isInOffsidePosition).
                 // no diving GK.
-                Where(x => !x.IsGK || !x.behaviors.Where(x => x is GKShieldBehavior).Cast<GKShieldBehavior>().FirstOrDefault().IsOnJump).
+                Where(x => !x.isGK || !x.behaviors.Where(x => x is GKShieldBehavior).Cast<GKShieldBehavior>().FirstOrDefault().IsOnJump).
                 Select(x => FindPassPositions(x)).
                 SelectMany(x => x).
                 Where(x => Vector3.Distance(x.position, Position) > minPassDistance).
@@ -217,7 +217,7 @@ namespace RedCard {
 
             // only short passes for GKs.
             finalOptions = finalOptions.Where(x =>
-                !x.actualTarget.IsGK ||
+                !x.actualTarget.isGK ||
                 x.Item1 == PassType.ShortPass);
             //
 
@@ -432,7 +432,7 @@ namespace RedCard {
 
                 float distance = Vector3.Distance(predicted, jug.Position);
 
-                if (jug.IsGK) {
+                if (jug.isGK) {
                     distance += RedMatch.match.settings.BestOptionToTargetGKAddition;
                 }
 

@@ -296,13 +296,13 @@ namespace RedCard {
                 jugador.surname = surnames[i];
                 if (i < 11) {
                     linePos = i;
-                    jugador.IsGK = i == 0;
+                    jugador.isGK = i == 0;
                     jugador.team = losAl;
                     lateralShift = -1f;
                 }
                 else {
                     linePos = i - 11;
-                    jugador.IsGK = i == 11;
+                    jugador.isGK = i == 11;
                     jugador.team = somerville;
                     lateralShift = 1f;
                 }
@@ -458,7 +458,7 @@ namespace RedCard {
                 float xTotal = 0f;
                 for (int i = 0; i < team.jugadores.Count; i++) {
                     Jugador jug = team.jugadores[i];
-                    if (!jug.IsGK) {
+                    if (!jug.isGK) {
                         xTotal += jug.controller.transform.position.x;
                     }
                 }
@@ -506,7 +506,7 @@ namespace RedCard {
             }
             else {
                 if (matchBall.holder.team == losAl) {
-                    if (matchBall.holder.IsGK) {
+                    if (matchBall.holder.isGK) {
                         losAlPosture = TeamPosture.WaitingForGK;
                         somervillePosture = TeamPosture.WaitingForOpponentGK;
                     }
@@ -517,7 +517,7 @@ namespace RedCard {
                 }
                 // somerville is possessing
                 else {
-                    if (matchBall.holder.IsGK) {
+                    if (matchBall.holder.isGK) {
                         losAlPosture = TeamPosture.WaitingForOpponentGK;
                         somervillePosture = TeamPosture.WaitingForGK;
                     }

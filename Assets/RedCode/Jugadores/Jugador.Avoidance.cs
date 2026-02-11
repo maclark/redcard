@@ -42,7 +42,7 @@ namespace RedCard {
             }
 
             var avoidanceData = targets.Where(x =>
-            !x.IsGK &&
+            !x.isGK &&
             x.controller.IsPhysicsEnabled).
             Select(x => avoid(x)).
             Where(x => x.avoidancePow > 0);

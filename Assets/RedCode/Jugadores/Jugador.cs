@@ -12,10 +12,13 @@ namespace RedCard {
         public RedTeam team;
         public RefTarget target;
         public AngerBar angerBar;
-        public bool IsGK = false;
+        public bool isGK = false;
         public bool isInOffsidePosition = false;
         public bool isRunningBehindDefense = false;
-        public bool IsHoldingBall = false;
+        public bool isHoldingBall = false;
+        public bool isThrowHolder;
+        public bool isGoalKickHolder;
+        public bool isCornerHolder;
         public float anger = 0f;
         public float fieldProgress;
         public JugadorController controller;
@@ -83,7 +86,7 @@ namespace RedCard {
             //new InputShootBehaviour(),
             //new InputBlockRestBehaviour(),
 
-            //new ThrowInBehaviour(),
+            new ThrowInBehavior(),
             //new CornerBehaviour(),
             //new KickOffBehaviour(),
 
@@ -116,7 +119,7 @@ namespace RedCard {
 
             new ShootingBehaviour (0, 1f),
 
-   //         new CrossingBehaviour (0.925f, 2),
+            new CrossingBehaviour (0.925f, 2),
 
             new DribblingBehaviour (RunForwardWithBallBehavior.ForwardCurve.MostlyStraight),
 
@@ -146,7 +149,7 @@ namespace RedCard {
             new CrossingBehaviour (0.8f, 1),
             new CrossingBehaviour (0.7f, 0.25f),
 
-   //         new CriticalSendBallToSafe (),
+            new GetRidOfItBehavior(),
         };
 
         public void Behave(
@@ -186,7 +189,7 @@ namespace RedCard {
         }
 
         public void Shoot(Vector3 targetVelocity) {
-            if (!IsHoldingBall) {
+            if (!isHoldingBall) {
                 return;
             }
 

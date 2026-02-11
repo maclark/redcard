@@ -8,10 +8,10 @@ namespace RedCard {
         public (bool shouldI, Jugador opponent) ShouldIBeware (bool ignoreOffside = false) {
             var goalNetPosition = goalNet.Position;
 
-            var orderedTeammates = teammates.Where(j => !j.IsGK).
+            var orderedTeammates = teammates.Where(j => !j.isGK).
                 Select(x => (x, x.fieldProgress));
 
-            var opponentsBehinds = opponents.Where(j => !j.IsGK && (ignoreOffside || !j.isInOffsidePosition)).
+            var opponentsBehinds = opponents.Where(j => !j.isGK && (ignoreOffside || !j.isInOffsidePosition)).
             OrderByDescending (x=>x.fieldProgress);
 
             int opponentsBehindCount = Mathf.Min (MAX_MARKING, opponentsBehinds.Count());

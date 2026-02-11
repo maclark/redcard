@@ -76,7 +76,7 @@ namespace RedCard {
         private float toleranceMod {
             get {
                 if (opponentGK == null) {
-                    opponentGK = opponents.FirstOrDefault(x => x.IsGK);
+                    opponentGK = opponents.FirstOrDefault(x => x.isGK);
                 }
 
                 var ballHeight = ball.transform.position.y;
@@ -102,7 +102,7 @@ namespace RedCard {
         }
 
         public bool IsOneOnOneWithTheGoalKeeper() {
-            var opponentGK = opponents.FirstOrDefault(x => x.IsGK);
+            var opponentGK = opponents.FirstOrDefault(x => x.isGK);
             if (opponentGK == null) {
                 return false; // NO GK? ok...
             }

@@ -66,7 +66,7 @@ namespace RedCard {
                     return false;
                 }
 
-                var myPos = jugador.Position;
+                Vector3 myPos = jugador.Position;
 
                 float myZPower = ZPower(myPos) - 1; // -1 addition.
 
