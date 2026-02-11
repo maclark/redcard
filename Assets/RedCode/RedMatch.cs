@@ -94,7 +94,7 @@ namespace RedCard {
 
         private bool initialized = false;
         private Vector3 centerSpot;
-        private Vector2 fieldSize;
+        public Vector2 fieldSize { private set; get; }
         private static RedMatch _match;
         private static Vector3 East = Vector3.right;
         private static Vector3 West = -Vector3.right;
@@ -296,13 +296,13 @@ namespace RedCard {
                 jugador.surname = surnames[i];
                 if (i < 11) {
                     linePos = i;
-                    jugador.isGoalie = i == 0;
+                    jugador.IsGK = i == 0;
                     jugador.team = losAl;
                     lateralShift = -1f;
                 }
                 else {
                     linePos = i - 11;
-                    jugador.isGoalie = i == 11;
+                    jugador.IsGK = i == 11;
                     jugador.team = somerville;
                     lateralShift = 1f;
                 }
@@ -330,7 +330,7 @@ namespace RedCard {
                 //jugador.graphics....kit, number, name, and goalies special?
                 //jugador.anim.SetFloat(JugadorAnimatorVariable.Agility, jugador.agility / 100f);
                 //jugador.controller.CollisionEnterEvent = jugador.OnCollisionEnter;
-                jugador.controller.isPhysicsEnabled = false;
+                jugador.controller.IsPhysicsEnabled = false;
                 jugador.controller.capsule.material = jugadorMaterial;
 
                 // #TODO goalkeepers are special
@@ -458,7 +458,7 @@ namespace RedCard {
                 float xTotal = 0f;
                 for (int i = 0; i < team.jugadores.Count; i++) {
                     Jugador jug = team.jugadores[i];
-                    if (!jug.isGoalie) {
+                    if (!jug.IsGK) {
                         xTotal += jug.controller.transform.position.x;
                     }
                 }
@@ -506,7 +506,7 @@ namespace RedCard {
             }
             else {
                 if (matchBall.holder.team == losAl) {
-                    if (matchBall.holder.isGoalie) {
+                    if (matchBall.holder.IsGK) {
                         losAlPosture = TeamPosture.WaitingForGK;
                         somervillePosture = TeamPosture.WaitingForOpponentGK;
                     }
@@ -517,7 +517,7 @@ namespace RedCard {
                 }
                 // somerville is possessing
                 else {
-                    if (matchBall.holder.isGoalie) {
+                    if (matchBall.holder.IsGK) {
                         losAlPosture = TeamPosture.WaitingForOpponentGK;
                         somervillePosture = TeamPosture.WaitingForGK;
                     }
@@ -531,8 +531,8 @@ namespace RedCard {
             losAl.DoTeamwork(
                 in time,
                 in dt,
-                in fieldSize.x,
-                in fieldSize.y,
+                fieldSize.x,
+                fieldSize.y,
                 in matchStatus,
                 in losAlPosture,
                 in losAlDensity,
@@ -547,8 +547,8 @@ namespace RedCard {
             somerville.DoTeamwork(
                 in time,
                 in dt,
-                in fieldSize.x,
-                in fieldSize.y,
+                fieldSize.x,
+                fieldSize.y,
                 in matchStatus,
                 in somervillePosture,
                 in somervilleDensity,

@@ -16,7 +16,7 @@ namespace RedCard {
                 avoidanceCurve = RedMatch.match.settings.avoidanceCurve;
             }
 
-            Vector3 jugPos = pos;
+            Vector3 jugPos = Position;
 
             var dir = targetPos - jugPos;
 
@@ -25,7 +25,7 @@ namespace RedCard {
             var distToTargetPos = dir.magnitude;
 
             (float avoidancePow, Vector3 avoidDir) avoid(Jugador marker) {
-                var markerPos = marker.pos;
+                var markerPos = marker.Position;
 
                 var dirToMe = jugPos - markerPos;
 
@@ -42,8 +42,8 @@ namespace RedCard {
             }
 
             var avoidanceData = targets.Where(x =>
-            !x.isGoalie &&
-            x.controller.isPhysicsEnabled).
+            !x.IsGK &&
+            x.controller.IsPhysicsEnabled).
             Select(x => avoid(x)).
             Where(x => x.avoidancePow > 0);
 

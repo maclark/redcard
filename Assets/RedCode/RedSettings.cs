@@ -35,6 +35,10 @@ namespace RedCard {
         public float teamAngerWrongGoal = 50f;
         public float respectLostWrongGoal = .4f;
 
+        // / / / / / / / / / simulator
+        // / / / / / / / / / simulator
+        // / / / / / / / / / simulator
+
         [Header("RUN CURVES")]
         public AnimationCurve[] runningForwardCurves;
         public AnimationCurve avoidanceCurve;
@@ -59,8 +63,63 @@ namespace RedCard {
         public AnimationCurve AgileToDirectionMoveSpeedHardness;
         public AnimationCurve Angle_PlayerProgress;
 
+        [Header("Direction Error settings")]
+        public bool IsDirectionErrorEnabled;
+        public AnimationCurve DirectionErrorModByVelocityCurve;
+        public AnimationCurve DirectionErrorSkillModCurve;
+
+        [Header("Shooting velocity")]
+        public float ShootingForwardAxisMultiplier = 2f;
+        public float ShootingUpAxisDistanceMultiplier = 4f;
+        public AnimationCurve ShootPowerByDistanceCurve;
+        public AnimationCurve ShootPowerBySkillCurve;
+        public float ShootingBlockAngle = 10;
+        public AnimationCurve ShootErrorRemoveByDistance;
+
+        [Header("AI Shoot Tolerance")]
+        [Range(0f, 100f)]
+        [Tooltip("AI will roll numbers between 0 and 100. If AI_ShootTolerance is bigger than it, it will decide to shoot.")]
+        [SerializeField] private float AI_ShootTolerance = 25f;
+        [SerializeField] private AnimationCurve AI_ShootToleranceDistanceCurveMod;
+        [SerializeField] private AnimationCurve AI_ShootToleranceDividerAngleCurveMod;
+        [SerializeField] private AnimationCurve AI_DistanceToAngleCurveMod;
+
+        // in FS, this was in its own file
+        // EngineSettings_ShootingOption or something, see ShootingBehaviour.cs
+        public AnimationCurve shootPowerModByAngleFree;
+
+        [Header("BestOptionToTargetPoint (When someone have the ball)")]
+        public AnimationCurve BestOptionToTargetMaxDistanceByBallProgressCurve;
+        public float BestOptionToTargetGKAddition = -10;
+
+        [Header("BallChasing GK addition")]
+        public float BallChasingDistanceGKAddition = 15;
+
+        [Header("JoinTheAttackCurves")]
+        public AnimationCurve[] JoinTheAttackCurves;
+
+
         // #TODO #DIVING
         // when a player dives, is "no call" good enough?
         // half time/full time
+
+
+        /// <summary>
+        /// Roll values to get if shoot is preferred.
+        /// </summary>
+        /// <param name="angle">Angle with the goal net</param>
+        /// <param name="distance">Distance to the goal net</param>
+        /// <returns></returns>
+        public bool ShootRoll(in float angle, in float distance, in float toleranceMod = 1) {
+            float distanceMod = AI_ShootToleranceDistanceCurveMod.Evaluate(distance);
+
+            float angleModdedByDistance = angle * AI_DistanceToAngleCurveMod.Evaluate(distance);
+
+            float angleDivider = AI_ShootToleranceDividerAngleCurveMod.Evaluate(angleModdedByDistance);
+
+            float roller = AI_ShootTolerance * toleranceMod * distanceMod / angleDivider;
+
+            return UnityEngine.Random.Range(0f, 100f) < roller;
+        }
     }
 }

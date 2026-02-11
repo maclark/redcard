@@ -6,12 +6,12 @@ namespace RedCard {
         private const int MAX_MARKING = 3;
 
         public (bool shouldI, Jugador opponent) ShouldIBeware (bool ignoreOffside = false) {
-            var goalNetPosition = ourGoalNet.pos;
+            var goalNetPosition = goalNet.Position;
 
-            var orderedTeammates = teammates.Where(j => !j.isGoalie).
+            var orderedTeammates = teammates.Where(j => !j.IsGK).
                 Select(x => (x, x.fieldProgress));
 
-            var opponentsBehinds = opponents.Where(j => !j.isGoalie && (ignoreOffside || !j.isInOffsidePosition)).
+            var opponentsBehinds = opponents.Where(j => !j.IsGK && (ignoreOffside || !j.isInOffsidePosition)).
             OrderByDescending (x=>x.fieldProgress);
 
             int opponentsBehindCount = Mathf.Min (MAX_MARKING, opponentsBehinds.Count());

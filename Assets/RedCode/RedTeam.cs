@@ -45,7 +45,7 @@ namespace RedCard {
         public Transform offsideLine;
         public Transform densityPoint;
         public float respect = 1f;
-        public float ballProgress;
+        public float BallProgress; //#CAPITALIZATION
         public List<Jugador> jugadores = new List<Jugador>();
 
     public void DoTeamwork(
@@ -66,7 +66,7 @@ namespace RedCard {
 
             // tacticManager.Run(); // what's it do? why not in line it?
 
-            ballProgress = Mathf.Abs(ourGoal.transform.position.x - matchBall.transform.position.x) / xFieldEnd;
+            BallProgress = Mathf.Abs(ourGoal.transform.position.x - matchBall.transform.position.x) / xFieldEnd;
 
             {
                 // here, we could deal with showing/hiding UI
@@ -82,7 +82,7 @@ namespace RedCard {
                     continue;
                 }
 
-                if (!jug.controller.isPhysicsEnabled) {
+                if (!jug.controller.IsPhysicsEnabled) {
                     jug.controller.Stop(dt / 4f); // stop slowly;
                 }
 
@@ -150,7 +150,17 @@ namespace RedCard {
 
         // private void KickOffPlayer(
 
-        // public void KeepPlayerBehaviorsForAShortTime(
+        /// <summary>
+        /// Keep the current behaviours for x seconds.
+        /// </summary>
+        /// <param name="seconds"></param>
+        public void KeepPlayerBehavioursForAShortTime() {
+            float time = Time.time + 0.1f;
+
+            foreach (var jug in jugadores) {
+                jug.NextBehavior = time;
+            }
+        }
 
         // private void UpdateMarkings(
     }

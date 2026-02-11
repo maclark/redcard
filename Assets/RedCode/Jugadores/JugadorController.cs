@@ -12,7 +12,7 @@ namespace RedCard {
 
         public Action<Collision> CollisionEnterEvent { get; set; }
         public Vector3 direction;
-        public bool isPhysicsEnabled;
+        public bool IsPhysicsEnabled;
         public float moveSpeed;
         public float targetMoveSpeed;
         //public FootballerAnimator anim;
@@ -30,6 +30,11 @@ namespace RedCard {
             rb.interpolation = RigidbodyInterpolation.Extrapolate;
             rb.linearDamping = 1;
             rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+        }
+
+        public void SetOffside(bool isInOffide) {
+            //#UI
+            //playerUI.SetBool(PlayerUI.UIAnimatorVariable.ShowOffside, isInOffide);
         }
 
         public bool MoveTo(

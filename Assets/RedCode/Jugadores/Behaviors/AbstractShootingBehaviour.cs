@@ -8,12 +8,12 @@ namespace RedCard {
         private const float MAX_ANGLE = 80;
 
         protected bool CanShoot () {
-            var goalToMe = jugador.pos - opponentGoalNet.pos;
+            var goalToMe = jugador.Position - targetGoalNet.Position;
 
             if (Mathf.Abs (goalToMe.z) > MIN_Z_DISTANCE_SQR_TO_ANGLE_CHECK && 
                 Mathf.Abs (goalToMe.x) <= MAX_X_DISTANCE_SQR_TO_ANGLE_CHECK) {
 
-                var angleBetweenGoal = AngleToGoal(opponentGoalNet);
+                var angleBetweenGoal = AngleToGoal(targetGoalNet);
 
                 if (angleBetweenGoal > MAX_ANGLE) {
                     Debug.Log("Cannot shoot.");
@@ -25,7 +25,7 @@ namespace RedCard {
         }
 
         protected float AngleToGoal (GoalNet goalNet) {
-            Vector3 playerPosition = jugador.pos;
+            Vector3 playerPosition = jugador.Position;
 
             Vector3 dirToLeft = goalNet.leftLimit.position - playerPosition;
             Vector3 dirToRight = goalNet.rightLimit.position - playerPosition;

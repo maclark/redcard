@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace RedCard {
-    public class DribbleBehavior : Behavior {
+    public class RunForwardWithBallBehavior : Behavior {
         private const float BEWARE_SUPER_CAREFUL = 2.3f;
         private const float BEWARE_CAREFUL = 1.8f;
         private const float BEWARE_NORMAL = 1.3f;
@@ -53,7 +53,7 @@ namespace RedCard {
         /// Construct a running behaviour with ignoring chasing.
         /// </summary>
         /// <param name="forwardCurve"></param>
-        public DribbleBehavior(
+        public RunForwardWithBallBehavior(
             float minBallProgress,
             ForwardCurve forwardCurve,
             BewareMod bewareMod = BewareMod.Normal,
@@ -80,7 +80,7 @@ namespace RedCard {
             }
         }
 
-        public DribbleBehavior(
+        public RunForwardWithBallBehavior(
             float maxBallProgress,
             BewareMod bewareMod,
             ForwardCurve curve,
@@ -99,29 +99,29 @@ namespace RedCard {
         }
 
         public override bool Behave(bool isAlreadyActive) {
-            if (matchBall.holder != jugador) {
+            if (ball.holder != jugador) {
                 return false;
             }
 
-            if (jugador.team.ballProgress > maxBallProgress) {
+            if (jugador.team.BallProgress > maxBallProgress) {
                 return false;
             }
 
-            if (jugador.team.ballProgress < minBallProgress) {
+            if (jugador.team.BallProgress < minBallProgress) {
                 return false;
             }
 
-            if (matchBall.transform.position.y < minBallHeight) {
+            if (ball.transform.position.y < minBallHeight) {
                 return false;
             }
 
-            Vector3 playerPosition = jugador.pos;
+            Vector3 playerPosition = jugador.Position;
 
-            Vector3 toGoal = opponentGoalNet.pos - playerPosition;
-            Vector3 toForward = ourGoalNet.transform.forward;
+            Vector3 toGoal = targetGoalNet.Position - playerPosition;
+            Vector3 toForward = goalNet.transform.forward;
 
             // to goal rotation by ball progress;
-            float ballProgress = jugador.team.ballProgress;
+            float ballProgress = jugador.team.BallProgress;
 
             float lerper = RedMatch.match.settings.runningForwardCurves[(int)curve].Evaluate(ballProgress);
 
@@ -130,13 +130,13 @@ namespace RedCard {
             if (!ignoreChasing && jugador.CanMyMarkersChaseMe(
                 bewareVelocityMod +
                 carefulbyBallprogress.Evaluate(jugador.fieldProgress) +
-                carefulByAngleToGoal.Evaluate(Mathf.Abs(Vector3.SignedAngle(jugador.attackingDir, opponentGoalNet.pos - jugador.pos, Vector3.up)))
+                carefulByAngleToGoal.Evaluate(Mathf.Abs(Vector3.SignedAngle(jugador.attackingDir, targetGoalNet.Position - jugador.Position, Vector3.up)))
                 )) {
 
                 return false; // check original dir.
             }
 
-            Vector3 targetPosition = jugador.pos + runningDir * 5;
+            Vector3 targetPosition = jugador.Position + runningDir * 5;
 
             Vector3 avoided = targetPosition;
             jugador.AvoidMarkers(opponents, ref avoided);
@@ -145,10 +145,10 @@ namespace RedCard {
                 targetPosition = avoided; // approve.
             }
 
-            jugador.currentAct = Acts.RunningForward;
+            jugador.CurrentAct = Acts.RunningForward;
 
             if (!isAlreadyActive) {
-                jugador.runForwardBehaviourFinalPosition = jugador.pos + jugador.controller.direction * 2;
+                jugador.runForwardBehaviourFinalPosition = jugador.Position + jugador.controller.direction * 2;
             }
 
             jugador.runForwardBehaviourFinalPosition = Vector3.Lerp(jugador.runForwardBehaviourFinalPosition, targetPosition, dt * ALREADY_ACTIVE_LERP_SPEED);
