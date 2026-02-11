@@ -136,15 +136,15 @@ namespace RedCard {
 
             new ShootingBehaviour (0, 1.5f),
 
-   //         new CrossingBehaviour (0.8f),
-   //         new PassingBehaviour (0.8f, true, 5),
-   //         new PassingBehaviour (0.95f),
+            new CrossingBehaviour (0.8f),
+            new PassingBehaviour (0.8f, true, 5),
+            new PassingBehaviour (0.95f),
 
             new ShootingBehaviour (0, 2.5f),
 
-   //         new CrossingBehaviour (0.925f, 10),
-   //         new CrossingBehaviour (0.8f, 1),
-   //         new CrossingBehaviour (0.7f, 0.25f),
+            new CrossingBehaviour (0.925f, 10),
+            new CrossingBehaviour (0.8f, 1),
+            new CrossingBehaviour (0.7f, 0.25f),
 
    //         new CriticalSendBallToSafe (),
         };
