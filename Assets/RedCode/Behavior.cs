@@ -18,6 +18,7 @@ namespace RedCard {
         protected GoalNet targetGoalNet;
         protected Jugador[] teammates;
         protected Jugador[] opponents;
+        public bool forced = false;
 
         public abstract bool Behave(bool isAlreadyActive);
 
@@ -54,5 +55,26 @@ namespace RedCard {
             this.teammates = teammates;
             this.opponents = opponents;
         }
+
+        protected bool IsOurGoalKeeperHasTheBallWithProtection() {
+            return ball.holder != null &&
+                ball.holder.isGK &&
+                ball.holder.team == jugador.team &&
+                ball.holder.isGKUntouchable;
+        }
+
+        protected bool IsOpponentGoalKeeperHasTheBallWithProtection() {
+            return ball.holder != null &&
+                ball.holder.isGK &&
+                ball.holder.team != jugador.team &&
+                ball.holder.isGKUntouchable;
+        }
+
+        //protected void Log<T>(T behaviour, string message) where T : Behavior {
+        //    if (jugador.controller.isDebuggerEnabled) {
+        //        Debug.Log($"[{behaviour}] -> {message}");
+        //    }
+        //}
+
     }
 }

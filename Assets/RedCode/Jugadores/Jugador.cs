@@ -13,6 +13,7 @@ namespace RedCard {
         public RefTarget target;
         public AngerBar angerBar;
         public bool isGK = false;
+        public bool isGKUntouchable = false;
         public bool isInOffsidePosition = false;
         public bool isRunningBehindDefense = false;
         public bool isHoldingBall = false;
@@ -29,11 +30,13 @@ namespace RedCard {
         public Vector3 attackingDir => team.ourGoal.transform.forward;
         public GoalNet opponentGoal => team.opponentGoal;
         public Acts CurrentAct; //#CAPS
+        public Behavior ActiveBehavior;
         public float NextBehavior;
 
         // #CAPS
         public Vector3 Position => controller.transform.position;
         public Vector3 Velocity => controller.dir * controller.moveSpeed;
+        public Vector3 PositioningMistake { private set; get; }
 
 
         #region GET FUNCTIONS with MODIFIERS, for in game match.
@@ -87,10 +90,10 @@ namespace RedCard {
             //new InputBlockRestBehaviour(),
 
             new ThrowInBehavior(),
-            //new CornerBehaviour(),
-            //new KickOffBehaviour(),
+            new CornerBehaviour(),
+            new KickOffBehaviour(),
 
-            //new OurGKDegageBehaviour (),
+            new OurGKDegageBehaviour (),
             //new OpponentGKDegageBehaviour (),
 
             //new IsInOffsideBehaviour (),
@@ -187,6 +190,34 @@ namespace RedCard {
 
             // ....
         }
+
+        public void ActivateBehavior(string behaviourName) {
+            if (behaviors == null) {
+                return; // this player is not using behaviours.
+            }
+
+            Debug.Log($"Activate behavior {behaviourName}");
+
+            var targetBehaviour = behaviors.FirstOrDefault(x => x.GetType().Name == behaviourName);
+
+            if (targetBehaviour == null) {
+                Debug.Log($"Activate behavior {behaviourName} but not found in behavior list.");
+            }
+            else {
+                ActiveBehavior = targetBehaviour;
+                NextBehavior = -1; // disable timer deactivation.
+            }
+        }
+
+        public void ResetBehaviours() {
+            foreach (Behavior b in behaviors) {
+                b.forced = false;
+            }
+
+            ActiveBehavior = null;
+            NextBehavior = 0;
+        }
+
 
         public void Shoot(Vector3 targetVelocity) {
             if (!isHoldingBall) {
@@ -335,6 +366,58 @@ namespace RedCard {
             if (ball.holder != this && !isRunningBehindDefense)
                 controller.LookTo(in deltaTime, ball.transform.position - Position);
         }
+
+
+        /// <summary>
+        /// Find field position of player by the team tactics.
+        /// </summary>
+        /// <param name="teamPosture"></param>
+        /// <param name="fieldEndX"></param>
+        /// <param name="fieldEndY"></param>
+        /// <param name="goalNet"></param>
+        /// <returns></returns>
+        public virtual Vector3 GetFieldPosition(
+            in bool teammateHasTheBall,
+            in TeamPosture teamPosture,
+            in float fieldEndX,
+            in float fieldEndY,
+            in Vector3 ballPosition,
+            in Jugador markingTarget,
+            in float offsideLine,
+            GoalNet goalNet,
+            GoalNet targetGoalNet) {
+
+            Vector3 fieldPosition = team.teamTactics.GetFieldPosition
+                (
+                Position,
+                in team.tacticPresetType,
+                in teamPosture,
+                team.BallProgress,
+                in fieldEndX,
+                in fieldEndY,
+                in ballPosition,
+                in markingTarget,
+                goalNet,
+                false);
+
+            // fix by offside.
+            var (isOffside, onSide) = IsPositionOffside(fieldPosition + attackingDir, targetGoalNet, in offsideLine);
+            if (isOffside) {
+                // fix by onside.
+                fieldPosition.x = onSide;
+            }
+
+            fieldPosition += PositioningMistake;
+
+            // clamp
+            fieldPosition.z = Mathf.Clamp(fieldPosition.z, 0, fieldEndY);
+            fieldPosition.x = Mathf.Clamp(fieldPosition.x, 0, fieldEndX);
+            //
+
+            return fieldPosition;
+        }
+
+
 
         /// <summary>
         /// Returns isoffside & position for onside.

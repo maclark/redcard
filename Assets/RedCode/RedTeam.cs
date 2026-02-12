@@ -27,7 +27,7 @@ namespace RedCard {
     [System.Flags]
     public enum MatchStatus {
         NotPlaying = 1<<0,
-        WaitingForKickoff = 1<<1,
+        WaitingForKickOff = 1<<1,
         Playing = 1<<2,
         Freeze = 1<<3,
         Special = 1<<4,
@@ -38,6 +38,8 @@ namespace RedCard {
         public int id = -1;
         public int goals = -1;
         public string squadName = "unnamed";
+        public TeamTactics teamTactics;
+        public TacticPresetTypes tacticPresetType;
         public GoalNet ourGoal;
         public GoalNet opponentGoal;
         public RefTarget sixYardBox;
