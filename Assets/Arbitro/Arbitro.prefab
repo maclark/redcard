@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 4280445363454229078}
   - component: {fileID: 7098505844284672893}
   m_Layer: 7
-  m_Name: RedRef
+  m_Name: Arbitro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -58,32 +58,43 @@ namespace RedCard {
 
         public AnimationCurve CrossingBehindDistanceByFieldProgress;
 
+        [Header("POSITIONING MISTAKES")]
+        [Range(0f, 1f)]
+        public float positioningMistakeModifier = .1f; // recommended to keep between 0 and 1
+        [Range(0f, 20f)]
+        public float positioningMistakeUpdateInPerSeconds = 3f;
 
-        [Header("RUN CURVES")]
-        public AnimationCurve[] runningForwardCurves;
-        public AnimationCurve avoidanceCurve;
+
+        [Header("SKILL MODIFIERS")] // other skills missing
+        [Tooltip("(PlayerSkill) Passing modifier")]
+        [Range(0, 10f)]
+        public float PassingModifier = 1f;
+        [Tooltip("(PlayerSkill) Dribbling modifier")]
+        [Range(0, 10f)]
+        public float DribbleModifier = 1f;
+
+        // tackling_difficulty
+
+        [Header("AI Shoot Tolerance")]
+        [Range(0f, 100f)]
+        [Tooltip("AI will roll numbers between 0 and 100. If AI_ShootTolerance is bigger than it, it will decide to shoot.")]
+        [SerializeField] private float AI_ShootTolerance = 25f;
+        [SerializeField] private AnimationCurve AI_ShootToleranceDistanceCurveMod;
+        [SerializeField] private AnimationCurve AI_ShootToleranceDividerAngleCurveMod;
+        [SerializeField] private AnimationCurve AI_DistanceToAngleCurveMod;
+
+        // in FS, this was in its own file
+        // EngineOptions_ShootingSettings.Current or something, see ShootingBehaviour.cs
+        public AnimationCurve shootPowerModByAngleFree;
+
 
         [Header("PLAYER RUN ANGLE MOD")]
         public float Angle_Power = 1.25f;
         public float Angle_Multi = 0.002f;
         public float Angle_Distance_Power = 0.8f;
-
-        [Header("BallChasingBehaviour")]
-        [Tooltip("When a AI player wants to chase the ball, we will make it harder by distance")]
-        public AnimationCurve BallChasingChaserToBallDistanceAdditionCurve;
-
-        [Header("Slight movement by angle difference")]
-        public float BallMagnetRadius = 2f;
-        public float BallMagnetPower = 1f;
-
-        public float AgileToDirectionWhenHoldingBallModifier = 2;
-
-        [Header("Agile to direction")]
-        public AnimationCurve AgileToDirectionAngleDifferencyHardness;
-        public AnimationCurve AgileToDirectionMoveSpeedHardness;
         public AnimationCurve Angle_PlayerProgress;
 
-        [Header("Passing (throught)")]
+        [Header("PASSING (through)")]
         public AnimationCurve PassingAngleCurve;
         public float PassingPlayerVelocityModifier = 0.25f;
         public float PassingDistancePlayerVelocityModifier = 0.01f;
@@ -98,7 +109,7 @@ namespace RedCard {
 
         public ThroughPassOption[] ThroughPassOptions;
 
-        [Header("Pass Power")]
+        [Header("PASS POWER")]
         /// <summary>
         /// When a player want to pass another one, the angle to the target player is important
         /// <para>The angle will be calculated by TargetPlayer.Pos - PasserPos & TargetPlayer.Direction</para>
@@ -107,7 +118,7 @@ namespace RedCard {
         public AnimationCurve PassPowerReceiverSpeedCurve;
         public float PassPowerCrossMod = 1.5f;
 
-        [Header("Pass Power Angled")]
+        [Header("PASS POWER ANGLED")]
         public AnimationCurve PassPowerByPassAngleCurve;
         public AnimationCurve PassPowerByAngledPassDistanceCurve;
 
@@ -120,16 +131,16 @@ namespace RedCard {
         public AnimationCurve PassingCrossBlockApproveDistanceToTargetByDistance;
         public AnimationCurve PassingCrossBlockApproveDistanceToPasserByDistance;
 
-        [Header("Curved ball settings")]
+        [Header("CURVED BALL SETTINGS")]
         public float CurvedBallHitPositionVectorModifier = 0.25f;
         public float CurvedBallHitDirectionLerper = 0.25f;
 
-        [Header("Direction Error settings")]
+        [Header("DIRETION ERROR SETTINGS")]
         public bool IsDirectionErrorEnabled;
         public AnimationCurve DirectionErrorModByVelocityCurve;
         public AnimationCurve DirectionErrorSkillModCurve;
 
-        [Header("Shooting velocity")]
+        [Header("SHOOTING VELOCITY")]
         public float ShootingForwardAxisMultiplier = 2f;
         public float ShootingUpAxisDistanceMultiplier = 4f;
         public AnimationCurve ShootPowerByDistanceCurve;
@@ -137,26 +148,27 @@ namespace RedCard {
         public float ShootingBlockAngle = 10;
         public AnimationCurve ShootErrorRemoveByDistance;
 
-        [Tooltip("(PlayerSkill) Passing modifier")]
-        [Range(0, 10f)]
-        public float PassingModifier = 1f;
 
-        [Tooltip("(PlayerSkill) Dribbling modifier")]
-        [Range(0, 10f)]
-        public float DribbleModifier = 1f;
+        [Header("RunForwardBehavior")]
+        public AnimationCurve[] runningForwardCurves;
+        // ... //
+        public AnimationCurve avoidanceCurve;
 
 
-        [Header("AI Shoot Tolerance")]
-        [Range(0f, 100f)]
-        [Tooltip("AI will roll numbers between 0 and 100. If AI_ShootTolerance is bigger than it, it will decide to shoot.")]
-        [SerializeField] private float AI_ShootTolerance = 25f;
-        [SerializeField] private AnimationCurve AI_ShootToleranceDistanceCurveMod;
-        [SerializeField] private AnimationCurve AI_ShootToleranceDividerAngleCurveMod;
-        [SerializeField] private AnimationCurve AI_DistanceToAngleCurveMod;
+        [Header("BallChasingBehaviour")]
+        [Tooltip("When a AI player wants to chase the ball, we will make it harder by distance")]
+        public AnimationCurve BallChasingChaserToBallDistanceAdditionCurve;
 
-        // in FS, this was in its own file
-        // EngineSettings_ShootingOption or something, see ShootingBehaviour.cs
-        public AnimationCurve shootPowerModByAngleFree;
+        [Header("Slight movement by angle difference")]
+        public float BallMagnetRadius = 2f;
+        public float BallMagnetPower = 1f;
+
+        public float AgileToDirectionWhenHoldingBallModifier = 2;
+
+        // "agile to" is weird word usage
+        [Header("Agile to direction")]
+        public AnimationCurve AgileToDirectionAngleDifferencyHardness;
+        public AnimationCurve AgileToDirectionMoveSpeedHardness;
 
         [Header("BestOptionToTargetPoint (When someone have the ball)")]
         public AnimationCurve BestOptionToTargetMaxDistanceByBallProgressCurve;
@@ -167,7 +179,6 @@ namespace RedCard {
 
         [Header("JoinTheAttackCurves")]
         public AnimationCurve[] JoinTheAttackCurves;
-
 
         // #TODO #DIVING
         // when a player dives, is "no call" good enough?
