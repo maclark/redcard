@@ -171,6 +171,12 @@ namespace RedCard {
     }
 
 
+    // hmm probably can do without
+    public enum BallSituation {
+        GK,
+        ThrowIn,
+        Normal
+    }
 
 
 }

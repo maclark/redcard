@@ -6,6 +6,7 @@ namespace RedCard {
 
     public partial class Jugador {
 
+
         public int id = -1;
         public string givenName;
         public string surname;
@@ -33,6 +34,7 @@ namespace RedCard {
         public Acts CurrentAct; //#CAPS
         public Behavior ActiveBehavior;
         public float NextBehavior;
+        private float nextPositionMistakeCalculation;
 
         // #CAPS
         public Vector3 Position => controller.transform.position;
@@ -63,6 +65,13 @@ namespace RedCard {
         #endregion
 
         public readonly LimitedCollection<Jugador> markers = new LimitedCollection<Jugador>(5);
+
+        #region CONSTANTS
+        public const float BEHAVIOR_CHANGE_OFFSET_AS_SECONDS = 0.2f;
+        public const float STRUGGLE_TIME = 1.5f;
+        public const float BALL_CONTORL_FLAIL_DISABLING_TIME = 0.4f;
+        public const float MAX_THROWIN_DISTANCE = 15f;
+        #endregion
 
         private Vector3 targetBallHitVector;
         private float targetBallHitSpeed;
@@ -215,9 +224,15 @@ namespace RedCard {
                 }
 
             }
+
+            // FS says there's a "design issue":
+            /*
+             * /// We are resetting chaser target at the end of every frame.
+             * /// Use CanAnyMarkersChaseMe () to auto assign this on player behaviours. 
+             */
+            chaserTarget = null;
         }
 
-        float nextPositionMistakeCalculation;
 
         public void ProcessBehaviors(in float time) {
 
@@ -228,12 +243,62 @@ namespace RedCard {
             // if skip rate > ?, return
 
 
-            //IEnumerable<Behavior> forcedBehaviors = behaviors.Where(x => x.forceBehavior);
-            // foreach (Behavior b in forcedBehaviors) ... return
+            IEnumerable<Behavior> forcedBehaviors = behaviors.Where(b => b.forced);
 
-            // bool reset = 
+            if (forcedBehaviors.Any()) {
+                foreach (Behavior fb in forcedBehaviors) {
 
-            // ....
+                    //if (controller.IsDebuggerEnabled) {
+                    //    Debug.Log($"[ProcessBehaviors] Forced behavior => {fb.GetType()}");
+                    //}
+
+                    fb.Behave(ActiveBehavior == fb);
+                }
+
+                return; ////// early return if we have any forced behaviors
+            }
+
+            bool reset = NextBehavior >= 0 && NextBehavior < time;
+
+            if (reset) {
+                ActiveBehavior = null;
+            }
+            else {
+                if (ActiveBehavior != null) {
+
+                    //if (controller.IsDebuggerEnabled) {
+                    //    Debug.Log($"[ProcessBehaviors] Active behavior => {ActiveBehavior.GetType()}");
+                    //}
+
+                    if (!ActiveBehavior.Behave(true)) {
+                        ActiveBehavior = null;
+                    }
+
+                    return; //////////////// peace out if we did our active behavior!
+                }
+            }
+
+
+            foreach (Behavior b in behaviors) {
+                bool isActiveBehavior = b == ActiveBehavior;
+
+                if (b.Behave(isActiveBehavior)) {
+                    ActiveBehavior = b;
+                    NextBehavior = time + BEHAVIOR_CHANGE_OFFSET_AS_SECONDS;
+
+                    //if (controller.IsDebuggerEnabled) {
+                    //    Debug.Log($"[ProcessBehaviors] Active behavior changed to => {ActiveBehavior.GetType()}");
+                    //}
+
+                    return; /////////////// peacing out here is probs unnecessary
+                }
+                // this behavior returned false!
+                else if (isActiveBehavior) {
+                    Debug.Log($"[ProcessBehaviors] ActiveBehavior reset (was => {ActiveBehavior.GetType()})");
+                    ActiveBehavior = null;
+                    // ah no 'return' here eh??
+                }
+            }
         }
 
         public void ActivateBehavior(string behaviourName) {

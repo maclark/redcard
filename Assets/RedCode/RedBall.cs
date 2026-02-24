@@ -5,6 +5,8 @@ namespace RedCard {
 
     public class RedBall : MonoBehaviour {
 
+        [SerializeField] private AnimationCurve followSpeedCurve;
+        [SerializeField] private float holdedBallFollowSpeed = 1f;
 
         [Header("ASSIGNATIONS")]
         public Rigidbody rb;
@@ -12,6 +14,11 @@ namespace RedCard {
         [Header("VARS")]
         public Jugador holder;
         public Jugador thrower;
+
+        private Vector3 holdingPosition;
+        private float followSpeedProgress;
+        private float followSpeed;
+
 
         private void OnCollisionEnter(Collision collision) {
             if (collision.collider.TryGetComponent(out CaptainBody cap)) {
@@ -61,6 +68,44 @@ namespace RedCard {
             }
 
             return Quaternion.Euler(error * sideUp, error * sideForward, 0);
+        }
+
+        // "Returns true if progress is completed.", but its result is unused in FS?
+        public bool HolderBehave(Vector3 position, Quaternion rotation, in float dt, float speedMod) {
+
+            if (holder == null) return false; ///////// early ret ////////
+
+            if (RedMatch.match.matchStatus == MatchStatus.WaitingForKickOff ||
+                RedMatch.match.matchStatus == MatchStatus.NotPlaying) {
+                return false; ///////// earl e. re turn
+            }
+
+            followSpeedProgress = Mathf.Min(1, followSpeedProgress+ dt + holdedBallFollowSpeed * speedMod);
+            followSpeed = followSpeedCurve.Evaluate(followSpeedProgress) * 1; // why * 1?
+
+            // supposed to zero out velocity
+            // idk, if there's a holder, isn't rigidbody non kinematic?
+            if (!rb.isKinematic) {
+                Debug.LogWarning("ball is non-kinematic with holder!");
+                rb.linearVelocity = Vector3.zero;
+            }
+
+            Vector3 targetPosition = Vector3.Lerp(
+                holdingPosition,
+                position,
+                followSpeed);
+
+            if (RedMatch.match.matchStatus.HasFlag(MatchStatus.Playing)) {
+                // ball should be in the field when held by jugador ... maybe
+                Vector2 fieldSize = RedMatch.match.fieldSize;
+                targetPosition.x = Mathf.Clamp(targetPosition.x, 0, fieldSize.x);
+                targetPosition.z = Mathf.Clamp(targetPosition.x, 0, fieldSize.y); // y is z!
+            }
+
+            transform.position = targetPosition;
+            transform.rotation = rotation;
+
+            return followSpeed >= 1; // what's this about?
         }
     }
 }

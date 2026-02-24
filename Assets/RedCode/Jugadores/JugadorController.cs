@@ -119,26 +119,33 @@ namespace RedCard {
 
         public void Up(in float dt, MatchStatus matchStatus, RedBall ball) {
 
-
-
-
-
             if (jugador.isHoldingBall && (jugador.isThrowHolder || matchStatus == MatchStatus.Playing)) {
 
                 float followSpeedMod = 1f;
 
                 if (
+                    // #TODO jugador.ActiveBehavior is ChipShootingBehavior ||
                     jugador.ActiveBehavior is ShootingBehavior ||
                     jugador.ActiveBehavior is PassingBehavior ||
                     jugador.ActiveBehavior is CrossingBehavior) {
 
+                    // how can this be throw holder, but is actively shooting, passing, or crossing?
+                    Debug.LogWarning("ball is throw holding, but is passing, shooting, or crossing!");
                     followSpeedMod = 1 - ball.transform.position.y;
                 }
 
                 followSpeedMod = Mathf.Clamp(followSpeedMod, .4f, 1f);
 
                 // situations!
+                // #TODO
+                //BallSituation holderSituation = BallSituation.Normal;
+                //if (jugador.isThrowHolder) holderSituation = BallSituation.ThrowIn;
+                //else if (jugador.isGKUntouchable && !jugador.isGoalKickHolder) holderSituation = BallSituation.GK;
 
+                Vector3 holdingPosition = jugador.Position + transform.forward; // anim.BallPosition(situation);
+                Quaternion holdingRotation = Quaternion.LookRotation(transform.forward, Vector3.up); // anim.BallRotation(situation);
+
+                ball.HolderBehave(holdingPosition, holdingRotation, in dt, followSpeedMod);
             }
 
         }
