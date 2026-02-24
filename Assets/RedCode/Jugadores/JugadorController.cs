@@ -116,5 +116,32 @@ namespace RedCard {
             return (turnResult, angleDifferency);
         }
 
+
+        public void Up(in float dt, MatchStatus matchStatus, RedBall ball) {
+
+
+
+
+
+            if (jugador.isHoldingBall && (jugador.isThrowHolder || matchStatus == MatchStatus.Playing)) {
+
+                float followSpeedMod = 1f;
+
+                if (
+                    jugador.ActiveBehavior is ShootingBehavior ||
+                    jugador.ActiveBehavior is PassingBehavior ||
+                    jugador.ActiveBehavior is CrossingBehavior) {
+
+                    followSpeedMod = 1 - ball.transform.position.y;
+                }
+
+                followSpeedMod = Mathf.Clamp(followSpeedMod, .4f, 1f);
+
+                // situations!
+
+            }
+
+        }
+
     }
 }

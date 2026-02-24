@@ -34,7 +34,7 @@ namespace RedCard {
                         in TeamPosture teamPosture,
                         in float xOffsideLine,
                         in float xOurOffsideLine,
-                        RedBall matchBall,
+                        RedBall ball,
                         GoalNet ourGoalNet,
                         GoalNet opponentGoalNet,
                         in Jugador[] teammates,
@@ -49,7 +49,7 @@ namespace RedCard {
             this.teamPosture = teamPosture;
             this.xOffsideLine = xOffsideLine;
             this.xOurOffsideLine = xOurOffsideLine;
-            this.ball = matchBall;
+            this.ball = ball;
             this.goalNet = ourGoalNet;
             this.targetGoalNet = opponentGoalNet;
             this.teammates = teammates;

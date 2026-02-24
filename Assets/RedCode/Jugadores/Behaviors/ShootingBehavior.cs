@@ -5,7 +5,7 @@ using System;
 using static UnityEngine.GraphicsBuffer;
 
 namespace RedCard {
-    public class ShootingBehaviour : AbstractShootingBehaviour {
+    public class ShootingBehavior : AbstractShootingBehavior {
         private const float ONEONONE_GK_TO_GOALNET_X_DIST = 5;
         private const float TO_GK_DIST = 10;
         private const float ONEONEONE_TOLERANCE_BONUS = 20;
@@ -63,12 +63,12 @@ namespace RedCard {
             new Curve.Point (1f, 100f)
         });
 
-        public ShootingBehaviour(float minBallProgress, float toleranceMulti = 1) {
+        public ShootingBehavior(float minBallProgress, float toleranceMulti = 1) {
             this.minBallProgress = minBallProgress;
             this.toleranceMulti = toleranceMulti;
         }
 
-        public ShootingBehaviour() {
+        public ShootingBehavior() {
             this.minBallProgress = 0;
             this.toleranceMulti = 1;
         }

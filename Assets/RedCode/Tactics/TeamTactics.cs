@@ -76,7 +76,7 @@ namespace RedCard {
         /// </summary>
         /// <param name="playerPosition"></param>
         /// <returns></returns>
-        public FieldPosition GetPosition(FormalPositioning fieldPositioning, in Positions playerPosition) {
+        public FieldPosition GetPosition(FormalPositioning fieldPositioning, in FormationPosition playerPosition) {
             var formalPosition = fieldPositioning.GetPosition(playerPosition);
             var basePosition = PositionRules.GetBasePosition(playerPosition);
 
@@ -84,30 +84,30 @@ namespace RedCard {
             float positionHorizontalDispersion = 0.5f;
 
             switch (basePosition) {
-                case Positions.CB:
-                case Positions.RB:
-                case Positions.LB:
+                case FormationPosition.CB:
+                case FormationPosition.RB:
+                case FormationPosition.LB:
                     positionHorizontalDispersion = defenseHorizontalDispersion;
                     break;
 
-                case Positions.DMF:
+                case FormationPosition.DMF:
                     positionHorizontalDispersion = (defenseHorizontalDispersion + midfieldHorizontalDispersion) / 2;
                     break;
 
-                case Positions.CM:
-                case Positions.RMF:
-                case Positions.LMF:
+                case FormationPosition.CM:
+                case FormationPosition.RMF:
+                case FormationPosition.LMF:
                     positionHorizontalDispersion = midfieldHorizontalDispersion;
                     break;
 
 
-                case Positions.AMF:
+                case FormationPosition.AMF:
                     positionHorizontalDispersion = (midfieldHorizontalDispersion + attackHorizontalDispersion) / 2;
                     break;
 
-                case Positions.LW:
-                case Positions.RW:
-                case Positions.ST:
+                case FormationPosition.LW:
+                case FormationPosition.RW:
+                case FormationPosition.ST:
                     positionHorizontalDispersion = attackHorizontalDispersion;
                     break;
             }
@@ -125,15 +125,15 @@ namespace RedCard {
             #endregion
 
             switch (playerPosition) {
-                case Positions.LB:
-                case Positions.RB:
+                case FormationPosition.LB:
+                case FormationPosition.RB:
                     formalPosition.VerticalPlacement += toEnd * fullBacksPositioningAddition;
                     break;
 
-                case Positions.LMF:
-                case Positions.RMF:
-                case Positions.LW:
-                case Positions.RW:
+                case FormationPosition.LMF:
+                case FormationPosition.RMF:
+                case FormationPosition.LW:
+                case FormationPosition.RW:
                     formalPosition.VerticalPlacement += toEnd * wingPositioningAddition;
                     break;
             }
@@ -154,7 +154,7 @@ namespace RedCard {
         /// <param name="debug"></param>
         /// <returns></returns>
         public Vector3 GetFieldPosition(
-            in Positions playerPosition,
+            in FormationPosition playerPosition,
             in TacticPresetTypes tacticPresetType,
             in TeamPosture teamPosture,
             in float ballProgress,

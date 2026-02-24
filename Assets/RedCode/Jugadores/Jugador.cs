@@ -11,7 +11,7 @@ namespace RedCard {
         public string surname;
         public RedTeam team;
         public RefTarget target;
-        public Positions position;
+        public FormationPosition formPosition;
         public AngerBar angerBar;
         public bool isGK = false;
         public bool isGKUntouchable = false;
@@ -67,6 +67,7 @@ namespace RedCard {
         private Vector3 targetBallHitVector;
         private float targetBallHitSpeed;
         private Jugador chaserTarget;
+        private Jugador markingTarget;
 
         private bool _caughtInOffside;
 
@@ -102,7 +103,7 @@ namespace RedCard {
             //// Try chip shot if GK is away.
             //new ChipShootingBehaviour (),
 
-            new ShootingBehaviour (0.75f, 0.5f),
+            new ShootingBehavior (0.75f, 0.5f),
 
             // Relax if there noone around.
             new RunForwardWithBallBehavior(0,
@@ -121,9 +122,9 @@ namespace RedCard {
                 0.5f, // activate on ball height 0.5f
                 0.65f), // activate before ball progress 0.65),
 
-            new ShootingBehaviour (0, 1f),
+            new ShootingBehavior (0, 1f),
 
-            new CrossingBehaviour (0.925f, 2),
+            new CrossingBehavior (0.925f, 2),
 
             new DribblingBehaviour (RunForwardWithBallBehavior.ForwardCurve.MostlyStraight),
 
@@ -133,7 +134,7 @@ namespace RedCard {
                 RunForwardWithBallBehavior.BewareMod.Careful,
                 false),
 
-            new ShootingBehaviour (0, 1.25f),
+            new ShootingBehavior (0, 1.25f),
 				
 			// Run to the goal with a risky chasing check.
             new RunForwardWithBallBehavior(0.7f,
@@ -141,17 +142,17 @@ namespace RedCard {
                 RunForwardWithBallBehavior.BewareMod.Normal,
                 false),
 
-            new ShootingBehaviour (0, 1.5f),
+            new ShootingBehavior (0, 1.5f),
 
-            new CrossingBehaviour (0.8f),
-            new PassingBehaviour (0.8f, true, 5),
-            new PassingBehaviour (0.95f),
+            new CrossingBehavior (0.8f),
+            new PassingBehavior (0.8f, true, 5),
+            new PassingBehavior (0.95f),
 
-            new ShootingBehaviour (0, 2.5f),
+            new ShootingBehavior (0, 2.5f),
 
-            new CrossingBehaviour (0.925f, 10),
-            new CrossingBehaviour (0.8f, 1),
-            new CrossingBehaviour (0.7f, 0.25f),
+            new CrossingBehavior (0.925f, 10),
+            new CrossingBehavior (0.8f, 1),
+            new CrossingBehavior (0.7f, 0.25f),
 
             new GetRidOfItBehavior(),
         };
@@ -165,15 +166,58 @@ namespace RedCard {
                 in TeamPosture teamPosture,
                 in float xOpponentOffsideLine,
                 in float xOurOffsideLine,
-                RedBall matchBall,
+                RedBall ball,
                 GoalNet opponentGoalNet,
                 in Jugador[] teammates,
                 in Jugador[] opponents
             ) {
 
-            // ...
+            if (opponentGoal != null) {
+                isInOffsidePosition = IsPositionOffside(Position, opponentGoal, in xOpponentOffsideLine).Item1;
+            }
 
+            if (!isHoldingBall) {
+
+                // this was a function that FS passed dt into,
+                // but surely that was a *mistake* 
+                // the function parameter was named 'time'
+                if (nextPositionMistakeCalculation < time) {
+                    nextPositionMistakeCalculation = time + RedMatch.match.settings.positioningMistakeUpdateInPerSeconds;
+                    float mistake = 101 - Random.Range(ActualPositioning, 100);
+                    Vector3 mistakeVector = new Vector3(Random.Range(-mistake, mistake), 0, Random.Range(-mistake, mistake));
+                    PositioningMistake = mistakeVector * RedMatch.match.settings.positioningMistakeModifier;
+                }
+            }
+
+
+            if (attackingDir.x > 0) {
+                fieldProgress = Position.x / xFieldEnd;
+            }
+            else {
+                fieldProgress = (xFieldEnd - Position.x) / xFieldEnd;
+            }
+
+            CurrentAct = Acts.Nothing;
+
+            // Up(date)
+            controller.Up(in dt, matchStatus, ball);
+
+            Vector3 headLookPosition = !isHoldingBall ? ball.transform.position : Position + controller.transform.forward * 10f + Vector3.up * 2f;
+            if (teamPosture == TeamPosture.Attacking) {
+                if (chaserTarget != null) {
+                    headLookPosition = chaserTarget.Position;
+                }
+            }
+            // not attacking
+            else {
+                if (markingTarget != null) {
+                    headLookPosition = markingTarget.Position;
+                }
+
+            }
         }
+
+        float nextPositionMistakeCalculation;
 
         public void ProcessBehaviors(in float time) {
 
@@ -390,7 +434,7 @@ namespace RedCard {
 
             Vector3 fieldPosition = team.teamTactics.GetFieldPosition
                 (
-                position,
+                formPosition,
                 in team.tacticPresetType,
                 in teamPosture,
                 team.BallProgress,

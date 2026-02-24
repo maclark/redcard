@@ -6,34 +6,34 @@ namespace RedCard {
     [System.Serializable]
     public abstract class BasePositionsData<T> : SerializedSingletonScriptable<T> where T : Object {
 
-        [SerializeField] private Dictionary<Positions, FieldPosition> Indexed;
+        [SerializeField] private Dictionary<FormationPosition, FieldPosition> Indexed;
 
         public bool FixedLength = true;
 
         [SerializeField]
         public FieldPosition[] FieldPositions = new FieldPosition[] {
-            new FieldPosition ( Positions.GK),
-            new FieldPosition ( Positions.CB),
-            new FieldPosition ( Positions.CB_R),
-            new FieldPosition ( Positions.CB_L),
-            new FieldPosition ( Positions.LB),
-            new FieldPosition ( Positions.RB),
-            new FieldPosition ( Positions.CM),
-            new FieldPosition ( Positions.CM_R),
-            new FieldPosition ( Positions.CM_L),
-            new FieldPosition ( Positions.RMF),
-            new FieldPosition ( Positions.LMF),
-            new FieldPosition ( Positions.AMF),
-            new FieldPosition ( Positions.AMF_R),
-            new FieldPosition ( Positions.AMF_L),
-            new FieldPosition ( Positions.ST),
-            new FieldPosition ( Positions.ST_R),
-            new FieldPosition ( Positions.ST_L)
+            new FieldPosition ( FormationPosition.GK),
+            new FieldPosition ( FormationPosition.CB),
+            new FieldPosition ( FormationPosition.CB_R),
+            new FieldPosition ( FormationPosition.CB_L),
+            new FieldPosition ( FormationPosition.LB),
+            new FieldPosition ( FormationPosition.RB),
+            new FieldPosition ( FormationPosition.CM),
+            new FieldPosition ( FormationPosition.CM_R),
+            new FieldPosition ( FormationPosition.CM_L),
+            new FieldPosition ( FormationPosition.RMF),
+            new FieldPosition ( FormationPosition.LMF),
+            new FieldPosition ( FormationPosition.AMF),
+            new FieldPosition ( FormationPosition.AMF_R),
+            new FieldPosition ( FormationPosition.AMF_L),
+            new FieldPosition ( FormationPosition.ST),
+            new FieldPosition ( FormationPosition.ST_R),
+            new FieldPosition ( FormationPosition.ST_L)
         };
 
-        public FieldPosition GetPosition(Positions position) {
+        public FieldPosition GetPosition(FormationPosition position) {
             if (Indexed == null) {
-                Indexed = new Dictionary<Positions, FieldPosition>();
+                Indexed = new Dictionary<FormationPosition, FieldPosition>();
                 foreach (var fieldPos in FieldPositions) {
                     Indexed.Add(fieldPos.Position, fieldPos);
                 }

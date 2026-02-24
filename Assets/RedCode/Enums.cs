@@ -134,7 +134,7 @@ namespace RedCard {
     }
 
     [System.Flags]
-    public enum Positions {
+    public enum FormationPosition {
         GK = 1 << 1,
         RB = 1 << 2,
         LB = 1 << 3,

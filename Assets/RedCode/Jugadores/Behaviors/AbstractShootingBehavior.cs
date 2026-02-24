@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace RedCard {
-    public abstract class AbstractShootingBehaviour : Behavior {
+    public abstract class AbstractShootingBehavior : Behavior {
         private const float MIN_Z_DISTANCE_SQR_TO_ANGLE_CHECK = 4;
         private const float MAX_X_DISTANCE_SQR_TO_ANGLE_CHECK = 6;
         private const float MAX_ANGLE = 80;

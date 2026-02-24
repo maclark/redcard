@@ -8,7 +8,7 @@ namespace RedCard {
     /// <summary>
     /// Cross to the penalty area.
     /// </summary>
-    public class CrossingBehaviour : Behavior {
+    public class CrossingBehavior : Behavior {
         private Jugador target;
 
         private const float MIN_DISTANCE_TO_TARGET = 16;
@@ -18,7 +18,7 @@ namespace RedCard {
         private readonly float minBallProgress;
         private readonly float chanceMultiplier;
 
-        public CrossingBehaviour(float minBallProgress = 0, float chanceMultiplier = 1) {
+        public CrossingBehavior(float minBallProgress = 0, float chanceMultiplier = 1) {
             this.minBallProgress = minBallProgress;
             this.chanceMultiplier = chanceMultiplier;
         }

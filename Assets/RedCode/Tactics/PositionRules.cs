@@ -4,29 +4,29 @@ using System.Linq;
 namespace RedCard {
     public class PositionRules {
 
-        private static Dictionary<Positions, Positions> rules = new Dictionary<Positions, Positions>() {
-            { Positions.GK, Positions.GK },
-            { Positions.LB, Positions.LB },
-            { Positions.RB, Positions.RB },
-            { Positions.LMF, Positions.LMF },
-            { Positions.RMF, Positions.RMF },
-            { Positions.LW, Positions.LW },
-            { Positions.RW, Positions.RW },
-            { Positions.CB, Positions.CB | Positions.CB_L | Positions.CB_R },
-            { Positions.CM, Positions.CM | Positions.CM_L | Positions.CM_R },
-            { Positions.DMF, Positions.DMF | Positions.DMF_L | Positions.DMF_R },
-            { Positions.AMF, Positions.AMF | Positions.AMF_L | Positions.AMF_R },
-            { Positions.ST, Positions.ST | Positions.ST_L | Positions.ST_R }
+        private static Dictionary<FormationPosition, FormationPosition> rules = new Dictionary<FormationPosition, FormationPosition>() {
+            { FormationPosition.GK, FormationPosition.GK },
+            { FormationPosition.LB, FormationPosition.LB },
+            { FormationPosition.RB, FormationPosition.RB },
+            { FormationPosition.LMF, FormationPosition.LMF },
+            { FormationPosition.RMF, FormationPosition.RMF },
+            { FormationPosition.LW, FormationPosition.LW },
+            { FormationPosition.RW, FormationPosition.RW },
+            { FormationPosition.CB, FormationPosition.CB | FormationPosition.CB_L | FormationPosition.CB_R },
+            { FormationPosition.CM, FormationPosition.CM | FormationPosition.CM_L | FormationPosition.CM_R },
+            { FormationPosition.DMF, FormationPosition.DMF | FormationPosition.DMF_L | FormationPosition.DMF_R },
+            { FormationPosition.AMF, FormationPosition.AMF | FormationPosition.AMF_L | FormationPosition.AMF_R },
+            { FormationPosition.ST, FormationPosition.ST | FormationPosition.ST_L | FormationPosition.ST_R }
         };
 
-        public static Positions GetRandomPosition() {
+        public static FormationPosition GetRandomPosition() {
             var randomPick = rules.Keys.OrderBy(x => System.Guid.NewGuid()).FirstOrDefault();
             return randomPick;
         }
 
-        public static Positions GetBasePosition(Positions position) {
+        public static FormationPosition GetBasePosition(FormationPosition position) {
             var result = rules.Where(x => x.Value.HasFlag(position)).FirstOrDefault();
-            if (result.Equals(default(KeyValuePair<Positions, Positions>))) {
+            if (result.Equals(default(KeyValuePair<FormationPosition, FormationPosition>))) {
                 // position doesnt have a rule.
                 return position;
             }
@@ -39,11 +39,11 @@ namespace RedCard {
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        public static Positions GetPositions(Positions position) {
+        public static FormationPosition GetPositions(FormationPosition position) {
             return rules.Where(x => x.Key.HasFlag(position)).FirstOrDefault().Value;
         }
 
-        public static IEnumerable<Positions> GetAllPositions() {
+        public static IEnumerable<FormationPosition> GetAllPositions() {
             return rules.Keys;
         }
     }

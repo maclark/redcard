@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Linq;
 
 namespace RedCard {
-    public class PassingBehaviour : Behavior {
+    public class PassingBehavior : Behavior {
 
         private PassTarget target;
 
@@ -12,7 +12,7 @@ namespace RedCard {
         private readonly float frontXThreshold;
         private readonly bool onlyIfCloserToGoalNet;
 
-        public PassingBehaviour(float maxBallProgress = 1) {
+        public PassingBehavior(float maxBallProgress = 1) {
             this.maxBallProgress = maxBallProgress;
         }
 
@@ -21,7 +21,7 @@ namespace RedCard {
         /// </summary>
         /// <param name="minBallProgress"></param>
         /// <param name="onlyIfCloserToGoalNet"></param>
-        public PassingBehaviour(
+        public PassingBehavior(
             float minBallProgress = 0,
             bool onlyIfCloserToGoalNet = false) {
 
@@ -36,7 +36,7 @@ namespace RedCard {
         /// <param name="minBallProgress">Minimum ball progress to activate. Between 0-1</param>
         /// <param name="onlyIfFrontOfUs">Select if passing point is front of us.</param>
         /// <param name="frontXThreshold">If onlyIfFrontOfUs true, optionally add more X threshold to consider it is 'Front'</param>
-        public PassingBehaviour(
+        public PassingBehavior(
             float minBallProgress,
             bool onlyIfFrontOfUs,
             float frontXThreshold) {

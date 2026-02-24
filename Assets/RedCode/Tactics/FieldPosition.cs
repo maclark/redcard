@@ -5,7 +5,7 @@ namespace RedCard {
 
     [System.Serializable]
     public struct FieldPosition {
-        public FieldPosition(Positions Position) {
+        public FieldPosition(FormationPosition Position) {
             this.Position = Position;
             this.Name = Position.ToString();
             this.HorizontalPlacement = 0;
@@ -21,7 +21,7 @@ namespace RedCard {
 
         public string Name;
 
-        public Positions Position;
+        public FormationPosition Position;
 
         [Range(0, 1)]
         public float HorizontalPlacement;
