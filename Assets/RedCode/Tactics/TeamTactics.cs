@@ -5,7 +5,7 @@ using UnityEngine;
 namespace RedCard {
 
     public static class FieldPositionUtility {
-        public static Vector3 PositionToVector3(Vector3 netDirection, in int fieldEndX, in int fieldEndY, FieldPosition fieldPosition) {
+        public static Vector3 PositionToVector3(Vector3 netDirection, in float fieldEndX, in float fieldEndY, FieldPosition fieldPosition) {
             var formalPosition = new Vector3(fieldEndX * fieldPosition.VerticalPlacement, 0, fieldEndY * fieldPosition.HorizontalPlacement);
             if (netDirection.x < 0) {
                 // team 2. reverse points
@@ -158,8 +158,8 @@ namespace RedCard {
             in TacticPresetTypes tacticPresetType,
             in TeamPosture teamPosture,
             in float ballProgress,
-            in int fieldXLength,
-            in int fieldYLength,
+            in float fieldXLength,
+            in float fieldYLength,
             in Vector3 ballPosition,
             in Jugador markingTarget,
             GoalNet goalNet,

@@ -11,6 +11,7 @@ namespace RedCard {
         public string surname;
         public RedTeam team;
         public RefTarget target;
+        public Positions position;
         public AngerBar angerBar;
         public bool isGK = false;
         public bool isGKUntouchable = false;
@@ -389,7 +390,7 @@ namespace RedCard {
 
             Vector3 fieldPosition = team.teamTactics.GetFieldPosition
                 (
-                Position,
+                position,
                 in team.tacticPresetType,
                 in teamPosture,
                 team.BallProgress,
