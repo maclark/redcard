@@ -152,19 +152,52 @@ namespace RedCard {
             else return match.somerville;
         }
 
-        public static void WhistleBlown(float duration) {
+        public void WhistleBlown(float duration) {
 
             // track whistle duration to have an effect emotionally on players?
             // or maybe baby whistles for half time are respect lossy
 
-            if (match.frozenWaitingForCall) { 
+            if (match.frozenWaitingForCall) {
                 // #TODO confusion, loss of respect, unless breaking up a fight
             }
             else {
-                FSInterpreter.BlowWhistle();
+
+                if (matchStatus == MatchStatus.Freeze) {
+                    Debug.Log("resuming match");
+                    matchStatus = MatchStatus.Playing;
+                    print("MatchFlags now: " + matchStatus);
+                    // this is just audio
+                    //EventManager.Trigger(new RefereeShortWhistleEvent());
+                }
+                else if (matchStatus == MatchStatus.WaitingForKickOff) {
+                    // this is just audio
+                    //EventManager.Trigger(new RefereeShortWhistleEvent());
+
+                    // could possibly want a delay in the simulation for a reaction
+
+                    if (clock == 0f) {
+                        //EventManager.Trigger(FirstWhistleEvent());
+                    }
+
+                    //EventManager.Trigger(new KickOffEvent());
+                }
+                else {
+                    // the function that blows the whistle listens for this event
+
+                    // this is just audio
+                    //EventManager.Trigger(new RefereeShortWhistleEvent());
+
+                    matchStatus = MatchStatus.Freeze;
+                    Debug.Log("MatchFlags now: " + matchStatus);
+                    //#TODO
+                    //ResetOffsides();
+                    // do i 'SetOutColliders'?
+                    // do i need to trigger an event?
+                }
+
+                print($"whistle blown for {duration}!");
             }
 
-            print($"whistle blown for {duration}!");
         }
 
         public static void ShowYellowCard(RefTarget target) {

@@ -750,7 +750,7 @@ namespace RedCard {
                     }
                     else if (ctx.canceled) {
                         blowingWhistle = false;
-                        if (tBlowingWhistle > minWhistleThreshold) RedMatch.WhistleBlown(tBlowingWhistle);
+                        if (tBlowingWhistle > minWhistleThreshold) RedMatch.match.WhistleBlown(tBlowingWhistle);
                         tBlowingWhistle = 0f; // it also zeroes when started. idk.
                         NormalWhistlePosition();
                     }
