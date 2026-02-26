@@ -104,8 +104,8 @@ namespace RedCard {
             new CornerBehaviour(),
             new KickOffBehaviour(),
 
-            new OurGKDegageBehaviour (),
-            //new OpponentGKDegageBehaviour (),
+            new OurGKDegageBehaviour(),
+            new OpponentGKDegageBehavior(),
 
             //new IsInOffsideBehaviour (),
 
